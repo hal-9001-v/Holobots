@@ -4,13 +4,20 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Shooter))]
-public class Turret : Bot
+public class Turret : Bot, IUtilityAI
 {
     [Header("Settings")]
+    [SerializeField] LayerMask _obstacleLayers;
+
     [SerializeField] [Range(0, 10)] int _maxRange;
+    [SerializeField] [Range(0, 5)] float _shootWeight = 1;
+    [SerializeField] [Range(0, 5)] float _idleWeight = 1;
 
     Shooter _shooter;
     Target _target;
+
+    DistanceToPlayerUnitSensor _distanceSensor;
+    SightToPlayerUnitSensor _sightSensor;
 
     UtilityUnit _utilityUnit;
 
@@ -19,37 +26,16 @@ public class Turret : Bot
         _shooter = GetComponent<Shooter>();
         _target = GetComponent<Target>();
 
-        Sensor[] sensors = new Sensor[3];
-
-        sensors[0] = new HealthSensor(_target);
-        sensors[1] = new DistanceToBotSensor(_target, _maxRange);
-        sensors[2] = new SightToPlayerUnitSensor(_target);
-
-
-
+        InitializeUtilityUnit();
 
     }
 
 
     public override void PrepareSteps()
     {
-        _shooter.ResetSteps();
+        ResetBehaviourComponents();
 
-        var playerUnits = FindObjectsOfType<PlayerUnit>();
-
-        if (playerUnits != null && playerUnits.Length != 0)
-        {
-            var target = playerUnits[Random.Range(0, playerUnits.Length)].GetComponent<Target>();
-
-            for (int i = 0; i < _shooter.maxShoots; i++)
-            {
-                _shooter.AddShootStep(target.currentGroundTile);
-            }
-
-        }
-
-
-
+        _utilityUnit.GetHighestAction().Execute();
     }
 
     public override TurnPreview[] GetPossibleMoves()
@@ -60,5 +46,39 @@ public class Turret : Bot
     public override MinMaxWeights GetMinMaxWeights()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void InitializeUtilityUnit()
+    {
+
+        _utilityUnit = new UtilityUnit();
+
+        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _maxRange, new LinearUtilityFunction());
+        _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
+
+        ShootPlayerUnitAction shootAction = new ShootPlayerUnitAction(_shooter, () =>
+        {
+            return _sightSensor.GetScore() * _distanceSensor.GetScore() * _shootWeight;
+        });
+
+        shootAction.AddPreparationListener(() =>
+        {
+            shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
+        });
+        _utilityUnit.AddAction(shootAction);
+
+
+
+        IdleAction idleAction = new IdleAction(() =>
+        {
+            return (1 - _distanceSensor.GetScore() * _idleWeight);
+        });
+        _utilityUnit.AddAction(idleAction);
+
+    }
+
+    public void ResetBehaviourComponents()
+    {
+        _shooter.ResetSteps();
     }
 }

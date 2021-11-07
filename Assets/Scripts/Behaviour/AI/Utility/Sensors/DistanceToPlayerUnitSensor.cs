@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class DistanceToPlayerUnitSensor : Sensor
 {
-    int _threshold;
 
+    int _threshold;
     Target _owner;
     Ground _ground;
 
-    public Bot closestBot { get; private set; }
+    public PlayerUnit closestPlayerUnit { get; private set; }
 
-    public DistanceToPlayerUnitSensor(Target owner, int threshold)
+    public DistanceToPlayerUnitSensor(Target owner, int threshold, UtilityFunction function) : base(function)
     {
         _owner = owner;
         _threshold = threshold;
@@ -19,9 +19,9 @@ public class DistanceToPlayerUnitSensor : Sensor
         _ground = GameObject.FindObjectOfType<Ground>();
     }
 
-    public override Score GetScore()
+    public override float GetScore()
     {
-        return TotalProximityScore();
+        return function.GetValue(TotalProximityScore());
     }
 
     float ClosestPlayerUnitDistance()
@@ -56,18 +56,27 @@ public class DistanceToPlayerUnitSensor : Sensor
     Score TotalProximityScore()
     {
         float value = 0;
+        float closestDistance = float.MaxValue;
 
-        var bots = GameObject.FindObjectsOfType<Bot>();
+        var units = GameObject.FindObjectsOfType<PlayerUnit>();
 
-        foreach (var bot in bots)
+        foreach (var unit in units)
         {
-            if (_ground.GetDistance(_owner.currentGroundTile, bot.target.currentGroundTile) < _threshold)
+            var distance = _ground.GetDistance(_owner.currentGroundTile, unit.target.currentGroundTile);
+
+            if (distance < _threshold)
             {
                 value++;
             }
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayerUnit = unit;
+            }
         }
 
-        return new Score(value, bots.Length);
+        return new Score(value, units.Length);
     }
 
 }

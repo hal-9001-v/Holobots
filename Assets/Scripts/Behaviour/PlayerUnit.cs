@@ -98,6 +98,7 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 
     public TurnPreview[] GetPossibleMoves()
     {
+        /*
         int range = 4;
         
         var moves = _mover.GetTilesInMaxRange(range);
@@ -109,8 +110,8 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
             preview[i] = new TurnPreview();
             preview[i].position = moves[i];
         }
-
-        return preview;
+        */
+        return null;
     }
 
     public MinMaxWeights GetMinMaxWeights()

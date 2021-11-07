@@ -4,20 +4,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Target))]
 public class UtilityUnit
 {
-    public Sensor[] sensors { get; private set;}
-    public UtilityAction[] actions { get; private set;}
+    List<UtilityAction> _actions;
 
-
-    public void SetSensors(Sensor[] sensors)
+    public UtilityUnit()
     {
-        this.sensors = sensors;
+        _actions = new List<UtilityAction>();
+    }
+    public UtilityAction GetHighestAction()
+    {
+        UtilityAction highestAction = _actions[0];
+        highestAction.UpdateValue();
+
+        for (int i = 1; i < _actions.Count; i++)
+        {
+            _actions[i].UpdateValue();
+
+            if (highestAction.value < _actions[i].value)
+            {
+                highestAction = _actions[i];
+            }
+
+        }
+
+         return highestAction;
     }
 
-    public void SetActions(UtilityAction[] actions)
+    public void AddAction(UtilityAction action)
     {
-        this.actions = actions;
+        _actions.Add(action);
     }
+
 }

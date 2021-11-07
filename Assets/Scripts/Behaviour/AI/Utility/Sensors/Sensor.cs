@@ -4,7 +4,14 @@ using UnityEngine;
 
 public abstract class Sensor
 {
-    public abstract Score GetScore();
+    public UtilityFunction function { get; private set; }
+
+    public Sensor(UtilityFunction function)
+    {
+        this.function = function;
+    }
+
+    public abstract float GetScore();
 
 
 }

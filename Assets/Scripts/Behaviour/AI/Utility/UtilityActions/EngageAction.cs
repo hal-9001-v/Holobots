@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootPlayerUnitAction : UtilityAction
+public class EngageAction : UtilityAction
 {
-    Shooter _shooter;
+    Mover _mover;
 
     PlayerUnit _target;
 
-    public ShootPlayerUnitAction( Shooter shooter, Func<float> valueCalculation) : base(valueCalculation)
+    public EngageAction(Mover mover, Func<float> valueCalculation) : base(valueCalculation)
     {
-        _shooter = shooter;
+        _mover = mover;
     }
 
     public void SetTarget(PlayerUnit target)
@@ -24,10 +24,7 @@ public class ShootPlayerUnitAction : UtilityAction
         if (_preparationAction != null)
             _preparationAction.Invoke();
 
-        for (int i = 0; i < _shooter.maxShoots; i++)
-        {
-            _shooter.AddShootStep(_target.target.currentGroundTile);
-        }
+        _mover.AddStepsToReachTarget(_target.target.currentGroundTile);
 
     }
 

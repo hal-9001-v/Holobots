@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,8 +74,15 @@ public class Mover : MonoBehaviour
         return newList;
     }
 
-    public void AddPathToSteps(List<GroundTile> path)
+    public void AddStepsToReachTarget(GroundTile target)
     {
+        AddStepsFromPath(GetFilteredPath(_target.currentGroundTile, target));
+    }
+
+    public void AddStepsFromPath(List<GroundTile> path)
+    {
+        if (path.Count == 0) return;
+
         //Create Steps
         MoverTurnStep[] steps = new MoverTurnStep[path.Count - 1];
         for (int i = 0; i < steps.Length; i++)
@@ -86,21 +94,23 @@ public class Mover : MonoBehaviour
         AddSteps(steps);
     }
 
-    public List<GroundTile> GetTilesInMaxRange(int range)
+    public List<DistancedTile> GetTilesInMaxRange(int range)
     {
-        List<GroundTile> tilesInRange = new List<GroundTile>();
+        List<DistancedTile> tilesInRange = new List<DistancedTile>();
         GroundTile newTile;
 
-        for (int i = 0; i < range; i++)
+        for (int i = -1; i <= range; i++)
         {
-            for (int j = 0; j < range; j++)
+            for (int j = -1; j <= range; j++)
             {
                 if (_ground.groundMap.TryGetValue(_target.currentGroundTile.cellCoord + new Vector2Int(i, j), out newTile))
                 {
+                    var pathLength = GetFilteredPath(_target.currentGroundTile, newTile).Count;
                     //Paths are 0 if there is no possible path.
-                    if (GetFilteredPath(_target.currentGroundTile, newTile).Count != 0)
+                    if (pathLength != 0)
                     {
-                        tilesInRange.Add(newTile);
+
+                        tilesInRange.Add(new DistancedTile(newTile, pathLength));
                     }
                 }
             }
@@ -184,5 +194,18 @@ public class MoverTurnStep : TurnStep
 
         _actor.EndStep();
 
+    }
+}
+
+
+public class DistancedTile
+{
+    public GroundTile tile;
+    public int distance;
+
+    public DistancedTile(GroundTile tile, int distance)
+    {
+        this.tile = tile;
+        this.distance = distance;
     }
 }

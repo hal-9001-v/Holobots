@@ -9,9 +9,11 @@ public class DistanceToBotSensor : Sensor
     Target _owner;
     Ground _ground;
 
-    public Bot closestBot { get; private set; }
 
-    public DistanceToBotSensor(Target owner, int threshold)
+    public Bot closestBot { get; private set; }
+    public Bot furthestBot { get; private set; }
+
+    public DistanceToBotSensor(Target owner, int threshold, UtilityFunction function) : base(function)
     {
         _owner = owner;
         _threshold = threshold;
@@ -19,16 +21,17 @@ public class DistanceToBotSensor : Sensor
         _ground = GameObject.FindObjectOfType<Ground>();
     }
 
-    public override Score GetScore()
+    public override float GetScore()
     {
-        return GetTotalProximityScore();
+        return function.GetValue(ClosestBotScore());
     }
 
-    float ClosestBotDistance()
+    Score ClosestBotScore()
     {
         var bots = GameObject.FindObjectsOfType<Bot>();
         Bot closestBot = null;
         int closestDistance = int.MaxValue;
+        int maxDistance = int.MinValue;
 
         int newDistance;
 
@@ -47,9 +50,14 @@ public class DistanceToBotSensor : Sensor
                 closestBot = bots[i];
                 closestDistance = newDistance;
             }
+            else if (newDistance > maxDistance) {
+                maxDistance = newDistance;
+                furthestBot = bots[i];
+            }
         }
 
-        return closestDistance;
+
+        return new Score(closestDistance, maxDistance);
 
     }
 

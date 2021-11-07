@@ -53,7 +53,7 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
         //Update Path
         _confirmedPath = JoinPaths(_confirmedPath, _tempPath);
 
-        _mover.AddPathToSteps(_tempPath);
+        _mover.AddStepsFromPath(_tempPath);
 
     }
 

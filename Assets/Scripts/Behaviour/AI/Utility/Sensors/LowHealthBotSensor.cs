@@ -6,14 +6,14 @@ public class LowHealthBotSensor : Sensor
 {
     float _threshold;
 
-    public LowHealthBotSensor(float threshold)
+    public LowHealthBotSensor(float threshold, UtilityFunction function) : base(function)
     {
         SetThreshold(threshold);
     }
 
-    public override Score GetScore()
+    public override float GetScore()
     {
-        return TotalHealthScore();
+        return function.GetValue(TotalHealthScore());
     }
 
     Score TotalHealthScore()

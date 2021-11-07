@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3150731235173526312}
   - component: {fileID: 3150731235173526311}
   - component: {fileID: 3150731235173526317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 7737253794733245361}
   - component: {fileID: 155883385276796867}
   - component: {fileID: 558199757465114421}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}

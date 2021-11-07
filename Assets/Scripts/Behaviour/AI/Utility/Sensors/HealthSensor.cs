@@ -6,14 +6,14 @@ public class HealthSensor : Sensor
 {
     Target _owner;
 
-    public HealthSensor(Target owner)
+    public HealthSensor(Target owner, UtilityFunction function) : base(function)
     {
         _owner = owner;
     }
 
-    public override Score GetScore()
+    public override float GetScore()
     {
-        return GetHealtScore();
+        return function.GetValue(GetHealtScore());
     }
 
     Score GetHealtScore()

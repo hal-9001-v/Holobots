@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Shooter))]
-public class Hunter : Bot
+public class Hunter : Bot, IUtilityAI
 {
     Mover _mover;
     Shooter _shooter;
@@ -12,11 +12,29 @@ public class Hunter : Bot
     Target _target;
     Target _selectedTarget;
 
+    UtilityUnit _utilityUnit;
+
+    [SerializeField] [Range(0, 5)] int _maxRange;
+
+    [SerializeField] [Range(0, 5)] float _shootWeight;
+    [SerializeField] [Range(0, 5)] float _fleeWeight;
+    [SerializeField] [Range(0, 5)] float _engageWeight;
+
+    [SerializeField] LayerMask _obstacleLayer;
+
+
+    //Sensors
+    DistanceToPlayerUnitSensor _distanceSensor;
+    HealthSensor _healthSensor;
+    SightToPlayerUnitSensor _sightSensor;
+
     private void Awake()
     {
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
         _shooter = GetComponent<Shooter>();
+
+        InitializeUtilityUnit();
     }
 
 
@@ -28,15 +46,12 @@ public class Hunter : Bot
 
     public override void PrepareSteps()
     {
-        var targets = FindObjectsOfType<PlayerUnit>();
+        ResetBehaviourComponents();
 
-        _selectedTarget = targets[Random.Range(0, targets.Length)].GetComponent<Target>();
+        var action = _utilityUnit.GetHighestAction();
 
-        _mover.ResetSteps();
-        _mover.AddPathToSteps(_mover.GetFilteredPath(_target.currentGroundTile, _selectedTarget.currentGroundTile));
+        action.Execute();
 
-        _shooter.ResetSteps();
-        _shooter.AddShootStep(_selectedTarget.currentGroundTile);
     }
 
     void Dead()
@@ -54,6 +69,7 @@ public class Hunter : Bot
 
     public override TurnPreview[] GetPossibleMoves()
     {
+        /*
         int range = 4;
 
         var moves = _mover.GetTilesInMaxRange(range);
@@ -65,12 +81,70 @@ public class Hunter : Bot
             preview[i] = new TurnPreview();
             preview[i].position = moves[i];
         }
+        */
+        return null;
 
-        return preview;
     }
 
     public override MinMaxWeights GetMinMaxWeights()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void InitializeUtilityUnit()
+    {
+        _utilityUnit = new UtilityUnit();
+
+        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _maxRange, new LinearUtilityFunction());
+        _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
+        _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
+
+        ShootPlayerUnitAction shootAction = new ShootPlayerUnitAction(_shooter, () =>
+        {
+            var value1 = _sightSensor.GetScore();
+            var value2 = _distanceSensor.GetScore();
+            return value1 * value2 * _shootWeight;
+        });
+
+        shootAction.AddPreparationListener(() =>
+        {
+            shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
+        });
+
+        _utilityUnit.AddAction(shootAction);
+
+
+        EngageAction engageAction = new EngageAction(_mover, () =>
+        {
+            var value = (1 - _distanceSensor.GetScore()) * 0.5f + _sightSensor.GetScore() * 0.5f;
+            return value * _engageWeight;
+        });
+
+        engageAction.AddPreparationListener(() =>
+        {
+            engageAction.SetTarget(_distanceSensor.closestPlayerUnit);
+        });
+        _utilityUnit.AddAction(engageAction);
+
+        FleeAction fleeAction = new FleeAction(_mover, () =>
+        {
+            var healthValue = 1 - _healthSensor.GetScore();
+            var distanceValue = _distanceSensor.GetScore();
+            return healthValue * (healthValue + distanceValue * 4) * _fleeWeight;
+        });
+
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_distanceSensor.closestPlayerUnit.target);
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+    }
+
+    public void ResetBehaviourComponents()
+    {
+        _mover.ResetSteps();
+        _shooter.ResetSteps();
     }
 }

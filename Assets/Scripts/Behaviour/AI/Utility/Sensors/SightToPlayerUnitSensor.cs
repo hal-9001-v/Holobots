@@ -8,14 +8,15 @@ public class SightToPlayerUnitSensor : Sensor
 
     LayerMask _obstacleLayers;
 
-    public SightToPlayerUnitSensor(Target owner)
+    public SightToPlayerUnitSensor(Target owner, LayerMask obstacleLayers, UtilityFunction function) : base(function)
     {
         _owner = owner;
+        _obstacleLayers = obstacleLayers;
     }
 
-    public override Score GetScore()
+    public override float GetScore()
     {
-        return GetTotalOnSight();
+        return function.GetValue(GetTotalOnSight());
     }
 
 
