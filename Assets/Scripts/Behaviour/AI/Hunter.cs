@@ -95,7 +95,7 @@ public class Hunter : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceToPlayerUnitSensor(_target,_mover.pathProfile, _maxRange, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
 
@@ -126,7 +126,7 @@ public class Hunter : Bot, IUtilityAI
         });
         _utilityUnit.AddAction(engageAction);
 
-        FleeAction fleeAction = new FleeAction(_mover, () =>
+        FleeAction fleeAction = new FleeAction(_mover,_mover.pathProfile, () =>
         {
             var healthValue = 1 - _healthSensor.GetScore();
             var distanceValue = _distanceSensor.GetScore();

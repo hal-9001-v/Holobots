@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground
+  m_Name: Shield
   m_Shader: {fileID: -6465566751694194690, guid: 95c1295c239dc1a40a6a5a28202ee662, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -109,8 +109,8 @@ Material:
     m_Colors:
     - Color_091b4394a16f41e1a48ad9eb8cb374d3: {r: 0, g: 0, b: 0, a: 0}
     - Color_1: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0}
-    - Color_2: {r: 0.21784072, g: 0, b: 0.7924528, a: 0}
-    - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}
+    - Color_2: {r: 0.9858491, g: 0.98916095, b: 1, a: 0}
+    - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0.2807049, g: 0.5427433, b: 0.7169812, a: 0}
     - _BaseColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

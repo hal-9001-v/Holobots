@@ -9,16 +9,20 @@ public class DistanceToBotSensor : Sensor
     Target _owner;
     Ground _ground;
 
+    PathProfile _pathProfile;
 
     public Bot closestBot { get; private set; }
     public Bot furthestBot { get; private set; }
 
-    public DistanceToBotSensor(Target owner, int threshold, UtilityFunction function) : base(function)
+    public DistanceToBotSensor(Target owner,PathProfile pathProfile, int threshold, UtilityFunction function) : base(function)
     {
         _owner = owner;
         _threshold = threshold;
+        _pathProfile = pathProfile;
 
         _ground = GameObject.FindObjectOfType<Ground>();
+
+
     }
 
     public override float GetScore()
@@ -43,7 +47,7 @@ public class DistanceToBotSensor : Sensor
                 continue;
             }
 
-            newDistance = _ground.GetDistance(_owner.currentGroundTile, bots[i].target.currentGroundTile);
+            newDistance = _ground.GetDistance(_owner.currentGroundTile, bots[i].target.currentGroundTile, _pathProfile);
 
             if (newDistance < closestDistance || !closestBot)
             {
@@ -69,7 +73,7 @@ public class DistanceToBotSensor : Sensor
 
         foreach (var unit in units)
         {
-            if (_ground.GetDistance(_owner.currentGroundTile, unit.target.currentGroundTile) < _threshold)
+            if (_ground.GetDistance(_owner.currentGroundTile, unit.target.currentGroundTile, _pathProfile) < _threshold)
             {
                 value++;
             }

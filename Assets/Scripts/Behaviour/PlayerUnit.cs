@@ -55,6 +55,12 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         {
             _adapters.Add(new ShooterPlayerAdapter(shooter));
         }
+
+        var shielder = GetComponent<Shielder>();
+        if (shielder)
+        {
+            _adapters.Add(new ShielderPlayerAdapter(shielder, target, _turnActor));
+        }
     }
 
     void Dead()

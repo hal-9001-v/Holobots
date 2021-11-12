@@ -45,7 +45,7 @@ public class Obstacle : MonoBehaviour
         if (_ground.groundMap.TryGetValue(cellCoords, out tile))
         {
             _tile = tile;
-            tile.isTraversable = false;
+            tile.tileType = TileType.Untraversable;
             tile.SetUnit(_target);
         }
 
@@ -56,7 +56,7 @@ public class Obstacle : MonoBehaviour
         if (_tile)
         {
             _tile.FreeUnit();
-            _tile.isTraversable = true;
+            _tile.tileType = TileType.Traversable;
 
             if (_buildingRenderer)
                 _buildingRenderer.enabled = false;

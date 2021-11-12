@@ -10,7 +10,9 @@ public class GroundTile : MonoBehaviour
     public GroundTile[] neighbours;
 
     public bool isClosed;
-    public bool isTraversable = true;
+
+    public TileType tileType;
+
 
     [Range(0, 10)] public int weight = 1;
 
@@ -39,6 +41,40 @@ public class GroundTile : MonoBehaviour
     }
 
     public void GetNeighBours(Dictionary<Vector2Int, GroundTile> groundGrid)
+    {
+        List<GroundTile> newNeighbours = new List<GroundTile>();
+        GroundTile neighbour;
+        for (int i = -1; i < 2; i++)
+        {
+            if (i == 0) continue;
+
+            if (groundGrid.TryGetValue(cellCoord + new Vector2Int(i, 0), out neighbour))
+            {
+           
+                newNeighbours.Add(neighbour);
+
+            }
+           
+        }
+
+        for (int i = -1; i < 2; i++)
+        {
+            if (i == 0) continue;
+
+            if (groundGrid.TryGetValue(cellCoord + new Vector2Int(0, i), out neighbour))
+            {
+
+                newNeighbours.Add(neighbour);
+
+            }
+
+        }
+
+        neighbours = newNeighbours.ToArray();
+
+    }
+
+    public void GetHexagonalNeighBours(Dictionary<Vector2Int, GroundTile> groundGrid)
     {
         List<GroundTile> newNeighbours = new List<GroundTile>();
         GroundTile neighbour;

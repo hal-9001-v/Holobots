@@ -67,7 +67,7 @@ public class Ground : MonoBehaviour
 
     }
 
-    public GroundTile[] GetPath(GroundTile origin, GroundTile destination)
+    public GroundTile[] GetPath(GroundTile origin, GroundTile destination, PathProfile profile)
     {
         List<GroundTile> openNodes = new List<GroundTile>();
 
@@ -95,7 +95,7 @@ public class Ground : MonoBehaviour
 
             foreach (GroundTile neighbour in currentNode.neighbours)
             {
-                CheckNeighbour(currentNode, neighbour, destination, openNodes);
+                CheckNeighbour(currentNode, neighbour, openNodes, profile);
             }
         }
 
@@ -116,54 +116,54 @@ public class Ground : MonoBehaviour
         return path.ToArray();
     }
 
-    public int GetDistance(GroundTile a, GroundTile b)
+    public int GetDistance(GroundTile a, GroundTile b, PathProfile profile)
     {
-        var path = GetPath(a,b);
+        var path = GetPath(a, b, profile);
 
         if (path.Length == 0)
             return int.MaxValue;
 
         return path.Length;
     }
-    void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, GroundTile destination, List<GroundTile> openNodes)
+    void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, List<GroundTile> openNodes, PathProfile profile)
     {
-        if (neighbour.isClosed == false && neighbour.isTraversable)
+        if (neighbour.isClosed) return;
+
+        if (!profile.canTraspass && neighbour.tileType == TileType.Untraversable) return;
+
+        float fixedWeight = currentNode.weight;
+
+        //If it is diagonal
+        if (currentNode.cellCoord.x != neighbour.cellCoord.x && currentNode.cellCoord.y != neighbour.cellCoord.y)
         {
-            float fixedWeight = currentNode.weight;
-
-            //If it is diagonal
-            if (currentNode.cellCoord.x != neighbour.cellCoord.x && currentNode.cellCoord.y != neighbour.cellCoord.y)
-            {
-                fixedWeight *= RootOf2;
-            }
-
-            if (neighbour.gCost > (currentNode.gCost + fixedWeight))
-            {
-                neighbour.parent = currentNode;
-                neighbour.gCost = currentNode.gCost + fixedWeight;
-
-                if (!openNodes.Contains(neighbour))
-                {
-                    openNodes.Add(neighbour);
-                }
-
-                openNodes.Sort(delegate (GroundTile a, GroundTile b)
-                {
-                    if (a.gCost < b.gCost)
-                        return -1;
-                    else
-                        return 1;
-
-                });
-            }
+            fixedWeight *= RootOf2;
         }
 
+        if (neighbour.gCost > (currentNode.gCost + fixedWeight))
+        {
+            neighbour.parent = currentNode;
+            neighbour.gCost = currentNode.gCost + fixedWeight;
+
+            if (!openNodes.Contains(neighbour))
+            {
+                openNodes.Add(neighbour);
+            }
+
+            openNodes.Sort(delegate (GroundTile a, GroundTile b)
+            {
+                if (a.gCost < b.gCost)
+                    return -1;
+                else
+                    return 1;
+
+            });
+        }
 
     }
 
-    public Vector3[] GetPointsOfPath(GroundTile origin, GroundTile destination)
+    public Vector3[] GetPointsOfPath(GroundTile origin, GroundTile destination, PathProfile pathProfile)
     {
-        GroundTile[] path = GetPath(origin, destination);
+        GroundTile[] path = GetPath(origin, destination, pathProfile);
 
         Vector3[] points = new Vector3[path.Length];
 

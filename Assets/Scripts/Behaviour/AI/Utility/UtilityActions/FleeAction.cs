@@ -9,10 +9,14 @@ public class FleeAction : UtilityAction
     Ground _ground;
     Target _target;
 
-    public FleeAction(Mover mover, Func<float> valueCalculation) : base(valueCalculation)
+    PathProfile _pathProfile;
+
+    public FleeAction(Mover mover,PathProfile pathProfile, Func<float> valueCalculation) : base(valueCalculation)
     {
         _mover = mover;
         _ground = GameObject.FindObjectOfType<Ground>();
+
+        _pathProfile = pathProfile;
     }
 
     public void SetTarget(Target target)
@@ -32,16 +36,14 @@ public class FleeAction : UtilityAction
         {
             if (distancedTile.tile.unit != null) continue;
 
-            var distance = _ground.GetDistance(distancedTile.tile, _target.currentGroundTile);
+            var distance = _ground.GetDistance(distancedTile.tile, _target.currentGroundTile, _pathProfile);
 
             if (distance > maxDistance)
             {
                 furthestTile = distancedTile.tile;
                 maxDistance = distance;
             }
-
         }
-
 
         _mover.AddStepsToReachTarget(furthestTile);
 

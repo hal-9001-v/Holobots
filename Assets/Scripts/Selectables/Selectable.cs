@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
+    
 
     public Action clickAction;
     public Action selectAction;
@@ -12,6 +13,7 @@ public class Selectable : MonoBehaviour
 
     public void Select()
     {
+        
         if (selectAction != null)
             selectAction.Invoke();
     }

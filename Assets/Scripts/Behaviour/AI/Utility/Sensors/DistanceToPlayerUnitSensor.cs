@@ -9,12 +9,15 @@ public class DistanceToPlayerUnitSensor : Sensor
     Target _owner;
     Ground _ground;
 
+    PathProfile _pathProfile;
+
     public PlayerUnit closestPlayerUnit { get; private set; }
 
-    public DistanceToPlayerUnitSensor(Target owner, int threshold, UtilityFunction function) : base(function)
+    public DistanceToPlayerUnitSensor(Target owner, PathProfile profile, int threshold, UtilityFunction function) : base(function)
     {
         _owner = owner;
         _threshold = threshold;
+        _pathProfile = profile;
 
         _ground = GameObject.FindObjectOfType<Ground>();
     }
@@ -40,7 +43,7 @@ public class DistanceToPlayerUnitSensor : Sensor
                 continue;
             }
 
-            newDistance = _ground.GetDistance(_owner.currentGroundTile, playerUnits[i].target.currentGroundTile);
+            newDistance = _ground.GetDistance(_owner.currentGroundTile, playerUnits[i].target.currentGroundTile, _pathProfile);
 
             if (newDistance < closestDistance || !closestUnit)
             {
@@ -62,7 +65,7 @@ public class DistanceToPlayerUnitSensor : Sensor
 
         foreach (var unit in units)
         {
-            var distance = _ground.GetDistance(_owner.currentGroundTile, unit.target.currentGroundTile);
+            var distance = _ground.GetDistance(_owner.currentGroundTile, unit.target.currentGroundTile, _pathProfile);
 
             if (distance < _threshold)
             {

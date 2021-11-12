@@ -122,9 +122,11 @@ public class CameraMovement : MonoBehaviour
         fixedRight.Normalize();
 
         var targetVelocity = input.x * fixedRight + input.y * fixedForward;
-        targetVelocity *= _movementSpeed;
+        targetVelocity *= _movementSpeed * Time.fixedDeltaTime;
 
-        _followRigidbody.AddForce(targetVelocity - _followRigidbody.velocity, ForceMode.VelocityChange);
+        //_followRigidbody.AddForce(targetVelocity - _followRigidbody.velocity, ForceMode.VelocityChange);
+
+        transform.position += targetVelocity;
     }
 
 }

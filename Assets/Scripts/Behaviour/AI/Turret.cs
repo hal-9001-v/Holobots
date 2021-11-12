@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Shooter))]
+[RequireComponent(typeof(Mover))]
 public class Turret : Bot, IUtilityAI
 {
     [Header("Settings")]
@@ -15,6 +16,7 @@ public class Turret : Bot, IUtilityAI
 
     Shooter _shooter;
     Target _target;
+    Mover _mover;
 
     DistanceToPlayerUnitSensor _distanceSensor;
     SightToPlayerUnitSensor _sightSensor;
@@ -24,6 +26,7 @@ public class Turret : Bot, IUtilityAI
     private void Awake()
     {
         _shooter = GetComponent<Shooter>();
+        _mover = GetComponent<Mover>();
         _target = GetComponent<Target>();
 
         InitializeUtilityUnit();
@@ -53,7 +56,7 @@ public class Turret : Bot, IUtilityAI
 
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
 
         ShootPlayerUnitAction shootAction = new ShootPlayerUnitAction(_shooter, () =>

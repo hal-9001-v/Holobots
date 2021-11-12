@@ -9,6 +9,16 @@ public class Mover : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] [Range(1, 10)] int _maxMoves;
+    [SerializeField] PathProfile _pathProfile;
+
+    public PathProfile pathProfile
+    {
+        get
+        {
+            return _pathProfile;
+
+        }
+    }
 
     public int maxMoves
     {
@@ -56,7 +66,7 @@ public class Mover : MonoBehaviour
     }
     public List<GroundTile> GetFilteredPath(GroundTile startingTile, GroundTile destinationTile)
     {
-        var totalPath = _ground.GetPath(startingTile, destinationTile);
+        var totalPath = _ground.GetPath(startingTile, destinationTile, _pathProfile);
 
         List<GroundTile> newList = new List<GroundTile>();
 
@@ -88,7 +98,7 @@ public class Mover : MonoBehaviour
         for (int i = 0; i < steps.Length; i++)
         {
             //i + 1 because first tile in _confirmedPath is currentPositon at the start
-            steps[i] = new MoverTurnStep(path[i + 1], _target, _turnActor, _stepDuration);
+            steps[i] = new MoverTurnStep(path[i + 1], _target, this, _turnActor, _stepDuration);
         }
 
         AddSteps(steps);
@@ -145,14 +155,16 @@ public class MoverTurnStep : TurnStep
     TurnActor _actor;
     public GroundTile destination;
     Target _target;
+    Mover _mover;
 
     float _duration;
 
-    public MoverTurnStep(GroundTile destination, Target target, TurnActor actor, float duration)
+    public MoverTurnStep(GroundTile destination, Target target, Mover mover, TurnActor actor, float duration)
     {
         this.destination = destination;
 
         _target = target;
+        _mover = mover;
         _actor = actor;
         _duration = duration;
     }
@@ -165,35 +177,31 @@ public class MoverTurnStep : TurnStep
 
     IEnumerator MoveToTarget()
     {
-        if (destination.unit != null)
-        {
-            //Cant move there. End turn
+        //Cant move there. End turn
+        if (!_mover.pathProfile.canTraspass && destination.unit != null)
             _actor.ResetSteps();
-        }
-        else
+
+        var startingPosition = _actor.transform.position;
+        _target.SetCurrentGroundTile(destination);
+
+        var fixedDestination = destination.transform.position;
+        fixedDestination.y = startingPosition.y;
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < _duration)
         {
-            var startingPosition = _actor.transform.position;
-            _target.SetCurrentGroundTile(destination);
+            elapsedTime += Time.deltaTime;
 
-            var fixedDestination = destination.transform.position;
-            fixedDestination.y = startingPosition.y;
+            _actor.transform.position = Vector3.Lerp(startingPosition, fixedDestination, elapsedTime / _duration);
 
-            float elapsedTime = 0;
-
-            while (elapsedTime < _duration)
-            {
-                elapsedTime += Time.deltaTime;
-
-                _actor.transform.position = Vector3.Lerp(startingPosition, fixedDestination, elapsedTime / _duration);
-
-                yield return null;
-            }
-
-            _actor.transform.position = fixedDestination;
+            yield return null;
         }
+
+        _actor.transform.position = fixedDestination;
+
 
         _actor.EndStep();
-
     }
 }
 
