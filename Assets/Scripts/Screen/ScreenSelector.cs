@@ -17,6 +17,7 @@ public class ScreenSelector : MonoBehaviour
     public Action<Selectable> onLeftClickCallback;
     public Action<Selectable> onRightClickCallback;
     public Action<Selectable> onSelectionCallback;
+    public Action onNothingSelectedCallback;
 
     private void Awake()
     {
@@ -45,6 +46,11 @@ public class ScreenSelector : MonoBehaviour
                 _selectedObject.Deselect();
 
                 _selectedObject = null;
+
+                if (onNothingSelectedCallback != null)
+                {
+                    onNothingSelectedCallback.Invoke();
+                }
             }
         }
 

@@ -21,7 +21,13 @@ public interface ISelectorObserver
     /// </summary>
     /// <param name="selectable"></param>
     public void OnSelectNotify(Selectable selectable);
-    
+
+    /// <summary>
+    /// When this unit is selected by controlling player, execute every time mouse is not pointing anything
+    /// </summary>
+    /// <param name="selectable"></param>
+    public void OnNothingSelectNotify();
+
     /// <summary>
     ///Add OnRightClickNotify, OnLeftClickNotify... to subject object(Probably GameDirector)
     /// </summary>

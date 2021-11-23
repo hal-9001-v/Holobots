@@ -6,7 +6,9 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
     Target _target;
     TurnActor _turnActor;
 
-    public ShielderPlayerAdapter(Shielder shielder, Target target, TurnActor actor)
+    GroundTile _selectedTile;
+
+    public ShielderPlayerAdapter(Shielder shielder, Target target, TurnActor actor) : base(AdapterType.Shield)
     {
         _shielder = shielder;
         _target = target;
@@ -17,10 +19,22 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnRightClickNotify(Selectable selectable)
     {
-        if (!_inputIsActive) return;
-        _shielder.RotateShield();
-        
+        //Nothing
+    }
 
+    public void OnLeftClickNotify(Selectable selectable)
+    {
+        if (_selectedTile)
+        {
+            _shielder.SetProtectingShield(_selectedTile);
+        }
+    }
+
+    public void OnNothingSelectNotify()
+    {
+        _selectedTile = null;
+
+        _shielder.HideShields();
     }
 
     public void OnSelectNotify(Selectable selectable)
@@ -30,7 +44,9 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
         var tile = selectable.GetComponent<GroundTile>();
         if (tile)
         {
-            _shielder.SetShield(tile);
+            _selectedTile = tile;
+
+            _shielder.SetPlanningShield(tile);
         }
 
     }
@@ -39,8 +55,9 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
     {
         var screenSelector = GameObject.FindObjectOfType<ScreenSelector>();
 
-        screenSelector.onRightClickCallback += OnRightClickNotify;
+        screenSelector.onLeftClickCallback += OnLeftClickNotify;
         screenSelector.onSelectionCallback += OnSelectNotify;
+        screenSelector.onNothingSelectedCallback += OnNothingSelectNotify;
 
     }
 
@@ -49,20 +66,15 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
-    public override void OnStopControl()
-    {
-
-    }
-
-    public void OnLeftClickNotify(Selectable selectable)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void OnStartControl()
     {
-        //Nothing!
+        _shielder.ShowShields();
 
+    }
+
+    public override void OnStopControl()
+    {
+        _shielder.HideShields();
     }
 
 }

@@ -14,7 +14,7 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
     //_confirmedPath's extension
     List<GroundTile> _tempPath;
 
-    public MoverPlayerAdapter(Mover mover, Target target, TurnActor actor)
+    public MoverPlayerAdapter(Mover mover, Target target, TurnActor actor) : base(AdapterType.Move)
     {
         _mover = mover;
         _target = target;
@@ -88,6 +88,7 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
         screenSelector.onRightClickCallback += OnRightClickNotify;
         screenSelector.onSelectionCallback += OnSelectNotify;
+        screenSelector.onNothingSelectedCallback += OnNothingSelectNotify;
 
     }
 
@@ -127,5 +128,11 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
+    public void OnNothingSelectNotify()
+    {
+        _gridLine.HideLine();
+
+        _tempPath.Clear();
+    }
 }
 

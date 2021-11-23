@@ -17,10 +17,10 @@ public class PlayerSelector : MonoBehaviour
     public Action<Selectable> onRightClickCallback;
 
     int _unitIndex;
-
     bool _isTurnActive;
 
     GameDirector _gameDirector;
+    SkillSelector _skillSelector;
 
     private void Awake()
     {
@@ -30,6 +30,7 @@ public class PlayerSelector : MonoBehaviour
         _cameraMovement = FindObjectOfType<CameraMovement>();
 
         _gameDirector = FindObjectOfType<GameDirector>();
+        _skillSelector = FindObjectOfType<SkillSelector>();
     }
     // Start is called before the first frame update
     void Start()
@@ -61,8 +62,6 @@ public class PlayerSelector : MonoBehaviour
     {
         if (_isTurnActive)
         {
-            units[_unitIndex].DisableControl();
-
             _unitIndex = index;
 
             if (_unitIndex >= units.Count)
@@ -74,8 +73,8 @@ public class PlayerSelector : MonoBehaviour
                 _unitIndex = units.Count;
             }
 
-            units[_unitIndex].EnableControl();
 
+            _skillSelector.SetSelectedUnit(units[_unitIndex]);
             _cameraMovement.LookAt(units[_unitIndex].transform.position);
         }
     }
@@ -106,7 +105,7 @@ public class PlayerSelector : MonoBehaviour
     {
         _isTurnActive = false;
 
-        units[_unitIndex].DisableControl();
+
 
     }
 

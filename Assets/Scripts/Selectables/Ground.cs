@@ -116,6 +116,25 @@ public class Ground : MonoBehaviour
         return path.ToArray();
     }
 
+    public List<GroundTile> GetTilesInRange(GroundTile center, int range)
+    {
+        List<GroundTile> avaliableTiles = new List<GroundTile>();
+
+        for (int i = (-range + 1); i < range; i++)
+        {
+            for (int j = (-range + 1); j < range; j++)
+            {
+                GroundTile tile;
+                if (groundMap.TryGetValue(center.cellCoord + new Vector2Int(i, j), out tile))
+                {
+                    avaliableTiles.Add(tile);
+                }
+            }
+        }
+
+        return avaliableTiles;
+    }
+
     public int GetDistance(GroundTile a, GroundTile b, PathProfile profile)
     {
         var path = GetPath(a, b, profile);

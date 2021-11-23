@@ -13,7 +13,7 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
     TurnActor _turnActor;
     Mover _mover;
 
-    List<Adapter> _adapters;
+    public List<Adapter> adapters { get; private set; }
 
     public bool isControlActive;
 
@@ -42,24 +42,24 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 
     void CreateAdapters()
     {
-        _adapters = new List<Adapter>();
+        adapters = new List<Adapter>();
 
         var mover = GetComponent<Mover>();
         if (mover)
         {
-            _adapters.Add(new MoverPlayerAdapter(mover, target, _turnActor));
+            adapters.Add(new MoverPlayerAdapter(mover, target, _turnActor));
         }
 
         var shooter = GetComponent<Shooter>();
         if (shooter)
         {
-            _adapters.Add(new ShooterPlayerAdapter(shooter));
+            adapters.Add(new ShooterPlayerAdapter(shooter));
         }
 
         var shielder = GetComponent<Shielder>();
         if (shielder)
         {
-            _adapters.Add(new ShielderPlayerAdapter(shielder, target, _turnActor));
+            adapters.Add(new ShielderPlayerAdapter(shielder, target, _turnActor));
         }
     }
 
@@ -76,25 +76,9 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         }
     }
 
-    public void EnableControl()
-    {
-        foreach (var adapter in _adapters)
-        {
-            adapter.EnableInput();
-        }
-    }
-
-    public void DisableControl()
-    {
-        foreach (var adapter in _adapters)
-        {
-            adapter.DisableInput();
-        }
-    }
-
     public void ResetAdapters()
     {
-        foreach (var adapter in _adapters)
+        foreach (var adapter in adapters)
         {
             adapter.Reset();
         }

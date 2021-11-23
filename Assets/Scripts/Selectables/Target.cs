@@ -7,6 +7,12 @@ using UnityEngine;
 [RequireComponent(typeof(Selectable))]
 public class Target : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] TextMeshPro _healthMesh;
+
+    [Header("Settings")]
+    [SerializeField] [Range(0, 10)] int _maxHealth;
+
     public int currentHealth { get; private set; }
     public int maxHealth
     {
@@ -15,9 +21,6 @@ public class Target : MonoBehaviour
             return _maxHealth;
         }
     }
-
-    [SerializeField] [Range(0, 10)] int _maxHealth;
-    [SerializeField] TextMeshPro _healthMesh;
 
     public bool isDead
     {

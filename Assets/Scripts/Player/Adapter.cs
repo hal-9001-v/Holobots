@@ -6,6 +6,12 @@ public abstract class Adapter
 {
     protected bool _inputIsActive;
 
+    public AdapterType adapterType { get; private set; }
+
+    public Adapter(AdapterType adapterType)
+    {
+        this.adapterType = adapterType;
+    }
 
     public void EnableInput()
     {
@@ -20,6 +26,8 @@ public abstract class Adapter
 
         OnStopControl();
     }
+
+
 
     public abstract void Reset();
 

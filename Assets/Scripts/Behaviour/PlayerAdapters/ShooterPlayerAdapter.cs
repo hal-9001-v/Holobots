@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShooterPlayerAdapter : Adapter, ISelectorObserver
@@ -10,7 +8,7 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 
     GroundTile _targetGroundTile;
 
-    public ShooterPlayerAdapter(Shooter shooter)
+    public ShooterPlayerAdapter(Shooter shooter) : base(AdapterType.Attack)
     {
         _shooter = shooter;
 
@@ -74,8 +72,6 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
             {
                 _shooter.AddShootStep(_targetGroundTile);
             }
-
-
         }
     }
 
@@ -108,4 +104,13 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
+    public void OnNothingSelectNotify()
+    {
+        _targetGroundTile = null;
+
+        foreach (var line in _gridLines)
+        {
+            line.HideLine();
+        }
+    }
 }
