@@ -144,6 +144,7 @@ public class Ground : MonoBehaviour
 
         return path.Length;
     }
+
     void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, List<GroundTile> openNodes, PathProfile profile)
     {
         if (neighbour.isClosed) return;

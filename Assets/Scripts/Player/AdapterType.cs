@@ -2,6 +2,7 @@ public enum AdapterType
 {
     Attack,
     Move,
-    Shield
+    Shield,
+    Meleer
     
 }

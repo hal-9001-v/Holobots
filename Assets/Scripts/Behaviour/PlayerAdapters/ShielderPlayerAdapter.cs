@@ -24,6 +24,7 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnLeftClickNotify(Selectable selectable)
     {
+        if (!_inputIsActive) return;
         if (_selectedTile)
         {
             _shielder.SetProtectingShield(_selectedTile);
@@ -32,6 +33,8 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnNothingSelectNotify()
     {
+        if (!_inputIsActive) return;
+
         _selectedTile = null;
 
         _shielder.HideShields();
@@ -42,7 +45,7 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
         if (!_inputIsActive) return;
 
         var tile = selectable.GetComponent<GroundTile>();
-        if (tile)
+        if (tile && tile != _target.currentGroundTile)
         {
             _selectedTile = tile;
 

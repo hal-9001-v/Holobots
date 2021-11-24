@@ -4,14 +4,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(Target))]
 [RequireComponent(typeof(Selectable))]
-[RequireComponent(typeof(Mover))]
-[RequireComponent(typeof(Shooter))]
 [RequireComponent(typeof(TurnActor))]
 public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 {
-    public Target target;
+    public Target target { get; private set; }
     TurnActor _turnActor;
-    Mover _mover;
 
     public List<Adapter> adapters { get; private set; }
 
@@ -29,7 +26,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
     private void Awake()
     {
         target = GetComponent<Target>();
-        _mover = GetComponent<Mover>();
         _turnActor = GetComponent<TurnActor>();
 
         CreateAdapters();
@@ -60,6 +56,12 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         if (shielder)
         {
             adapters.Add(new ShielderPlayerAdapter(shielder, target, _turnActor));
+        }
+
+        var meleer = GetComponent<Meleer>();
+        if (meleer)
+        {
+            adapters.Add(new MeleerPlayerAdapter(meleer, target));
         }
     }
 
