@@ -20,7 +20,7 @@ public class CameraMovement : MonoBehaviour
     Rigidbody _followRigidbody;
 
     [Header("Settings")]
-    [SerializeField] [Range(0f, 10f)] float _rotationSpeed = 1;
+    [SerializeField] [Range(50f, 250f)] float _rotationSpeed = 1;
     [SerializeField] [Range(0f, 10f)] float _movementSpeed = 1;
     [SerializeField] [Range(0f, 10f)] float _fovChange = 1;
 
@@ -108,7 +108,7 @@ public class CameraMovement : MonoBehaviour
     {
         if (_cameraAxis)
         {
-            _cameraAxis.Rotate(Vector3.up, input * _rotationSpeed);
+            _cameraAxis.Rotate(Vector3.up, input * _rotationSpeed * Time.deltaTime);
         }
     }
 
