@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Camera))]
 public class ScreenSelector : MonoBehaviour
@@ -80,7 +81,7 @@ public class ScreenSelector : MonoBehaviour
 
     public void CheckClick()
     {
-        if (Mouse.current.press.wasReleasedThisFrame)
+        if (Mouse.current.press.wasReleasedThisFrame && !EventSystem.current.IsPointerOverGameObject()) 
         {
             if (_selectedObject != null)
             {
@@ -91,7 +92,7 @@ public class ScreenSelector : MonoBehaviour
             }
         }
 
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
+        if (Mouse.current.rightButton.wasReleasedThisFrame && !EventSystem.current.IsPointerOverGameObject())
         {
             if (_selectedObject != null)
             {
