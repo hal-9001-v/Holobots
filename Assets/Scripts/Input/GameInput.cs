@@ -188,6 +188,38 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SelectAbility1"",
+                    ""type"": ""Button"",
+                    ""id"": ""282cbf03-853b-4788-9341-bf8e224255e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SelectAbility2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bab4b51-1f09-4167-9f06-15322dcb62a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SelectAbility3"",
+                    ""type"": ""Button"",
+                    ""id"": ""63f05e92-99e2-4758-9ca5-62d77d6d86c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SelectAbility4"",
+                    ""type"": ""Button"",
+                    ""id"": ""75dcdac3-9654-48f2-bbad-d0b8b16c3871"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -245,6 +277,50 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""action"": ""EndTurn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23d7dcd4-aeb8-498e-b1d3-6b02bdd3a917"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1bce01b2-dd1b-4b8b-8f10-058d5166e43d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""700aa935-f716-496d-a245-391dc7b6ba6d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a8bab5f-464b-453e-bf71-8c912e3c73ee"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -263,6 +339,10 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Game_ResetSteps = m_Game.FindAction("Reset Steps", throwIfNotFound: true);
         m_Game_NextUnit = m_Game.FindAction("NextUnit", throwIfNotFound: true);
         m_Game_EndTurn = m_Game.FindAction("EndTurn", throwIfNotFound: true);
+        m_Game_SelectAbility1 = m_Game.FindAction("SelectAbility1", throwIfNotFound: true);
+        m_Game_SelectAbility2 = m_Game.FindAction("SelectAbility2", throwIfNotFound: true);
+        m_Game_SelectAbility3 = m_Game.FindAction("SelectAbility3", throwIfNotFound: true);
+        m_Game_SelectAbility4 = m_Game.FindAction("SelectAbility4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -366,6 +446,10 @@ public class @GameInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Game_ResetSteps;
     private readonly InputAction m_Game_NextUnit;
     private readonly InputAction m_Game_EndTurn;
+    private readonly InputAction m_Game_SelectAbility1;
+    private readonly InputAction m_Game_SelectAbility2;
+    private readonly InputAction m_Game_SelectAbility3;
+    private readonly InputAction m_Game_SelectAbility4;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -375,6 +459,10 @@ public class @GameInput : IInputActionCollection, IDisposable
         public InputAction @ResetSteps => m_Wrapper.m_Game_ResetSteps;
         public InputAction @NextUnit => m_Wrapper.m_Game_NextUnit;
         public InputAction @EndTurn => m_Wrapper.m_Game_EndTurn;
+        public InputAction @SelectAbility1 => m_Wrapper.m_Game_SelectAbility1;
+        public InputAction @SelectAbility2 => m_Wrapper.m_Game_SelectAbility2;
+        public InputAction @SelectAbility3 => m_Wrapper.m_Game_SelectAbility3;
+        public InputAction @SelectAbility4 => m_Wrapper.m_Game_SelectAbility4;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -399,6 +487,18 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @EndTurn.started -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
                 @EndTurn.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
                 @EndTurn.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
+                @SelectAbility1.started -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility1;
+                @SelectAbility1.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility1;
+                @SelectAbility1.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility1;
+                @SelectAbility2.started -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility2;
+                @SelectAbility2.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility2;
+                @SelectAbility2.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility2;
+                @SelectAbility3.started -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility3;
+                @SelectAbility3.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility3;
+                @SelectAbility3.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility3;
+                @SelectAbility4.started -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility4;
+                @SelectAbility4.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility4;
+                @SelectAbility4.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnSelectAbility4;
             }
             m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
@@ -418,6 +518,18 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @EndTurn.started += instance.OnEndTurn;
                 @EndTurn.performed += instance.OnEndTurn;
                 @EndTurn.canceled += instance.OnEndTurn;
+                @SelectAbility1.started += instance.OnSelectAbility1;
+                @SelectAbility1.performed += instance.OnSelectAbility1;
+                @SelectAbility1.canceled += instance.OnSelectAbility1;
+                @SelectAbility2.started += instance.OnSelectAbility2;
+                @SelectAbility2.performed += instance.OnSelectAbility2;
+                @SelectAbility2.canceled += instance.OnSelectAbility2;
+                @SelectAbility3.started += instance.OnSelectAbility3;
+                @SelectAbility3.performed += instance.OnSelectAbility3;
+                @SelectAbility3.canceled += instance.OnSelectAbility3;
+                @SelectAbility4.started += instance.OnSelectAbility4;
+                @SelectAbility4.performed += instance.OnSelectAbility4;
+                @SelectAbility4.canceled += instance.OnSelectAbility4;
             }
         }
     }
@@ -435,5 +547,9 @@ public class @GameInput : IInputActionCollection, IDisposable
         void OnResetSteps(InputAction.CallbackContext context);
         void OnNextUnit(InputAction.CallbackContext context);
         void OnEndTurn(InputAction.CallbackContext context);
+        void OnSelectAbility1(InputAction.CallbackContext context);
+        void OnSelectAbility2(InputAction.CallbackContext context);
+        void OnSelectAbility3(InputAction.CallbackContext context);
+        void OnSelectAbility4(InputAction.CallbackContext context);
     }
 }

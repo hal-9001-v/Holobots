@@ -14,6 +14,8 @@ public class PlayerTeam : Team
 
     SkillSelector _skillSelector;
 
+     
+
     int _unitIndex;
     public PlayerTeam() : base(TeamTag.Player)
     {
@@ -32,6 +34,24 @@ public class PlayerTeam : Team
         _inputContainer.inputMap.Game.EndTurn.performed += ctx =>
         {
             EndTurn();
+        };
+        _inputContainer.inputMap.Game.SelectAbility1.performed += ctx => {
+
+            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[0]);
+
+        };
+         _inputContainer.inputMap.Game.SelectAbility2.performed += ctx => {
+
+            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[1]);
+
+        }; _inputContainer.inputMap.Game.SelectAbility3.performed += ctx => {
+
+            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[2]);
+
+        }; _inputContainer.inputMap.Game.SelectAbility4.performed += ctx => {
+
+            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[3]);
+
         };
     }
 

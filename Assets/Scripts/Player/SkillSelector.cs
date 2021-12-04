@@ -5,10 +5,15 @@ using UnityEngine;
 public class SkillSelector : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] SkillHolder[] _skillHolders;
+    [SerializeField]  SkillHolder[] _skillHolders;
+    public SkillHolder[] skillHolders{
+         get{
+             return _skillHolders;
+         }
+     }
 
     PlayerUnit _selectedUnit;
-    SkillHolder _selectedSkill;
+     SkillHolder _selectedSkill;
 
     public void SetSelectedUnit(PlayerUnit unit)
     {
