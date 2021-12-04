@@ -16,9 +16,26 @@ public class DistanceSensor : Sensor
     /// GetScore() will depend on this variable. Besides, methods will use this TeamTag for queries by default
     /// </summary>
     public TeamTag teamForScoreCalculation { get; private set; }
+    public TargetType typeForScoreCalculation { get; private set; }
 
     public DistanceSensor(Target owner, TeamTag teamForScore, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function)
     {
+
+        _owner = owner;
+        _threshold = threshold;
+        _pathProfile = pathProfile;
+
+        teamForScoreCalculation = teamForScore;
+        typeForScoreCalculation = TargetType.Any;
+
+        _ground = GameObject.FindObjectOfType<Ground>();
+
+    }
+
+    public DistanceSensor(Target owner, TargetType typeForScore, TeamTag teamForScore, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function)
+    {
+        typeForScoreCalculation = typeForScore;
+
         _owner = owner;
         _threshold = threshold;
         _pathProfile = pathProfile;
@@ -29,6 +46,7 @@ public class DistanceSensor : Sensor
 
     }
 
+
     /// <summary>
     /// Returns the closes target to owner.
     /// </summary>
@@ -36,6 +54,8 @@ public class DistanceSensor : Sensor
     /// <returns></returns>
     public Target GetClosestTargetFromList(List<Target> targets)
     {
+        if (targets.Count == 0) return null;
+
         Target closestTarget = targets[0];
         int currentDistance = _ground.GetDistance(_owner.currentGroundTile, targets[0].currentGroundTile, _pathProfile);
 
@@ -48,7 +68,6 @@ public class DistanceSensor : Sensor
                 currentDistance = newDistance;
             }
         }
-
 
         return closestTarget;
     }
@@ -174,7 +193,7 @@ public class DistanceSensor : Sensor
 
     Score GetClosestUnitProximity(TeamTag team)
     {
-        
+
         var targets = GameObject.FindObjectsOfType<Target>();
 
         if (targets.Length == 0)
@@ -191,7 +210,8 @@ public class DistanceSensor : Sensor
             {
                 var newDistance = _ground.GetDistance(_owner.currentGroundTile, unit.currentGroundTile, _pathProfile);
 
-                if (newDistance < closestDistance) {
+                if (newDistance < closestDistance)
+                {
                     closestUnit = unit;
                     closestDistance = newDistance;
                 }

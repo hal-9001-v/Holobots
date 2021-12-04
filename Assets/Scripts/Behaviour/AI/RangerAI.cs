@@ -22,15 +22,18 @@ public class RangerAI : Bot, IUtilityAI
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _shootWeight;
+    [SerializeField] [Range(0, 5)] float _engageAllyWeight;
     [SerializeField] [Range(0, 5)] float _explosionerWeight;
 
 
     //Sensors
     DistanceSensor _distanceSensor;
-    LowHealthBotSensor _lowHealthSensor;
     HealthSensor _healthSensor;
     SightToPlayerUnitSensor _sightSensor;
     GroupSensor _groupSensor;
+
+    DistanceSensor _distanceToTankSensor;
+
 
     private void Start()
     {
@@ -57,14 +60,18 @@ public class RangerAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        //_lowHealthSensor = new LowHealthBotSensor(_lowHealthThreshold, new LinearUtilityFunction());
-        _groupSensor = new GroupSensor(TeamTag.Player, _explosioner.explosionRange, new ThresholdUtilityFunction(0.5f));
+        _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
+        _groupSensor = new GroupSensor(TeamTag.Player,0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
         _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 5, new ThresholdUtilityFunction(0.9f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleMask, new ThresholdUtilityFunction(0.9f));
 
+        _distanceToTankSensor = new DistanceSensor(_target, TargetType.Tank, TeamTag.AI, _mover.pathProfile, 4, new ThresholdUtilityFunction(1));
+
         _utilityUnit.AddAction(GetShootTree());
         _utilityUnit.AddAction(GetExplosionerTree());
+        _utilityUnit.AddAction(GetEngangeAllyAction());
+
     }
 
     UtilityAction GetShootTree()
@@ -73,7 +80,7 @@ public class RangerAI : Bot, IUtilityAI
         {
             var shootValue = _sightSensor.GetScore();
 
-            return shootValue * _shootWeight;
+            return (shootValue + 0.5f) * _shootWeight;
         });
 
         #region ENGAGE
@@ -185,9 +192,33 @@ public class RangerAI : Bot, IUtilityAI
             return false;
         });
         #endregion
-        
+
         return explosionerTree;
     }
+
+    UtilityAction GetEngangeAllyAction()
+    {
+        EngageAction engangeAlly = new EngageAction(_mover, () =>
+        {
+            var healthScore = 1 - _healthSensor.GetScore();
+            var distanceToTankScore = _distanceToTankSensor.GetScore();
+
+            return healthScore * distanceToTankScore * _engageAllyWeight;
+        });
+
+        engangeAlly.AddPreparationListener(() =>
+        {
+            var tanks = _distanceToTankSensor.FindTargetWithTag(TargetType.Tank);
+            var tank = _distanceToTankSensor.GetClosestTargetFromList(tanks);
+
+            engangeAlly.SetTarget(tank);
+
+        });
+
+        return engangeAlly;
+
+    }
+
     public void ResetBehaviourComponents()
     {
 

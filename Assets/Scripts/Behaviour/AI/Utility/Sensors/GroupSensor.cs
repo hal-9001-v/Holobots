@@ -7,36 +7,55 @@ public class GroupSensor : Sensor
 {
     public TeamTag targetTeam { private get; set; }
 
-    Ground _ground;
-
     int _groupRange;
 
-    public GroupSensor(TeamTag targetTeam, int range, UtilityFunction function) : base(function)
+    float _targetTeamSum;
+    float _noTargetTeamSum;
+
+    public GroupSensor(TeamTag targetTeam, float targetTeamSum, float noTargetTeamSum, int range, UtilityFunction function) : base(function)
     {
         this.targetTeam = targetTeam;
 
-        _groupRange = range;
+        _targetTeamSum = targetTeamSum;
+        _noTargetTeamSum = noTargetTeamSum;
 
-        _ground = GameObject.FindObjectOfType<Ground>();
+        _groupRange = range;
     }
 
     public override float GetScore()
     {
         var targets = GetGroupedTargets();
 
-        if (targets.Count == 0)
-            return function.GetValue(new Score(0, 1));
+        int targetCount = 0;
+        int noTargetCount = 0;
+        foreach (var target in targets)
+        {
+            if (target.team == targetTeam)
+            {
+                targetCount++;
+            }
+            else if (target.team != TeamTag.None)
+            {
+                noTargetCount++;
+            }
+        }
 
-        return function.GetValue(new Score(1, 1));
+        float value = targetCount * _targetTeamSum + noTargetCount * _noTargetTeamSum;
+
+        if (value > 1) value = 1;
+        else if (value < 0) value = 0;
+
+        return function.GetValue(new Score(value, 1));
     }
 
     public List<Target> GetGroupedTargets()
     {
+
         List<Target> targets = new List<Target>();
 
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (target.team == targetTeam)
+            if (target.team != TeamTag.None)
             {
                 targets.Add(target);
             }
@@ -54,7 +73,7 @@ public class GroupSensor : Sensor
 
                 v = new Vector2Int(Mathf.Abs(v.x), Mathf.Abs(v.y));
 
-                if (v.x < _groupRange || v.y < _groupRange)
+                if (v.x < _groupRange && v.y < _groupRange)
                 {
                     if (!groupedTargets.Contains(targets[i]))
                     {
