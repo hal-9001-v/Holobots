@@ -69,7 +69,7 @@ public class ScreenSelector : MonoBehaviour
         {
             _selectedObject.Select();
 
-            if (onSelectionCallback != null)
+            if (onSelectionCallback != null &&  !EventSystem.current.IsPointerOverGameObject())
             {
                 onSelectionCallback.Invoke(_selectedObject);
             }

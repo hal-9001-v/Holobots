@@ -903,7 +903,7 @@ MonoBehaviour:
   _camera: {fileID: 623525875}
   _virtualCamera: {fileID: 115493904}
   _cameraLimiters: []
-  _rotationSpeed: 3
+  _rotationSpeed: 250
   _movementSpeed: 5
   _fovChange: 1
 --- !u!54 &270114761
