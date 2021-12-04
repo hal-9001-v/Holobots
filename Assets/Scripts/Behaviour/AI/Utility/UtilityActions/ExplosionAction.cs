@@ -6,7 +6,6 @@ using UnityEngine;
 public class ExplosionAction : UtilityAction
 {
     Explosioner _explosioner;
-
     GroundTile _targetTile;
 
     public ExplosionAction(Explosioner explosioner, Func<float> valueCalculation) : base(valueCalculation)

@@ -7,6 +7,7 @@ public enum TargetType
     Tank,
     Ranger,
     Building,
-    Hunter
+    Hunter,
+    Any,
 
 }

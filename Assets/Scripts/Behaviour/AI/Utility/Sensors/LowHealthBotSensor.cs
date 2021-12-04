@@ -6,14 +6,18 @@ public class LowHealthBotSensor : Sensor
 {
     float _threshold;
 
+    Target _owner;
+
     public LowHealthBotSensor(float threshold, UtilityFunction function) : base(function)
     {
         SetThreshold(threshold);
     }
 
+
     public override float GetScore()
     {
         return function.GetValue(TotalHealthScore());
+
     }
 
     public List<Target> GetLowHealthBots()
@@ -35,7 +39,7 @@ public class LowHealthBotSensor : Sensor
 
     Score TotalHealthScore()
     {
-        
+
         var bots = GameObject.FindObjectsOfType<Bot>();
 
         var lowHealthBots = GetLowHealthBots();
