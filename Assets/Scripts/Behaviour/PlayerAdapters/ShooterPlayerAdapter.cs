@@ -3,23 +3,21 @@ using UnityEngine;
 public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 {
     Shooter _shooter;
+    Target _target;
 
-    GridLine[] _gridLines;
+    Target _shootTarget;
 
-    GroundTile _targetGroundTile;
+    GridLine _gridLine;
 
-    public ShooterPlayerAdapter(Shooter shooter) : base(AdapterType.Attack)
+    public ShooterPlayerAdapter(Target target, Shooter shooter) : base(AdapterType.Attack)
     {
         _shooter = shooter;
+        _target = target;
 
-        _gridLines = new GridLine[shooter.maxShoots];
 
         GridLineProvider provider = GameObject.FindObjectOfType<GridLineProvider>();
 
-        for (int i = 0; i < _gridLines.Length; i++)
-        {
-            _gridLines[i] = provider.CloneAttacktGridLine(shooter.name);
-        }
+        _gridLine = provider.CloneAttacktGridLine(shooter.name);
 
         SetNotifications();
     }
@@ -28,29 +26,26 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
     {
         if (!_inputIsActive) return;
 
-        if (_shooter.usedShoots < _shooter.maxShoots)
+        _shootTarget = selectable.GetComponent<Target>();
+
+        if (_shootTarget == null)
         {
-            _targetGroundTile = selectable.GetComponent<GroundTile>();
+            var tile = selectable.GetComponent<GroundTile>();
 
-            if (!_targetGroundTile)
+            if (tile)
             {
-
-                var target = selectable.GetComponent<Target>();
-
-                if (target)
-                    _targetGroundTile = target.currentGroundTile;
-
-
+                _shootTarget = tile.unit;
             }
+        }
 
-            if (_targetGroundTile)
-            {
-                var points = new Vector3[2]
-                    { _shooter.shootOriginTile.transform.position, _targetGroundTile.transform.position};
 
-                _gridLines[_shooter.usedShoots].SetPoints(points);
+        if (_shootTarget)
+        {
+            var points = new Vector3[2]
+                {_target.transform.position, _shootTarget.currentGroundTile.transform.position};
 
-            }
+            _gridLine.SetPoints(points);
+
         }
     }
 
@@ -60,18 +55,16 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 
         selector.onLeftClickCallback += OnLeftClickNotify;
         selector.onSelectionCallback += OnSelectNotify;
+        selector.onNothingSelectedCallback += OnNothingSelectNotify;
     }
 
     public void OnLeftClickNotify(Selectable selectable)
     {
         if (!_inputIsActive) return;
 
-        if (_shooter.shootOriginTile != null && _targetGroundTile)
+        if (_shootTarget)
         {
-            if (_shooter.usedShoots < _shooter.maxShoots)
-            {
-                _shooter.AddShootStep(_targetGroundTile);
-            }
+            _shooter.AddShoot(_shootTarget);
         }
     }
 
@@ -79,38 +72,20 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
     {
     }
 
-
     public override void OnStartControl()
     {
     }
 
     public override void OnStopControl()
     {
-        for (int i = _shooter.usedShoots; i < _shooter.maxShoots; i++)
-        {
-            _gridLines[i].HideLine();
-        }
-
-    }
-
-    public override void Reset()
-    {
-        _shooter.ResetSteps();
-
-        foreach (var line in _gridLines)
-        {
-            line.HideLine();
-        }
+        _gridLine.HideLine();
 
     }
 
     public void OnNothingSelectNotify()
     {
-        _targetGroundTile = null;
+        _shootTarget = null;
 
-        foreach (var line in _gridLines)
-        {
-            line.HideLine();
-        }
+        _gridLine.HideLine();
     }
 }

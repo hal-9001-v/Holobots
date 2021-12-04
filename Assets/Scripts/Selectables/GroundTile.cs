@@ -3,27 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Selectable))]
+[RequireComponent(typeof(Highlightable))]
 public class GroundTile : MonoBehaviour
 {
     [Header("Settings")]
-
     public GroundTile[] neighbours;
-
-    public bool isClosed;
-
     public TileType tileType;
-
-
     [Range(0, 10)] public int weight = 1;
 
+    public Shield shield { get; private set;}
+
+
+    public Target unit { get; private set; }
+    public Vector2Int cellCoord { get; private set; }
+    public Highlightable highlightable { get; private set; }
+
+
+
+    [HideInInspector]
+    public bool isClosed;
     [HideInInspector]
     public float gCost;
     [HideInInspector]
     public GroundTile parent;
 
-    public Target unit { get; private set; }
+    private void Awake()
+    {
+        highlightable = GetComponent<Highlightable>();
+    }
 
-    public Vector2Int cellCoord { get; private set; }
+    public void SetShield(Shield shield)
+    {
+        this.shield = shield;
+    }
+
+    public void UnsetShield(Shield shield)
+    {
+        if (this.shield == shield)
+        {
+            this.shield = null;
+        }
+    }
+
 
     public void SetUnit(Target target)
     {
@@ -50,11 +71,11 @@ public class GroundTile : MonoBehaviour
 
             if (groundGrid.TryGetValue(cellCoord + new Vector2Int(i, 0), out neighbour))
             {
-           
+
                 newNeighbours.Add(neighbour);
 
             }
-           
+
         }
 
         for (int i = -1; i < 2; i++)

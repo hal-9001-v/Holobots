@@ -22,13 +22,13 @@ public class Hunter : Bot, IUtilityAI
 
     [SerializeField] LayerMask _obstacleLayer;
 
-
     //Sensors
-    DistanceToPlayerUnitSensor _distanceSensor;
+    DistanceSensor _distanceSensor;
+
     HealthSensor _healthSensor;
     SightToPlayerUnitSensor _sightSensor;
 
-    private void Awake()
+    private void Start()
     {
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
@@ -37,69 +37,27 @@ public class Hunter : Bot, IUtilityAI
         InitializeUtilityUnit();
     }
 
-
-
-    private void Start()
-    {
-        _target.dieAction += Dead;
-    }
-
-    public override void PrepareSteps()
+    public override void ExecuteStep()
     {
         ResetBehaviourComponents();
 
         var action = _utilityUnit.GetHighestAction();
 
+        Debug.Log("Executing Action: " +action.GetType().ToString());
+
         action.Execute();
-
     }
 
-    void Dead()
-    {
-        foreach (var renderer in GetComponentsInChildren<Renderer>())
-        {
-            renderer.enabled = false;
-        }
-
-        foreach (var collider in GetComponentsInChildren<Collider>())
-        {
-            collider.enabled = false;
-        }
-    }
-
-    public override TurnPreview[] GetPossibleMoves()
-    {
-        /*
-        int range = 4;
-
-        var moves = _mover.GetTilesInMaxRange(range);
-
-        TurnPreview[] preview = new TurnPreview[moves.Count];
-
-        for (int i = 0; i < moves.Count; i++)
-        {
-            preview[i] = new TurnPreview();
-            preview[i].position = moves[i];
-        }
-        */
-        return null;
-
-    }
-
-    public override MinMaxWeights GetMinMaxWeights()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void InitializeUtilityUnit()
     {
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceToPlayerUnitSensor(_target,_mover.pathProfile, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target,TeamTag.Player, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
 
-        ShootPlayerUnitAction shootAction = new ShootPlayerUnitAction(_shooter, () =>
+        ShootAction shootAction = new ShootAction(_shooter, () =>
         {
             var value1 = _sightSensor.GetScore();
             var value2 = _distanceSensor.GetScore();
@@ -108,7 +66,7 @@ public class Hunter : Bot, IUtilityAI
 
         shootAction.AddPreparationListener(() =>
         {
-            shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
+            //shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
         });
 
         _utilityUnit.AddAction(shootAction);
@@ -116,35 +74,38 @@ public class Hunter : Bot, IUtilityAI
 
         EngageAction engageAction = new EngageAction(_mover, () =>
         {
-            var value = (1 - _distanceSensor.GetScore()) * 0.5f + _sightSensor.GetScore() * 0.5f;
+            var distValue = _distanceSensor.GetScore();
+            var sightValue = _sightSensor.GetScore();
+
+            var value = distValue * 0.5f + sightValue * 0.5f + 0.1f;
+
             return value * _engageWeight;
         });
 
         engageAction.AddPreparationListener(() =>
         {
-            engageAction.SetTarget(_distanceSensor.closestPlayerUnit);
+            //engageAction.SetTarget(_distanceSensor.closestPlayerUnit.target);
         });
         _utilityUnit.AddAction(engageAction);
 
-        FleeAction fleeAction = new FleeAction(_mover,_mover.pathProfile, () =>
-        {
-            var healthValue = 1 - _healthSensor.GetScore();
-            var distanceValue = _distanceSensor.GetScore();
-            return healthValue * (healthValue + distanceValue * 4) * _fleeWeight;
-        });
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, () =>
+         {
+             var healthValue = 1 - _healthSensor.GetScore();
+             var distanceValue = _distanceSensor.GetScore();
+
+             return healthValue * (healthValue + distanceValue * 4) * _fleeWeight;
+         });
 
         fleeAction.AddPreparationListener(() =>
         {
-            fleeAction.SetTarget(_distanceSensor.closestPlayerUnit.target);
+            //fleeAction.SetTarget(_distanceSensor.closestPlayerUnit.target);
         });
 
         _utilityUnit.AddAction(fleeAction);
-
     }
 
     public void ResetBehaviourComponents()
     {
-        _mover.ResetSteps();
-        _shooter.ResetSteps();
+
     }
 }

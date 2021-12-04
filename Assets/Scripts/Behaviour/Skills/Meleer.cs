@@ -1,25 +1,38 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Target))]
 public class Meleer : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] [Range(2, 5)] int _meleeRange = 2;
+    [SerializeField] [Range(1, 5)] int _meleerDamage = 1;
+    [SerializeField] [Range(1, 5)] int _meleerCost = 1;
+
+    public int meleeRange
+    {
+        get
+        {
+            return _meleeRange;
+        }
+    }
+
     [Header("References")]
-    [SerializeField] MeleeHit _hit;
     [SerializeField] MeleeHit _planningHit;
 
-    Ground _ground;
+    MeleerExecuter _executer;
+    TurnActor _actor;
 
     private void Awake()
     {
-        _ground = FindObjectOfType<Ground>();
+        _actor = GetComponent<TurnActor>();
+
+        _executer = new MeleerExecuter(_actor, _meleerCost);
     }
 
-    public void SetHit(GroundTile tile)
+    public void Hit(GroundTile tile)
     {
-        _hit.SetTile(tile);
+        _executer.Execute(tile, _meleerDamage);
     }
 
     public void SetPlanningHit(GroundTile tile)
@@ -29,10 +42,38 @@ public class Meleer : MonoBehaviour
 
     public void Hide()
     {
-        _hit.Hide();
         _planningHit.Hide();
     }
 
+}
 
+class MeleerExecuter
+{
+    TurnActor _actor;
+    int _cost = 0;
 
+    public MeleerExecuter(TurnActor actor, int cost)
+    {
+        _actor = actor;
+        _cost = cost;
+    }
+
+    public void Execute(GroundTile tile, int damage)
+    {
+        Debug.Log(_actor.name + " is attacking with melee " + tile);
+
+        _actor.StartCoroutine(MakeHit(tile, damage));
+    }
+
+    IEnumerator MakeHit(GroundTile tile, int damage)
+    {
+        _actor.StartStep(_cost);
+        yield return new WaitForSeconds(1f);
+
+        if (tile.unit != null)
+        {
+            tile.unit.Hurt(damage);
+        }
+        _actor.EndStep();
+    }
 }

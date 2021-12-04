@@ -7,14 +7,16 @@ public class EngageAction : UtilityAction
 {
     Mover _mover;
 
-    PlayerUnit _target;
+    Target _target;
 
     public EngageAction(Mover mover, Func<float> valueCalculation) : base(valueCalculation)
     {
         _mover = mover;
     }
 
-    public void SetTarget(PlayerUnit target)
+
+
+    public void SetTarget(Target target)
     {
         _target = target;
     }
@@ -24,8 +26,7 @@ public class EngageAction : UtilityAction
         if (_preparationAction != null)
             _preparationAction.Invoke();
 
-        _mover.AddStepsToReachTarget(_target.target.currentGroundTile);
-
+        _mover.MoveToTarget(_target.currentGroundTile);
     }
 
 

@@ -13,6 +13,8 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _virtualCamera;
 
 
+
+
     [SerializeField] Transform[] _cameraLimiters;
 
     Rigidbody _followRigidbody;
@@ -27,7 +29,6 @@ public class CameraMovement : MonoBehaviour
 
     Vector2 _movementInput;
     bool _isMoving;
-
 
     private void Start()
     {

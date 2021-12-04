@@ -6,29 +6,45 @@ using UnityEngine;
 [RequireComponent(typeof(Target))]
 public class TurnActor : MonoBehaviour
 {
+    [Header("Settings")]
+    [SerializeField] [Range(1, 10)] int _maxTurnPoints = 2;
+
+
+
     //Used to indicate if actor should be called for Steps
     public bool isDead { get; private set; }
 
-    public bool isTurnEnded
+    Target _target;
+
+    Team _team;
+
+    public TeamTag teamTag
     {
         get
         {
-            return _steps.Count == 0;
+            return _target.team;
         }
     }
 
-    Queue<TurnStep> _steps;
 
-    Target _target;
+    public int maxTurnPoints
+    {
+        get
+        {
+            return _maxTurnPoints;
+        }
+    }
 
-    GameDirector _gameDirector;
+    public int currentTurnPoints { get; private set; }
+
+    Action _startTurnCallback;
+    Action _endTurnCallback;
 
     private void Awake()
     {
-        _steps = new Queue<TurnStep>();
-
         _target = GetComponent<Target>();
-        _gameDirector = FindObjectOfType<GameDirector>();
+
+        currentTurnPoints = maxTurnPoints;
     }
 
     private void Start()
@@ -39,41 +55,66 @@ public class TurnActor : MonoBehaviour
     void Die()
     {
         isDead = true;
-
-        _steps.Clear();
     }
 
-    public void ResetSteps()
+    public void SetTeam(Team team)
     {
-        _steps.Clear();
+        _team = team;
     }
 
-    public void StartStep()
+    public void StartTurn()
     {
-        if (_steps.Count != 0)
+        currentTurnPoints = maxTurnPoints;
+
+        if (_startTurnCallback != null)
         {
-            var turnStep = _steps.Dequeue();
-
-            turnStep.Execute();
+            _startTurnCallback.Invoke();
         }
     }
 
+    public void EndTurn()
+    {
+        if (_endTurnCallback != null)
+        {
+            _endTurnCallback.Invoke();
+        }
+
+    }
+
+    public void StartStep(int cost)
+    {
+        currentTurnPoints -= cost;
+
+        _team.ActorStartedStep(this);
+
+        if (currentTurnPoints < 0)
+        {
+            currentTurnPoints = 0;
+        }
+
+    }
     public void EndStep()
     {
-        _gameDirector.ActorEndedStep();
-    }
-
-    public void AddSteps(TurnStep[] steps)
-    {
-        foreach (var step in steps)
+        if (currentTurnPoints <= 0)
         {
-            _steps.Enqueue(step);
+            _team.ActorFinishedTurn(this);
         }
+        else
+        {
+            _team.ActorFinishedStep(this);
+        }
+
+
     }
 
-    public void AddStep(TurnStep step)
+    public void AddStartTurnListener(Action callback)
     {
-        _steps.Enqueue(step);
+        _startTurnCallback += callback;
+    }
+
+    public void AddEndTurnListener(Action callback)
+    {
+        _endTurnCallback += callback;
     }
 
 }

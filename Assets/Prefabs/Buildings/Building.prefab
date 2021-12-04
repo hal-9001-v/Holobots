@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3150731235173526312}
   - component: {fileID: 3150731235173526311}
   - component: {fileID: 3150731235173526317}
+  - component: {fileID: 9177362880961156134}
   m_Layer: 7
   m_Name: Building
   m_TagString: Untagged
@@ -141,8 +142,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7546e1710e5812f4a9eba1db46bb1540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 3
   _healthMesh: {fileID: 0}
+  _targetType: 2
+  _team: 2
+  _maxHealth: 3
 --- !u!114 &3150731235173526317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,6 +162,19 @@ MonoBehaviour:
   _debrisPrototype: {fileID: 558199757465114421}
   _debrisDamage: 1
   _debrisWeight: 2
+--- !u!114 &9177362880961156134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3150731235173526309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f1d0a8e746dc3409e3334902735691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _highlightMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
 --- !u!1 &7176663265245086147
 GameObject:
   m_ObjectHideFlags: 0

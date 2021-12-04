@@ -4,15 +4,13 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 {
     Shielder _shielder;
     Target _target;
-    TurnActor _turnActor;
 
     GroundTile _selectedTile;
 
-    public ShielderPlayerAdapter(Shielder shielder, Target target, TurnActor actor) : base(AdapterType.Shield)
+    public ShielderPlayerAdapter(Shielder shielder, Target target) : base(AdapterType.Shield)
     {
         _shielder = shielder;
         _target = target;
-        _turnActor = actor;
 
         SetNotifications();
     }
@@ -37,7 +35,7 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
         _selectedTile = null;
 
-        _shielder.HideShields();
+        _shielder.HidePlanningShield();
     }
 
     public void OnSelectNotify(Selectable selectable)
@@ -45,7 +43,21 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
         if (!_inputIsActive) return;
 
         var tile = selectable.GetComponent<GroundTile>();
-        if (tile && tile != _target.currentGroundTile)
+
+
+        if (!tile)
+        {
+
+            var target = selectable.GetComponent<Target>();
+
+            if (target)
+            {
+                tile = target.currentGroundTile;
+            }
+        }
+
+
+        if (tile)
         {
             _selectedTile = tile;
 
@@ -64,20 +76,14 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
-    public override void Reset()
-    {
-
-    }
-
     public override void OnStartControl()
     {
-        _shielder.ShowShields();
-
+        _shielder.ShowPlanningShield();
     }
 
     public override void OnStopControl()
     {
-        _shielder.HideShields();
+        _shielder.HidePlanningShield();
     }
 
 }

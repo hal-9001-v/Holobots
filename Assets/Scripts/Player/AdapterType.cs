@@ -3,6 +3,7 @@ public enum AdapterType
     Attack,
     Move,
     Shield,
-    Meleer
+    Meleer,
+    Explosioner
     
 }

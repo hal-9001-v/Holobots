@@ -27,10 +27,6 @@ public abstract class Adapter
         OnStopControl();
     }
 
-
-
-    public abstract void Reset();
-
     public abstract void OnStartControl();
     public abstract void OnStopControl();
 

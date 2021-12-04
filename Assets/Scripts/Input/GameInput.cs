@@ -180,6 +180,14 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""EndTurn"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb1b10af-b3e4-4a62-a0cb-adda75eaec7a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -226,6 +234,17 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""action"": ""Reset Steps"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4eb79fc-3360-4174-aba2-d052bba050aa"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EndTurn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -243,6 +262,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Game_ResetStepsOnSelectedUnit = m_Game.FindAction("Reset Steps On Selected Unit", throwIfNotFound: true);
         m_Game_ResetSteps = m_Game.FindAction("Reset Steps", throwIfNotFound: true);
         m_Game_NextUnit = m_Game.FindAction("NextUnit", throwIfNotFound: true);
+        m_Game_EndTurn = m_Game.FindAction("EndTurn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -345,6 +365,7 @@ public class @GameInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Game_ResetStepsOnSelectedUnit;
     private readonly InputAction m_Game_ResetSteps;
     private readonly InputAction m_Game_NextUnit;
+    private readonly InputAction m_Game_EndTurn;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -353,6 +374,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         public InputAction @ResetStepsOnSelectedUnit => m_Wrapper.m_Game_ResetStepsOnSelectedUnit;
         public InputAction @ResetSteps => m_Wrapper.m_Game_ResetSteps;
         public InputAction @NextUnit => m_Wrapper.m_Game_NextUnit;
+        public InputAction @EndTurn => m_Wrapper.m_Game_EndTurn;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -374,6 +396,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @NextUnit.started -= m_Wrapper.m_GameActionsCallbackInterface.OnNextUnit;
                 @NextUnit.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnNextUnit;
                 @NextUnit.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnNextUnit;
+                @EndTurn.started -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
+                @EndTurn.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
+                @EndTurn.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnEndTurn;
             }
             m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
@@ -390,6 +415,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @NextUnit.started += instance.OnNextUnit;
                 @NextUnit.performed += instance.OnNextUnit;
                 @NextUnit.canceled += instance.OnNextUnit;
+                @EndTurn.started += instance.OnEndTurn;
+                @EndTurn.performed += instance.OnEndTurn;
+                @EndTurn.canceled += instance.OnEndTurn;
             }
         }
     }
@@ -406,5 +434,6 @@ public class @GameInput : IInputActionCollection, IDisposable
         void OnResetStepsOnSelectedUnit(InputAction.CallbackContext context);
         void OnResetSteps(InputAction.CallbackContext context);
         void OnNextUnit(InputAction.CallbackContext context);
+        void OnEndTurn(InputAction.CallbackContext context);
     }
 }

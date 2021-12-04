@@ -5,9 +5,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(Target))]
 [RequireComponent(typeof(TurnActor))]
-public abstract class Bot : MonoBehaviour, ITurnPreviewer
+public abstract class Bot : MonoBehaviour
 {
     public Target target { get; private set; }
+
+    public TurnActor actor { get; private set; }
 
     public bool isDead
     {
@@ -32,12 +34,9 @@ public abstract class Bot : MonoBehaviour, ITurnPreviewer
     private void Awake()
     {
         target = GetComponent<Target>();
+
+        actor = GetComponent<TurnActor>();
     }
 
-    public abstract void PrepareSteps();
-
-    public abstract TurnPreview[] GetPossibleMoves();
-
-    public abstract MinMaxWeights GetMinMaxWeights();
-    
+    public abstract void ExecuteStep();    
 }

@@ -18,7 +18,7 @@ public class Turret : Bot, IUtilityAI
     Target _target;
     Mover _mover;
 
-    DistanceToPlayerUnitSensor _distanceSensor;
+    DistanceSensor _distanceSensor;
     SightToPlayerUnitSensor _sightSensor;
 
     UtilityUnit _utilityUnit;
@@ -34,21 +34,11 @@ public class Turret : Bot, IUtilityAI
     }
 
 
-    public override void PrepareSteps()
+    public override void ExecuteStep()
     {
         ResetBehaviourComponents();
 
         _utilityUnit.GetHighestAction().Execute();
-    }
-
-    public override TurnPreview[] GetPossibleMoves()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override MinMaxWeights GetMinMaxWeights()
-    {
-        throw new System.NotImplementedException();
     }
 
     public void InitializeUtilityUnit()
@@ -56,32 +46,32 @@ public class Turret : Bot, IUtilityAI
 
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceToPlayerUnitSensor(_target, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
 
-        ShootPlayerUnitAction shootAction = new ShootPlayerUnitAction(_shooter, () =>
+        ShootAction shootAction = new ShootAction(_shooter, () =>
         {
             return _sightSensor.GetScore() * _distanceSensor.GetScore() * _shootWeight;
         });
 
         shootAction.AddPreparationListener(() =>
         {
-            shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
+            //shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
         });
         _utilityUnit.AddAction(shootAction);
 
 
-
+        /*
         IdleAction idleAction = new IdleAction(() =>
         {
             return (1 - _distanceSensor.GetScore() * _idleWeight);
         });
         _utilityUnit.AddAction(idleAction);
-
+        */
     }
 
     public void ResetBehaviourComponents()
     {
-        _shooter.ResetSteps();
+
     }
 }

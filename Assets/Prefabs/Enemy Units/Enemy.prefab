@@ -146,8 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7546e1710e5812f4a9eba1db46bb1540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 3
   _healthMesh: {fileID: 4316718589622499466}
+  _team: 0
+  _maxHealth: 3
 --- !u!114 &2599028045216284326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4204fc269d85e408ea2ee0f74064a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxTurnPoints: 2
 --- !u!114 &930835063152625619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +175,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxMoves: 2
+  _moveCost: 1
+  _pathProfile:
+    canTraspass: 0
+    canFly: 0
+  _movingSpeed: 0
   _stepDuration: 0.5
 --- !u!114 &5429196979593422816
 MonoBehaviour:
@@ -186,8 +193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661d86b4cc4f86441847b24f3bebe7fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxShoots: 1
-  _damage: 1
+  _shootCost: 1
+  _damage: 2
   _speed: 10
   _projectile: {fileID: 9205642667264458850}
 --- !u!114 &127708210658198706
@@ -202,6 +209,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4335f52287f6ff04a8b65157f09a81ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxRange: 2
+  _shootWeight: 2
+  _fleeWeight: 3
+  _engageWeight: 2
+  _obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!95 &946388346
 Animator:
   serializedVersion: 3

@@ -9,9 +9,6 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
     Target _target;
     TurnActor _turnActor;
 
-    //Sum of _tempPats
-    List<GroundTile> _confirmedPath;
-    //_confirmedPath's extension
     List<GroundTile> _tempPath;
 
     public MoverPlayerAdapter(Mover mover, Target target, TurnActor actor) : base(AdapterType.Move)
@@ -20,41 +17,19 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
         _target = target;
         _turnActor = actor;
 
-        _confirmedPath = new List<GroundTile>();
-        _tempPath = new List<GroundTile>();
-
         _gridLine = GameObject.FindObjectOfType<GridLineProvider>().CloneMovementGridLine(mover.name);
 
         SetNotifications();
-    }
-
-    List<GroundTile> JoinPaths(List<GroundTile> a, List<GroundTile> b)
-    {
-        List<GroundTile> newList = new List<GroundTile>();
-
-        foreach (GroundTile tile in a)
-        {
-            newList.Add(tile);
-        }
-
-        foreach (GroundTile tile in b)
-        {
-            newList.Add(tile);
-        }
-
-        return newList;
-
     }
 
     public void OnRightClickNotify(Selectable selectable)
     {
         if (!_inputIsActive) return;
 
-        //Update Path
-        _confirmedPath = JoinPaths(_confirmedPath, _tempPath);
-
-        _mover.AddStepsFromPath(_tempPath);
-
+        if (_turnActor.currentTurnPoints > 0 && _tempPath != null && _tempPath.Count != 0)
+        {
+            _mover.MoveInPath(_tempPath);
+        }
     }
 
     public void OnSelectNotify(Selectable selectable)
@@ -67,14 +42,13 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
             if (destination)
             {
-                _tempPath = _mover.GetFilteredPath(_mover.lastPathTile, destination);
+                _tempPath = _mover.GetFilteredPath(_target.currentGroundTile, destination);
 
-                var totalPath = JoinPaths(_confirmedPath, _tempPath);
-                Vector3[] points = new Vector3[totalPath.Count];
+                Vector3[] points = new Vector3[_tempPath.Count];
 
-                for (int i = 0; i < totalPath.Count; i++)
+                for (int i = 0; i < _tempPath.Count; i++)
                 {
-                    points[i] = totalPath[i].transform.position;
+                    points[i] = _tempPath[i].transform.position;
                 }
 
                 _gridLine.SetPoints(points);
@@ -92,35 +66,6 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
-    public override void Reset()
-    {
-        _gridLine.HideLine();
-
-        _confirmedPath.Clear();
-        _tempPath.Clear();
-
-        _mover.ResetSteps();
-    }
-
-    public override void OnStopControl()
-    {
-        _tempPath.Clear();
-
-        Vector3[] points = new Vector3[_confirmedPath.Count];
-
-        for (int i = 0; i < _confirmedPath.Count; i++)
-        {
-            points[i] = _confirmedPath[i].transform.position;
-        }
-
-        _gridLine.SetPoints(points);
-
-    }
-
-    public void OnLeftClickNotify(Selectable selectable)
-    {
-        throw new System.NotImplementedException();
-    }
 
     public override void OnStartControl()
     {
@@ -128,11 +73,29 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
     }
 
+
+    public override void OnStopControl()
+    {
+        if (_tempPath != null)
+        {
+            _tempPath.Clear();
+        }
+        _gridLine.HideLine();
+    }
+
+    public void OnLeftClickNotify(Selectable selectable)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void OnNothingSelectNotify()
     {
         _gridLine.HideLine();
 
-        _tempPath.Clear();
+        if (_tempPath != null)
+        {
+            _tempPath.Clear();
+        }
     }
 }
 

@@ -1,98 +1,82 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameDirector : MonoBehaviour
 {
-    int _steppingActorCounter;
+    List<Team> _teams;
 
-    TurnActor[] _actors;
+    BehaviourTree _teamTurnTree;
 
-    PlayerSelector _playerSelector;
-
-    public bool allActorsEnded
-    {
-        get
-        {
-            foreach (var actor in _actors)
-            {
-                if (!actor.isTurnEnded)
-                    return false;
-            }
-
-            return true;
-        }
-    }
+    Team _teamInTurn;
 
     enum GameStates
     {
-        Decide,
-        Step,
-        EndOfStep
-    }
-
-    GameStates _currentState;
-
-    private void Awake()
-    {
-        _actors = FindObjectsOfType<TurnActor>();
-        _playerSelector = FindObjectOfType<PlayerSelector>();
-
+        Intro,
+        StartTurn,
+        EndTurn,
+        EndGame
     }
 
     private void Start()
     {
-        ChangeState(GameStates.Decide);
+        CreateTeams();
+
+        SetTeamTurnTree();
+
+        ChangeState(GameStates.Intro);
     }
 
-    void StepActors()
+    void SetTeamTurnTree()
     {
-        _steppingActorCounter = 0;
+        _teamTurnTree = new BehaviourTree();
 
-        for (int i = 0; i < _actors.Length; i++)
+        SequenceNode rootNode = new SequenceNode(null);
+        _teamTurnTree.root = rootNode;
+
+        foreach (var team in _teams)
         {
-            if (!_actors[i].isTurnEnded)
+            SequenceNode startTurnNode = new SequenceNode(rootNode, () =>
             {
-                _steppingActorCounter++;
-                _actors[i].StartStep();
-            }
-        }
+                StartTeamTurn(team);
+            });
 
-        if (_steppingActorCounter == 0)
-        {
-            ChangeState(GameStates.Decide);
-        }
+            startTurnNode.name = "Start turn of " + team.tag.ToString();
 
+            WaitForTickNode waitforTickNode = new WaitForTickNode(startTurnNode, null);
+            waitforTickNode.name = "Wait of " + team.tag.ToString();
+
+            LeafNode endTurnNode = new LeafNode(waitforTickNode, null);
+            endTurnNode.name = "End of " + team.tag.ToString();
+        }
     }
 
     void ChangeState(GameStates nextState)
     {
-        _currentState = nextState;
-
         switch (nextState)
         {
-            case GameStates.Decide:
-                PrepareAI();
-                _playerSelector.EnableControl();
+            case GameStates.Intro:
+                ChangeState(GameStates.StartTurn);
                 break;
 
-            case GameStates.Step:
+            case GameStates.StartTurn:
 
-                _playerSelector.DisableControl();
+                _teamTurnTree.StartTree(() =>
+                {
+                    ChangeState(GameStates.EndTurn);
+                });
 
-                StepActors();
                 break;
 
-            case GameStates.EndOfStep:
+            case GameStates.EndTurn:
 
-                if (allActorsEnded)
-                {
-                    ChangeState(GameStates.Decide);
-                }
-                else
-                {
-                    ChangeState(GameStates.Step);
-                }
+                ChangeState(GameStates.StartTurn);
+
+                break;
+
+            case GameStates.EndGame:
+
 
                 return;
 
@@ -102,38 +86,38 @@ public class GameDirector : MonoBehaviour
 
     }
 
-    void PrepareAI()
+    void CreateTeams()
     {
-        foreach (var unit in FindObjectsOfType<Bot>())
+        //Add low priority teams first
+        _teams = new List<Team>();
+        _teams.Add(new AITeam());
+        _teams.Add(new PlayerTeam());
+
+        foreach (var team in _teams)
         {
-            if (!unit.isDead)
-            {
-                unit.PrepareSteps();
-            }
+            team.UpdateTeam();
         }
     }
 
-    public void ExecuteSteps()
+    void StartTeamTurn(Team team)
     {
-        if (_currentState == GameStates.Decide)
-        {
-            ChangeState(GameStates.Step);
-        }
+        _teamInTurn = team;
+        team.StartTurn();
 
+        Debug.Log("Start Turn of " + team);
     }
 
-    public void ActorEndedStep()
+    public void TeamEndedTurn(Team team)
     {
-        _steppingActorCounter--;
-
-        if (_steppingActorCounter <= 0)
+        if (team == _teamInTurn)
         {
-            _steppingActorCounter = 0;
-
-            ChangeState(GameStates.EndOfStep);
+            _teamTurnTree.Tick();
         }
-
-
     }
 
+    [ContextMenu("Tick")]
+    void TickTree()
+    {
+        _teamTurnTree.Tick();
+    }
 }

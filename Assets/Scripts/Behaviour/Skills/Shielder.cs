@@ -6,27 +6,55 @@ using UnityEngine;
 public class Shielder : MonoBehaviour
 {
     [Header("Referenes")]
-    [SerializeField] Shield _protectingShield;
+    [SerializeField] Shield[] _protectingShields;
     [SerializeField] Shield _planningShield;
+
 
     [Header("Settings")]
     [SerializeField] [Range(1, 10)] int _range = 2;
-    Target _target;
+    [SerializeField] [Range(1, 10)] int _shieldCost = 1;
 
+    public int maxShieldRange
+    {
+        get
+        {
+            return _range;
+        }
+    }
+
+    Target _target;
+    TurnActor _actor;
+
+    ChildGiver _childGiver;
     Ground _ground;
     GroundTile _currentTile;
 
-    public List<GroundTile> avaliableTiles;
+    List<Shield> _undeployedShields;
 
-    bool _isFacingX;
+    public List<GroundTile> avaliableTiles;
 
     private void Awake()
     {
         _target = GetComponent<Target>();
+        _actor = GetComponent<TurnActor>();
 
         _ground = FindObjectOfType<Ground>();
         avaliableTiles = new List<GroundTile>();
 
+        _undeployedShields = new List<Shield>();
+        _childGiver = new ChildGiver(gameObject);
+
+        foreach (var shield in _protectingShields)
+        {
+            _undeployedShields.Add(shield);
+            _childGiver.AddChildToContainer(shield.gameObject);
+        }
+
+        _childGiver.AddChildToContainer(_planningShield.gameObject);
+
+        _target.dieAction += _childGiver.GiveChildrenBack;
+
+        _actor.AddStartTurnListener(ResetUndeployedShields);
     }
 
     private void Start()
@@ -46,7 +74,16 @@ public class Shielder : MonoBehaviour
 
     public void SetProtectingShield(GroundTile tile)
     {
-        SetShield(tile, _protectingShield);
+        if (_undeployedShields.Count != 0)
+        {
+            if (SetShield(tile, _undeployedShields[0]))
+            {
+                _undeployedShields.RemoveAt(0);
+
+                _actor.StartStep(_shieldCost);
+                _actor.EndStep();
+            }
+        }
     }
 
     public void SetPlanningShield(GroundTile tile)
@@ -54,40 +91,42 @@ public class Shielder : MonoBehaviour
         SetShield(tile, _planningShield);
     }
 
-    void SetShield(GroundTile tile, Shield shield)
+    bool SetShield(GroundTile tile, Shield shield)
     {
         CalculateAvaliableTiles();
 
-        if (!avaliableTiles.Contains(tile)) return;
+        if (!avaliableTiles.Contains(tile)) return false;
 
         shield.SetTile(tile);
+
+        return true;
     }
 
-    public void RotateShield()
+    void ResetUndeployedShields()
     {
-        if (_isFacingX)
+        _undeployedShields.Clear();
+
+        foreach (var shield in _protectingShields)
         {
+            shield.TurnOff();
 
+            _undeployedShields.Add(shield);
         }
-        //It is facing Z
-        else
-        {
-
-        }
-
-        _isFacingX = !_isFacingX;
     }
 
-    public void HideShields()
+    public void HidePlanningShield()
     {
-        _protectingShield.TurnOff();
         _planningShield.TurnOff();
     }
 
-    public void ShowShields()
+    public void ShowPlanningShield()
     {
-        _protectingShield.TurnOn();
         _planningShield.TurnOn();
     }
+
+}
+
+class ShielderExecuter
+{
 
 }

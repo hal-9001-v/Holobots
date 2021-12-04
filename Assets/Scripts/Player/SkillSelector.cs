@@ -20,6 +20,14 @@ public class SkillSelector : MonoBehaviour
         SetSelectedSkill(_skillHolders[0]);
     }
 
+    public void SetSelectedUnit(TurnActor unit)
+    {
+        var playerUnit = unit.GetComponent<PlayerUnit>();
+
+        if (playerUnit)
+            SetSelectedUnit(playerUnit);
+    }
+
     public void SetSelectedSkill(SkillHolder selectedSkill)
     {
         foreach (var skill in _skillHolders)
@@ -48,6 +56,29 @@ public class SkillSelector : MonoBehaviour
             }
 
             _skillHolders[i].Show(_selectedUnit.adapters[i]);
+        }
+    }
+
+    public void EnableInput()
+    {
+        
+    }
+
+    public void DisableInput()
+    {
+
+    }
+
+    public void Hide()
+    {
+        foreach (var skill in _selectedUnit.adapters)
+        {
+            skill.DisableInput();
+        }
+
+        foreach (var holder in _skillHolders)
+        {
+            holder.Hide();
         }
     }
 

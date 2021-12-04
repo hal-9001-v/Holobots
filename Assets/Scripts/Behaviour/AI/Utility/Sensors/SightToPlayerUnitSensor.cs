@@ -38,7 +38,7 @@ public class SightToPlayerUnitSensor : Sensor
         return new Score(score, maxScore);
     }
 
-    bool IsTargetOnSight(Target target)
+    public bool IsTargetOnSight(Target target)
     {
 
         var direction = target.transform.position - _owner.transform.position;
@@ -53,6 +53,21 @@ public class SightToPlayerUnitSensor : Sensor
 
         return true;
 
+    }
+
+    public List<Target> GetTargetsOnSight(TeamTag team)
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var target in GameObject.FindObjectsOfType<Target>())
+        {
+            if (target.team == team && IsTargetOnSight(target))
+            {
+                targets.Add(target);
+            }
+        }
+
+        return targets;
     }
 
 

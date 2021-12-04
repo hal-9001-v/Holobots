@@ -9,12 +9,13 @@ using UnityEngine;
 public class Shooter : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] [Range(1, 5)] int _maxShoots;
-    public int maxShoots
+    [SerializeField] [Range(1, 5)] int _shootCost = 1;
+
+    public int shootCost
     {
         get
         {
-            return _maxShoots;
+            return _shootCost;
         }
     }
 
@@ -32,35 +33,25 @@ public class Shooter : MonoBehaviour
 
     [SerializeField] Projectile _projectile;
 
-    Mover _mover;
     TurnActor _turnActor;
+    Target _target;
+    ShooterExecuter _executer;
 
-    public GroundTile shootOriginTile
-    {
-        get
-        {
-            return _mover.lastPathTile;
-        }
-    }
 
     private void Awake()
     {
-        _mover = GetComponent<Mover>();
         _turnActor = GetComponent<TurnActor>();
-    }
-    public void ResetSteps()
-    {
-        _usedShoots = 0;
+        _target = GetComponent<Target>();
+
+        _projectile.SetOwner(_target);
+        _projectile.SetDamage(_damage);
+
+        _executer = new ShooterExecuter(_projectile, this, _turnActor, _speed);
     }
 
-    public void AddShootStep(GroundTile target)
+    public void AddShoot(Target target)
     {
-        if (_usedShoots < _maxShoots)
-        {
-            _usedShoots++;
-            _turnActor.AddStep(new ShooterTurnStep(target, _projectile, this, _turnActor, _damage, _speed));
-        }
-
+        _executer.Execute(target.transform.position);
     }
 
     [Serializable]
@@ -78,32 +69,52 @@ public class Shooter : MonoBehaviour
     }
 }
 
-public class ShooterTurnStep : TurnStep
+public class ShooterExecuter
 {
-    GroundTile _destination;
-
     Projectile _projectile;
 
     TurnActor _turnActor;
     Shooter _owner;
 
-    int _damage;
     float _speed;
 
-    public ShooterTurnStep(GroundTile destination, Projectile projectile, Shooter owner, TurnActor turnActor, int damage, float speed)
+    public ShooterExecuter(Projectile projectile, Shooter owner, TurnActor turnActor, float speed)
     {
-        _destination = destination;
-
         _projectile = projectile;
         _owner = owner;
 
         _turnActor = turnActor;
 
-        _damage = damage;
         _speed = speed;
     }
-    public override void Execute()
+
+    public void Execute(Vector3 destination)
     {
-        _projectile.Launch(_speed, _damage, _owner,_turnActor, _turnActor.transform.position, _destination.transform.position);
+        _owner.StartCoroutine(MoveProjectileToTarget(_speed, _turnActor.transform.position, destination));
     }
+
+    IEnumerator MoveProjectileToTarget(float speed, Vector3 origin, Vector3 destination)
+    {
+        _turnActor.StartStep(_owner.shootCost);
+
+        float duration = Vector3.Distance(origin, destination) / speed;
+        float elapsedTime = 0;
+        _projectile.transform.position = origin;
+
+        _projectile.EnableProjectile();
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            _projectile.transform.position = Vector3.Lerp(origin, destination, elapsedTime / duration);
+
+            yield return null;
+
+        }
+
+        _projectile.transform.position = destination;
+        _projectile.DisableProjectile();
+        _turnActor.EndStep();
+    }
+
 }

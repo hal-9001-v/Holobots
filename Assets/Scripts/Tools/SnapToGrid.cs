@@ -22,10 +22,6 @@ public class SnapToGrid : MonoBehaviour
     [SerializeField] bool _snapToHeight;
     [SerializeField] bool _localPosition;
 
-    private void Start()
-    {
-        enabled = false;
-    }
 
     private void Update()
     {

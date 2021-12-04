@@ -15,7 +15,6 @@ public abstract class UtilityAction
     public UtilityAction(Func<float> valueCalculation)
     {
         _valueCalculation = valueCalculation;
-
     }
 
 

@@ -13,7 +13,7 @@ public class Ground : MonoBehaviour
     public byte[][] byteMap;
 
     [Header("Settings")]
-    [SerializeField] [Range(0.1f, 1f)] float _cellSize;
+    [SerializeField] [Range(0.1f, 5f)] float _cellSize;
 
     GroundTile _zeroTile;
 
@@ -28,6 +28,7 @@ public class Ground : MonoBehaviour
     [SerializeField] [Range(0.1f, 1)] float _gizmosSize;
 
     const float RootOf2 = 1.41421356f;
+    const float MinimumFloatValue = 0.01f;
 
     private void Awake()
     {
@@ -48,7 +49,21 @@ public class Ground : MonoBehaviour
     void SetGroundGrid()
     {
 
-        _tiles = FindObjectsOfType<GroundTile>();
+        _tiles = GetComponentsInChildren<GroundTile>();
+
+        _zeroTile = _tiles[0];
+
+        foreach (var tile in _tiles)
+        {
+            if (tile.transform.position.x - _zeroTile.transform.position.x < 0.01f)
+            {
+                if (tile.transform.position.z - _zeroTile.transform.position.z < 0.01f)
+                {
+                    _zeroTile = tile;
+                }
+            }
+        }
+
         _zeroTile = _tiles[0];
         groundMap = new Dictionary<Vector2Int, GroundTile>();
 
@@ -56,6 +71,8 @@ public class Ground : MonoBehaviour
         {
             var cellCoord = ToCellCoords(_tiles[i].transform.position);
             _tiles[i].SetCellCoord(cellCoord);
+
+            _tiles[i].name = "Cell (" + cellCoord.x + ", " + cellCoord.y + ")";
             groundMap.Add(_tiles[i].cellCoord, _tiles[i]);
 
         }
@@ -95,7 +112,11 @@ public class Ground : MonoBehaviour
 
             foreach (GroundTile neighbour in currentNode.neighbours)
             {
-                CheckNeighbour(currentNode, neighbour, openNodes, profile);
+                if (neighbour == destination)
+                    CheckNeighbour(currentNode, neighbour, true, openNodes, profile);
+                else
+                    CheckNeighbour(currentNode, neighbour, false, openNodes, profile);
+
             }
         }
 
@@ -112,6 +133,9 @@ public class Ground : MonoBehaviour
 
         path.Push(currentNode);
 
+        //If path's count is 1, then no path has been found. That node in path is the just destination node
+        if (path.Count == 1)
+            path.Clear();
 
         return path.ToArray();
     }
@@ -145,11 +169,17 @@ public class Ground : MonoBehaviour
         return path.Length;
     }
 
-    void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, List<GroundTile> openNodes, PathProfile profile)
+    void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, bool isDestination, List<GroundTile> openNodes, PathProfile profile)
     {
+        if (!isDestination)
+        {
+            if (neighbour.unit) return;
+            if (!profile.canTraspass && neighbour.tileType == TileType.Untraversable) return;
+        }
+
+
         if (neighbour.isClosed) return;
 
-        if (!profile.canTraspass && neighbour.tileType == TileType.Untraversable) return;
 
         float fixedWeight = currentNode.weight;
 

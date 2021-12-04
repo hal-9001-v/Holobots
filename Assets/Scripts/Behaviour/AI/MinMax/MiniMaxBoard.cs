@@ -29,7 +29,7 @@ public class MiniMaxBoard
 
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemyPreview[i] = enemies[i].GetPossibleMoves();
+            //enemyPreview[i] = enemies[i].GetPossibleMoves();
         }
 
         TurnPreview[][] unitPreview = new TurnPreview[units.Length][];

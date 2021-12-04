@@ -9,8 +9,11 @@ public class Mover : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] [Range(1, 10)] int _maxMoves;
+    [SerializeField] [Range(1, 10)] int _moveCost = 1;
     [SerializeField] PathProfile _pathProfile;
+    [SerializeField] float _movingSpeed;
 
+    MoverExecuter _executer;
     public PathProfile pathProfile
     {
         get
@@ -28,25 +31,14 @@ public class Mover : MonoBehaviour
         }
     }
 
-    [SerializeField] [Range(0.5f, 3)] float _stepDuration;
-
-    public float stepDuration
+    public int moveCost
     {
         get
         {
-            return _stepDuration;
+            return _moveCost;
         }
     }
 
-    int _avaliableMoves;
-
-    public int avaliableMoves
-    {
-        get
-        {
-            return _avaliableMoves;
-        }
-    }
     public bool isReadyToMove { get; set; }
 
     Target _target;
@@ -54,16 +46,16 @@ public class Mover : MonoBehaviour
 
     Ground _ground;
 
-    //Last of _confirmedPath
-    public GroundTile lastPathTile { get; private set; }
-
     void Awake()
     {
         _target = GetComponent<Target>();
         _turnActor = GetComponent<TurnActor>();
 
         _ground = FindObjectOfType<Ground>();
+
+        _executer = new MoverExecuter(_target, this, _turnActor, _movingSpeed);
     }
+
     public List<GroundTile> GetFilteredPath(GroundTile startingTile, GroundTile destinationTile)
     {
         var totalPath = _ground.GetPath(startingTile, destinationTile, _pathProfile);
@@ -73,7 +65,7 @@ public class Mover : MonoBehaviour
         int elapsedWeight = 0;
         for (int i = 0; i < totalPath.Length; i++)
         {
-            if (elapsedWeight + totalPath[i].weight > _avaliableMoves)
+            if (elapsedWeight + totalPath[i].weight > maxMoves)
                 break;
 
             elapsedWeight += totalPath[i].weight;
@@ -84,26 +76,20 @@ public class Mover : MonoBehaviour
         return newList;
     }
 
-    public void AddStepsToReachTarget(GroundTile target)
+    public void MoveToTarget(GroundTile target)
     {
-        AddStepsFromPath(GetFilteredPath(_target.currentGroundTile, target));
+        _executer.Execute(GetFilteredPath(_target.currentGroundTile, target));
     }
 
-    public void AddStepsFromPath(List<GroundTile> path)
+    public int DistanceToTarget(GroundTile target)
     {
-        if (path.Count == 0) return;
-
-        //Create Steps
-        MoverTurnStep[] steps = new MoverTurnStep[path.Count - 1];
-        for (int i = 0; i < steps.Length; i++)
-        {
-            //i + 1 because first tile in _confirmedPath is currentPositon at the start
-            steps[i] = new MoverTurnStep(path[i + 1], _target, this, _turnActor, _stepDuration);
-        }
-
-        AddSteps(steps);
+        return _ground.GetDistance(_target.currentGroundTile, target, pathProfile);
     }
 
+    public void MoveInPath(List<GroundTile> path)
+    {
+        _executer.Execute(path);
+    }
     public List<DistancedTile> GetTilesInMaxRange(int range)
     {
         List<DistancedTile> tilesInRange = new List<DistancedTile>();
@@ -129,82 +115,70 @@ public class Mover : MonoBehaviour
         return tilesInRange;
 
     }
-
-    void AddSteps(MoverTurnStep[] steps)
-    {
-        if (steps != null && steps.Length != 0)
-        {
-            lastPathTile = steps[steps.Length - 1].destination;
-
-            _turnActor.AddSteps(steps);
-
-            _avaliableMoves -= steps.Length;
-        }
-    }
-
-    public void ResetSteps()
-    {
-        _avaliableMoves = _maxMoves;
-
-        lastPathTile = _target.currentGroundTile;
-    }
 }
 
-public class MoverTurnStep : TurnStep
+public class MoverExecuter
 {
     TurnActor _actor;
-    public GroundTile destination;
     Target _target;
     Mover _mover;
 
-    float _duration;
+    float _speed;
 
-    public MoverTurnStep(GroundTile destination, Target target, Mover mover, TurnActor actor, float duration)
+    public MoverExecuter(Target target, Mover mover, TurnActor actor, float speed)
     {
-        this.destination = destination;
+        _speed = speed;
 
         _target = target;
         _mover = mover;
         _actor = actor;
-        _duration = duration;
     }
 
-    public override void Execute()
+    public void Execute(List<GroundTile> tileList)
     {
-        _actor.StartCoroutine(MoveToTarget());
-
+        Debug.Log(_target.name + " is moving from " + _target.currentGroundTile.name + " to " + tileList[tileList.Count - 1].name);
+        _actor.StartCoroutine(MoveToTarget(tileList.ToArray()));
     }
 
-    IEnumerator MoveToTarget()
+    IEnumerator MoveToTarget(GroundTile[] path)
     {
-        //Cant move there. End turn
-        if (!_mover.pathProfile.canTraspass && destination.unit != null)
-            _actor.ResetSteps();
+        _actor.StartStep(_mover.moveCost);
 
-        var startingPosition = _actor.transform.position;
-        _target.SetCurrentGroundTile(destination);
-
-        var fixedDestination = destination.transform.position;
-        fixedDestination.y = startingPosition.y;
-
-        float elapsedTime = 0;
-
-        while (elapsedTime < _duration)
+        for (int i = 0; i < path.Length; i++)
         {
-            elapsedTime += Time.deltaTime;
+            var destinationTile = path[i];
 
-            _actor.transform.position = Vector3.Lerp(startingPosition, fixedDestination, elapsedTime / _duration);
+            if (!_mover.pathProfile.canTraspass)
+            {
+                if (destinationTile.unit != null && destinationTile.unit != _target) break;
+            }
 
-            yield return null;
+            var startingPosition = _actor.transform.position;
+
+            var fixedDestination = destinationTile.transform.position;
+            fixedDestination.y = _actor.transform.position.y;
+
+            float elapsedTime = 0;
+            float duration = Vector3.Distance(startingPosition, fixedDestination) / _speed;
+
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+
+                _actor.transform.position = Vector3.Lerp(startingPosition, fixedDestination, elapsedTime / duration);
+
+                yield return null;
+            }
+
+            _target.transform.position = fixedDestination;
+
+            _target.SetCurrentGroundTile(destinationTile);
         }
-
-        _actor.transform.position = fixedDestination;
-
 
         _actor.EndStep();
     }
-}
 
+}
 
 public class DistancedTile
 {

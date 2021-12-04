@@ -1,16 +1,34 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Selectable))]
+[RequireComponent(typeof(Highlightable))]
 public class Target : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TextMeshPro _healthMesh;
 
     [Header("Settings")]
+    [SerializeField] TargetType _targetType;
+    [SerializeField] TeamTag _team;
+
+    public TargetType targetType
+    {
+        get
+        {
+            return _targetType;
+        }
+    }
+
+    public TeamTag team
+    {
+        get
+        {
+            return _team;
+        }
+    }
+
     [SerializeField] [Range(0, 10)] int _maxHealth;
 
     public int currentHealth { get; private set; }
@@ -30,12 +48,16 @@ public class Target : MonoBehaviour
         }
     }
 
+    public Highlightable highlightable { get; private set; }
+
     public GroundTile currentGroundTile { get; private set; }
 
     public Action dieAction;
 
     void Awake()
     {
+        highlightable = GetComponent<Highlightable>();
+
         currentHealth = _maxHealth;
     }
 
@@ -60,13 +82,33 @@ public class Target : MonoBehaviour
 
     public void Hurt(int damage)
     {
-        currentHealth -= damage;
+        bool hurtPlayer = false;
+        int fixedDamage = 0;
 
-        if (currentHealth <= 0)
+        if (currentGroundTile.shield)
         {
-            currentHealth = 0;
+            if (currentGroundTile.shield.HurtShield(damage, out fixedDamage))
+            {
+                hurtPlayer = true;
+            }
 
-            Die();
+        }
+        else
+        {
+            fixedDamage = damage;
+            hurtPlayer = true;
+        }
+
+        if (hurtPlayer)
+        {
+            currentHealth -= fixedDamage;
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+
+                Die();
+            }
         }
     }
 
@@ -75,10 +117,12 @@ public class Target : MonoBehaviour
         if (dieAction != null)
         {
             dieAction.Invoke();
-
-            if (currentGroundTile != null)
-                currentGroundTile.FreeUnit();
         }
+
+        if (currentGroundTile != null)
+            currentGroundTile.FreeUnit();
+
+        Destroy(gameObject);
     }
 
     void DisplayStats()
@@ -99,4 +143,13 @@ public class Target : MonoBehaviour
         }
     }
 
+    public void Heal(int points)
+    {
+        currentHealth += Math.Abs(points);
+
+        if (currentHealth > _maxHealth)
+        {
+            currentHealth = _maxHealth;
+        }
+    }
 }

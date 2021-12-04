@@ -16,21 +16,31 @@ public class LowHealthBotSensor : Sensor
         return function.GetValue(TotalHealthScore());
     }
 
-    Score TotalHealthScore()
+    public List<Target> GetLowHealthBots()
     {
-        float value = 0;
+        List<Target> bots = new List<Target>();
 
-        var bots = GameObject.FindObjectsOfType<Bot>();
-
-        foreach (var bot in bots)
+        foreach (var bot in GameObject.FindObjectsOfType<Bot>())
         {
-            if (bot.target.currentHealth / bot.target.maxHealth < _threshold)
+            float currentHealth = bot.target.currentHealth;
+            float maxHealth = bot.target.maxHealth;
+            if (currentHealth / maxHealth < _threshold)
             {
-                value++;
+                bots.Add(bot.target);
             }
         }
 
-        return new Score(value, bots.Length);
+        return bots;
+    }
+
+    Score TotalHealthScore()
+    {
+        
+        var bots = GameObject.FindObjectsOfType<Bot>();
+
+        var lowHealthBots = GetLowHealthBots();
+
+        return new Score(lowHealthBots.Count, bots.Length);
     }
 
     /// <summary>
@@ -38,7 +48,7 @@ public class LowHealthBotSensor : Sensor
     /// </summary>
     public void SetThreshold(float value)
     {
-        value = _threshold;
+        _threshold = value;
     }
 
 }

@@ -22,7 +22,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         }
     }
 
-
     private void Awake()
     {
         target = GetComponent<Target>();
@@ -49,19 +48,25 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         var shooter = GetComponent<Shooter>();
         if (shooter)
         {
-            adapters.Add(new ShooterPlayerAdapter(shooter));
+            adapters.Add(new ShooterPlayerAdapter(target, shooter));
         }
 
         var shielder = GetComponent<Shielder>();
         if (shielder)
         {
-            adapters.Add(new ShielderPlayerAdapter(shielder, target, _turnActor));
+            adapters.Add(new ShielderPlayerAdapter(shielder, target));
         }
 
         var meleer = GetComponent<Meleer>();
         if (meleer)
         {
             adapters.Add(new MeleerPlayerAdapter(meleer, target));
+        }
+
+        var explosioner = GetComponent<Explosioner>();
+        if (explosioner)
+        {
+            adapters.Add(new ExplosionerPlayerAdapter(target, explosioner));
         }
     }
 
@@ -78,15 +83,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         }
     }
 
-    public void ResetAdapters()
-    {
-        foreach (var adapter in adapters)
-        {
-            adapter.Reset();
-        }
-
-        _turnActor.ResetSteps();
-    }
 
     public TurnPreview[] GetPossibleMoves()
     {

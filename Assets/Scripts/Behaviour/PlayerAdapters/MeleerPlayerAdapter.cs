@@ -29,7 +29,7 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
 
         if (_selectedTile)
         {
-            _meleer.SetHit(_selectedTile);
+            _meleer.Hit(_selectedTile);
         }
     }
 
@@ -52,10 +52,26 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
 
         var tile = selectable.GetComponent<GroundTile>();
 
-
-        if (_selectedTile == null || _selectedTile != tile)
+        if (tile == null)
         {
-            if (_ground.GetTilesInRange(_target.currentGroundTile, 2).Contains(tile))
+            var unit = selectable.GetComponent<Target>();
+
+            if (unit)
+            {
+                tile = unit.currentGroundTile;
+            }
+        }
+
+        if (tile == _target.currentGroundTile)
+        {
+            _selectedTile = null;
+            _meleer.Hide();
+            return;
+        }
+
+        if (tile)
+        {
+            if (_ground.GetTilesInRange(_target.currentGroundTile, _meleer.meleeRange).Contains(tile))
             {
                 _meleer.SetPlanningHit(tile);
 
@@ -64,13 +80,17 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
             else
             {
                 _selectedTile = null;
+                _meleer.Hide();
+                return;
             }
         }
+
+        _selectedTile = tile;
     }
 
     public override void OnStartControl()
     {
-        
+
     }
 
     public override void OnStopControl()
@@ -79,10 +99,6 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
         _selectedTile = null;
     }
 
-    public override void Reset()
-    {
-        
-    }
 
     public void SetNotifications()
     {

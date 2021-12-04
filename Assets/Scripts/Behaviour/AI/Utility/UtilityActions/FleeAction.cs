@@ -45,7 +45,7 @@ public class FleeAction : UtilityAction
             }
         }
 
-        _mover.AddStepsToReachTarget(furthestTile);
+        _mover.MoveToTarget(furthestTile);
 
     }
 
