@@ -44,7 +44,7 @@ public class PauseMenuManager : MonoBehaviour
 
         StartCoroutine(ResumeC());
         Time.timeScale = 1;
-        _pauseButton.GetComponent<CanvasGroup>().alpha = 1;
+       _pauseButton.GetComponent<CanvasGroup>().alpha = 1;
     }
 
     private IEnumerator ResumeC(){

@@ -59,22 +59,21 @@ public class PlayerTeam : Team
 
     public override void StartTurn()
     {
+        _cameraMovement.FixLookAt(_cameraTarget);
         base.StartTurn();
-
         SelectUnit(0);
     }
 
     public override void EndTurn()
     {
         base.EndTurn();
-
         _skillSelector.Hide();
     }
 
     public override void ActorFinishedTurn(TurnActor actor)
     {
+        _cameraMovement.FixLookAt(_cameraTarget);
         base.ActorFinishedTurn(actor);
-
         SelectUnit(0);
     }
 
@@ -102,18 +101,21 @@ public class PlayerTeam : Team
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
             _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
             //_uiInfo.currentUnit = _actorsInTurn[_unitIndex].GetType();
-            _cameraMovement.FixLookAt(_cameraTarget);
         }
     }
 
     public override void ActorFinishedStep(TurnActor actor)
     {
+        _cameraMovement.FixLookAt(_cameraTarget);
         SelectUnit(0);
+    
+
     }
 
     public override void ActorStartedStep(TurnActor actor)
     {
+        _cameraMovement.FixLookAt(_actorsInTurn[_unitIndex].transform);
         _skillSelector.Hide();
-        
+
     }
 }
