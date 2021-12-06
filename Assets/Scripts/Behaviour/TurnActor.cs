@@ -85,12 +85,13 @@ public class TurnActor : MonoBehaviour
     {
         currentTurnPoints -= cost;
 
-        _team.ActorStartedStep(this);
-
         if (currentTurnPoints < 0)
         {
             currentTurnPoints = 0;
         }
+
+        Debug.Log(name + " starting step. Remaining turn points: " + currentTurnPoints);
+        _team.ActorStartedStep(this);
 
     }
     public void EndStep()

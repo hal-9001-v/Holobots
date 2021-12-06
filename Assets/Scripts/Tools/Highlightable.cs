@@ -5,7 +5,8 @@ using UnityEngine;
 public class Highlightable : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Material _highlightMaterial;
+    [SerializeField] Material _dangerMaterial;
+    [SerializeField] Material _healMaterial;
 
     MeshRenderer[] _renderers;
 
@@ -28,10 +29,18 @@ public class Highlightable : MonoBehaviour
     }
 
     [ContextMenu("Hightlight")]
-    public void Highlight()
+    public void DangerHighlight()
     {
-        SetMaterial(_highlightMaterial);
+        SetMaterial(_dangerMaterial);
     }
+
+    public void HealHighlight()
+    {
+        SetMaterial(_healMaterial);
+    }
+
+
+
 
     [ContextMenu("Unhightlight")]
     public void Unhighlight()

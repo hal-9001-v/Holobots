@@ -47,7 +47,6 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
         if (!tile)
         {
-
             var target = selectable.GetComponent<Target>();
 
             if (target)

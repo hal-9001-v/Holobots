@@ -4,6 +4,7 @@ public enum AdapterType
     Move,
     Shield,
     Meleer,
-    Explosioner
+    Explosioner,
+    Heal
     
 }

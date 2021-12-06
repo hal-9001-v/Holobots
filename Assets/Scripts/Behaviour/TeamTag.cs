@@ -6,5 +6,7 @@ public enum TeamTag
 {
     Player,
     AI,
+    Mob,
+    AIorPlayer,
     None
 }

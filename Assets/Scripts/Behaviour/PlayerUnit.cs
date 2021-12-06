@@ -68,6 +68,12 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         {
             adapters.Add(new ExplosionerPlayerAdapter(target, explosioner));
         }
+
+        var healer = GetComponent<Healer>();
+        if (healer)
+        {
+            adapters.Add(new HealerPlayerAdapter(healer, target));
+        }
     }
 
     void Dead()

@@ -57,7 +57,7 @@ public class TankAI : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log("Executing Action: " + action.GetType().ToString());
+        Debug.Log(name + "is executing Action: " + action.GetType().ToString());
 
         action.Execute();
     }

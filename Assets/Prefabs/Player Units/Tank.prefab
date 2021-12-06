@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 6942599896008363797}
+  _targetType: 0
   _team: 0
   _maxHealth: 10
 --- !u!114 &5962367221777819474
@@ -482,7 +483,6 @@ MonoBehaviour:
     canTraspass: 0
     canFly: 0
   _movingSpeed: 0
-  _stepDuration: 0.5
 --- !u!114 &828574324003217469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c698c189e166549a43fd274b3d2015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meleeRange: 2
   _meleerDamage: 3
   _meleerCost: 1
   _planningHit: {fileID: 8626562160634358892}
@@ -572,7 +573,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f1d0a8e746dc3409e3334902735691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highlightMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
+  _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
+  _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
 --- !u!1 &8448874807543468172
 GameObject:
   m_ObjectHideFlags: 0
