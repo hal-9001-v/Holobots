@@ -63,7 +63,7 @@ public class CameraMovement : MonoBehaviour
 
             inputMapContainer.inputMap.Camera.Scroll.performed += ctx =>
             {
-                if (ctx.ReadValue<float>() > 0)
+                if (ctx.ReadValue<float>() < 0)
                 {
                     _virtualCamera.m_Lens.FieldOfView += _fovChange;
                 }
@@ -102,6 +102,12 @@ public class CameraMovement : MonoBehaviour
         position.y = _cameraFollow.position.y;
 
         _cameraFollow.position = position;
+    }
+
+    public void FixLookAt(Transform t){
+
+        _virtualCamera.LookAt = t;
+        _virtualCamera.Follow = t;
     }
 
     void RotateCamera(float input)

@@ -7,11 +7,14 @@ public class AITeam : Team
     List<Bot> _bots;
     List<Bot> _botsInTurn;
 
-    public AITeam() : base(TeamTag.AI)
+    private CameraMovement _cameraFollower;
+    private Transform _cameraTarget;
+    public AITeam(Transform target) : base(TeamTag.AI)
     {
         _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
-
+        _cameraTarget = target;
+        _cameraFollower = GameObject.FindObjectOfType<CameraMovement>();
         UpdateTeam();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
@@ -35,7 +38,11 @@ public class AITeam : Team
     void ExecuteBotStep()
     {
         _botsInTurn[0].ExecuteStep();
+        _cameraFollower.LookAt(_botsInTurn[0].transform.position);
+        _cameraFollower.FixLookAt(_botsInTurn[0].transform);
     }
+
+  
 
     void BotEndedStep(TurnActor actor)
     {

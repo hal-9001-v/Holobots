@@ -10,7 +10,7 @@ public class GameDirector : MonoBehaviour
     BehaviourTree _teamTurnTree;
 
     Team _teamInTurn;
-
+    [SerializeField] Transform cameraTarget;
     enum GameStates
     {
         Intro,
@@ -90,8 +90,8 @@ public class GameDirector : MonoBehaviour
     {
         //Add low priority teams first
         _teams = new List<Team>();
-        _teams.Add(new AITeam());
-        _teams.Add(new PlayerTeam());
+        _teams.Add(new AITeam(cameraTarget));
+        _teams.Add(new PlayerTeam(cameraTarget));
 
         foreach (var team in _teams)
         {

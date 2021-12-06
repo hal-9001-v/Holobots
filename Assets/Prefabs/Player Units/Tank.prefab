@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 1815630978624650786}
   - component: {fileID: 6544045272580164151}
   - component: {fileID: 6942599896008363797}
+  - component: {fileID: 3991774106819993566}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -203,6 +204,18 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &3991774106819993566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380385667468720436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c310fda527e446488c991c7cb9aa686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2423050929362096426
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 6942599896008363797}
+  _targetType: 0
   _team: 0
   _maxHealth: 10
 --- !u!114 &5962367221777819474
@@ -482,7 +496,6 @@ MonoBehaviour:
     canTraspass: 0
     canFly: 0
   _movingSpeed: 0
-  _stepDuration: 0.5
 --- !u!114 &828574324003217469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82c698c189e166549a43fd274b3d2015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _meleeRange: 2
   _meleerDamage: 3
   _meleerCost: 1
   _planningHit: {fileID: 8626562160634358892}

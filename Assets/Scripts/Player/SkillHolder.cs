@@ -12,6 +12,8 @@ public class SkillHolder : MonoBehaviour
     [Tooltip("This image will be highlighted when this skill is selected")]
     [SerializeField] RawImage _highlightedImage;
     [SerializeField] Button _button;
+    [SerializeField] Button _pauseButton;
+    [SerializeField] Animator _pauseButtonAnimator;
 
     [Header("Settings")]
     [SerializeField] AdapterIcon[] _icons;
@@ -35,8 +37,27 @@ public class SkillHolder : MonoBehaviour
         {
             _skillSelector.SetSelectedSkill(this);
         });
+        _pauseButton.onClick.AddListener(() =>
+        {
+            DisplayPauseMenu();    
+        });
     }
 
+    public void DisplayPauseMenu(){
+
+        Time.timeScale = 0f;
+        StartCoroutine(DisplayPauseMenuC());
+    }
+
+    private IEnumerator DisplayPauseMenuC(){
+
+        _pauseButtonAnimator.SetTrigger("Start");
+        _pauseButton.GetComponent<CanvasGroup>().alpha = 0f;
+        yield return new WaitForSeconds(1f);
+
+        _pauseButtonAnimator.ResetTrigger("Start");
+
+    }
     public void SelectSkill()
     {
         if (_currentAdapter != null)
