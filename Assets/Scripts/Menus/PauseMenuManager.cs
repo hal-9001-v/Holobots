@@ -19,21 +19,21 @@ public class PauseMenuManager : MonoBehaviour
     private void Awake() {
         _levelLoader = FindObjectOfType<LevelLoader>();
 
-            _resume.onClick.AddListener(() =>
+          if(_resume!= null)  _resume.onClick.AddListener(() =>
         {
             Resume();
         });
-        _settings.onClick.AddListener(() =>
+      if(_settings != null)  _settings.onClick.AddListener(() =>
         {
           
             DisplaySettings();
           
         });
-        _quit.onClick.AddListener(() =>
+        if(_quit != null) _quit.onClick.AddListener(() =>
         {
             Application.Quit();
         });
-       _returnToMenu.onClick.AddListener(() =>
+        if(_returnToMenu != null) _returnToMenu.onClick.AddListener(() =>
         {
             ReturnToMenu();
         });

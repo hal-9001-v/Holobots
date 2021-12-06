@@ -14,14 +14,14 @@ public class PlayerTeam : Team
 
     SkillSelector _skillSelector;
 
+    private Transform _cameraTarget;
      
-
     int _unitIndex;
-    public PlayerTeam() : base(TeamTag.Player)
+    public PlayerTeam(Transform target) : base(TeamTag.Player)
     {
         _inputContainer = GameObject.FindObjectOfType<InputMapContainer>();
         _cameraMovement = GameObject.FindObjectOfType<CameraMovement>();
-
+        _cameraTarget = target;
         _skillSelector = GameObject.FindObjectOfType<SkillSelector>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
@@ -99,6 +99,7 @@ public class PlayerTeam : Team
             _unitIndex = index;
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
             _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
+            _cameraMovement.FixLookAt(_cameraTarget);
         }
     }
 
