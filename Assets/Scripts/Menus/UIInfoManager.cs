@@ -6,15 +6,7 @@ using TMPro;
 public class UIInfoManager : MonoBehaviour
 {   
 
-    public enum UnitTypes{
 
-        Fighter,
-        Healer,
-        Ranger,
-        Rogue,
-        Tank,
-
-    }
     [SerializeField] private TextMeshProUGUI _unitName;
     public TextMeshProUGUI unitName{
          get{
@@ -27,42 +19,42 @@ public class UIInfoManager : MonoBehaviour
 
     [SerializeField] private Sprite[] _portraitSprites;
 
-    public UnitTypes currentUnit;
+    public TargetType currentUnit;
 
     [SerializeField] private Image _currentSprite;
  
     public void UpdatePortrait(){
 
-        switch(currentUnit){
+        /*switch(currentUnit){
 
-            case UnitTypes.Fighter:
+            case TargetType.Fighter:
                 _unitName.text = "Fighter";
                 _currentSprite.sprite = _portraitSprites[0];
             break;
 
-            case UnitTypes.Healer:
+            case TargetType.Healer:
                 _unitName.text = "Healer";
                 _currentSprite.sprite = _portraitSprites[1];
 
             break;
 
-            case UnitTypes.Ranger:
+            case TargetType.Ranger:
                 _unitName.text = "Ranger";
                 _currentSprite.sprite = _portraitSprites[2];
 
             break;
         
-            case UnitTypes.Rogue:
+            case TargetType.Rogue:
                 _unitName.text = "Rogue";
                 _currentSprite.sprite = _portraitSprites[3];
 
             break;
-            case UnitTypes.Tank:
+            case TargetType.Tank:
                 _unitName.text = "Tank";
                 _currentSprite.sprite = _portraitSprites[4];
 
             break;
-        }
+        }*/
     } 
 
 
