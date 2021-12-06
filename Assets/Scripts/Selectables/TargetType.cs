@@ -6,8 +6,12 @@ public enum TargetType
 {
     Tank,
     Ranger,
+    Healer,
+    Rogue,
+    Fighter,
     Building,
     Hunter,
+    Turret,
     Any,
 
 }

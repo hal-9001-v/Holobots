@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Highlighted
+  m_Name: DangerHighlight
   m_Shader: {fileID: -6465566751694194690, guid: 40fccf3bb2537e74088b7e37f7fe9a98, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -127,7 +127,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_529d09b2aa1d4b5482e56b8193cc0555: {r: 0, g: 0.105882406, b: 1, a: 1}
-    - Color_9560c23f81fa43539b5abb1fe4518741: {r: 0.31498337, g: 0.6226415, b: 0, a: 1}
+    - Color_9560c23f81fa43539b5abb1fe4518741: {r: 1, g: 0.087065585, b: 0, a: 1}
     - Vector2_ef54a87404554141adddde883ce4c002: {r: 10, g: 10, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

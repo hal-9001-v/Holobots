@@ -90,8 +90,10 @@ public class GameDirector : MonoBehaviour
     {
         //Add low priority teams first
         _teams = new List<Team>();
-        _teams.Add(new AITeam(cameraTarget));
-        _teams.Add(new PlayerTeam(cameraTarget));
+
+        _teams.Add(new MobTeam());
+        _teams.Add(new AITeam());
+        _teams.Add(new PlayerTeam());
 
         foreach (var team in _teams)
         {
