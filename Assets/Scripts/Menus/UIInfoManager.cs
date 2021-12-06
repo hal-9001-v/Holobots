@@ -29,46 +29,44 @@ public class UIInfoManager : MonoBehaviour
 
     public UnitTypes currentUnit;
 
-    private SpriteRenderer _currentSprite;
-    public SpriteRenderer currentSprite{
-            get{
-                return _currentSprite;
-            }
-            set{
-                _currentSprite = currentSprite;  
-            }
-        }
-
+    [SerializeField] private Image _currentSprite;
+ 
     public void UpdatePortrait(){
 
         switch(currentUnit){
 
             case UnitTypes.Fighter:
                 _unitName.text = "Fighter";
-                
+                _currentSprite.sprite = _portraitSprites[0];
             break;
 
             case UnitTypes.Healer:
                 _unitName.text = "Healer";
+                _currentSprite.sprite = _portraitSprites[1];
 
             break;
 
-            case UnitTypes.Tank:
-                _unitName.text = "Tank";
+            case UnitTypes.Ranger:
+                _unitName.text = "Ranger";
+                _currentSprite.sprite = _portraitSprites[2];
 
             break;
         
-            case UnitTypes.Ranger:
-                _unitName.text = "Ranger";
-
-            break;
             case UnitTypes.Rogue:
                 _unitName.text = "Rogue";
+                _currentSprite.sprite = _portraitSprites[3];
+
+            break;
+            case UnitTypes.Tank:
+                _unitName.text = "Tank";
+                _currentSprite.sprite = _portraitSprites[4];
 
             break;
         }
     } 
 
 
-
+    private void Update() {
+        UpdatePortrait();
+    }
 }
