@@ -30,9 +30,19 @@ public class AITeam : Team
             _botsInTurn.Add(bot);
 
             bot.actor.SetTeam(this);
+
+            bot.actor.StartTurn();
         }
 
-        ExecuteBotStep();
+
+        if (_botsInTurn.Count != 0)
+        {
+            ExecuteBotStep();
+        }
+        else
+        {
+            EndTurn();
+        }
     }
 
     void ExecuteBotStep()

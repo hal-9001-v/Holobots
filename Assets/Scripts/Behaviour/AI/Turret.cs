@@ -4,61 +4,120 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(Shooter))]
+[RequireComponent(typeof(TurnActor))]
 [RequireComponent(typeof(Mover))]
-public class Turret : Bot, IUtilityAI
+public class Turret : Bot
 {
     [Header("Settings")]
     [SerializeField] LayerMask _obstacleLayers;
 
     [SerializeField] [Range(0, 10)] int _maxRange;
-    [SerializeField] [Range(0, 5)] float _shootWeight = 1;
-    [SerializeField] [Range(0, 5)] float _idleWeight = 1;
 
     Shooter _shooter;
     Target _target;
+    TurnActor _actor;
     Mover _mover;
 
     DistanceSensor _distanceSensor;
     SightToPlayerUnitSensor _sightSensor;
 
-    UtilityUnit _utilityUnit;
+    FSMachine _machine;
 
-    private void Awake()
+    private void Start()
     {
         _shooter = GetComponent<Shooter>();
         _mover = GetComponent<Mover>();
         _target = GetComponent<Target>();
+        _actor = GetComponent<TurnActor>();
 
-        InitializeUtilityUnit();
+
+
+        InitializeFSM();
 
     }
-
 
     public override void ExecuteStep()
     {
-        ResetBehaviourComponents();
-
-        _utilityUnit.GetHighestAction().Execute();
+        _machine.Update();
     }
 
-    public void InitializeUtilityUnit()
+    public void InitializeFSM()
     {
-
-        _utilityUnit = new UtilityUnit();
-
-        _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target, TeamTag.AIorPlayer, _mover.pathProfile, _maxRange, new ThresholdUtilityFunction(1f));
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
 
-        ShootAction shootAction = new ShootAction(_shooter, () =>
-        {
-            return _sightSensor.GetScore() * _distanceSensor.GetScore() * _shootWeight;
-        });
+        ShootAction shootAction = new ShootAction(_shooter, () => { return -1; });
 
         shootAction.AddPreparationListener(() =>
         {
-            //shootAction.SetTarget(_distanceSensor.closestPlayerUnit);
+            var targets = _sightSensor.GetTargetsOnSight(TeamTag.AIorPlayer);
+
+            shootAction.SetTarget(targets[0]);
+
         });
-        _utilityUnit.AddAction(shootAction);
+
+        IdleAction idleAction = new IdleAction(_actor, () => { return -1; });
+
+        FSMState idleState = new FSMState("Idle State", () =>
+         {
+             return true;
+         },
+        () =>
+        {
+            idleAction.Execute();
+        });
+
+        FSMState checkForTarget = new FSMState("Check State", () =>
+         {
+             return true;
+         },
+        () =>
+        {
+            _machine.Update();
+        });
+
+
+        FSMState shootTarget = new FSMState("Shoot State", () =>
+         {
+             var distanceValue = _distanceSensor.GetScore();
+
+             if (distanceValue == 1)
+             {
+                 var targets = _sightSensor.GetTargetsOnSight(TeamTag.AIorPlayer);
+
+                 if (targets.Count != 0)
+                 {
+                     return true;
+                 }
+
+             }
+
+             return false;
+         },
+        () =>
+        {
+            shootAction.Execute();
+        });
+
+        FSMState reloadState = new FSMState("Reload State", () =>
+         {
+             return true;
+         },
+        () =>
+        {
+            idleAction.Execute();
+        });
+
+        _machine = new FSMachine(checkForTarget);
+
+        idleState.children.Add(checkForTarget);
+
+        checkForTarget.children.Add(shootTarget);
+        checkForTarget.children.Add(idleState);
+
+        shootTarget.children.Add(reloadState);
+
+        reloadState.children.Add(checkForTarget);
 
 
         /*
@@ -70,8 +129,4 @@ public class Turret : Bot, IUtilityAI
         */
     }
 
-    public void ResetBehaviourComponents()
-    {
-
-    }
 }

@@ -161,6 +161,8 @@ public class Ground : MonoBehaviour
 
     public int GetDistance(GroundTile a, GroundTile b, PathProfile profile)
     {
+        if (a == b) return 0;
+
         var path = GetPath(a, b, profile);
 
         if (path.Length == 0)

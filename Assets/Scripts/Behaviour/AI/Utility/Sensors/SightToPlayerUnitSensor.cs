@@ -59,11 +59,16 @@ public class SightToPlayerUnitSensor : Sensor
     {
         List<Target> targets = new List<Target>();
 
+        var mask = GetTeamTagMask(team);
+
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (target.team == team && IsTargetOnSight(target))
+            if (mask.Contains(target.team))
             {
-                targets.Add(target);
+                if (IsTargetOnSight(target))
+                {
+                    targets.Add(target);
+                }
             }
         }
 

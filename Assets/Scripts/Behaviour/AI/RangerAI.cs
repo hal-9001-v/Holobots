@@ -51,7 +51,7 @@ public class RangerAI : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log("Executing Action: " + action.GetType().ToString());
+        Debug.Log(name + " is executing Action: " + action.GetType().ToString());
 
         action.Execute();
     }
@@ -61,7 +61,7 @@ public class RangerAI : Bot, IUtilityAI
         _utilityUnit = new UtilityUnit();
 
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _groupSensor = new GroupSensor(TeamTag.Player,0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
+        _groupSensor = new GroupSensor(TeamTag.Player, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
         _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 5, new ThresholdUtilityFunction(0.9f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleMask, new ThresholdUtilityFunction(0.9f));
@@ -143,7 +143,7 @@ public class RangerAI : Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var targets = _groupSensor.GetGroupedTargets();
+            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -152,7 +152,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(engageAction, () =>
         {
-            var targets = _groupSensor.GetGroupedTargets();
+            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -180,7 +180,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(explosionAction, () =>
         {
-            var targets = _groupSensor.GetGroupedTargets();
+            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 

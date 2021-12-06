@@ -221,6 +221,8 @@ MonoBehaviour:
     adapterType: 3
   - icon: {fileID: 21300000, guid: 32b7a1fbcf1e51a42aae3f2f58d528b4, type: 3}
     adapterType: 4
+  - icon: {fileID: 21300000, guid: 46ed5a06ce1456b47b2864e5f5a0eaf4, type: 3}
+    adapterType: 5
   _selectedColor: {r: 0.09803922, g: 0.70980394, b: 0.44529453, a: 1}
   _unselectedColor: {r: 0.098039225, g: 0.49411768, b: 0.70980394, a: 1}
 --- !u!225 &3220966143708588999

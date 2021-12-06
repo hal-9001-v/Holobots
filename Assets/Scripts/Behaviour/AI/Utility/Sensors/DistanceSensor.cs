@@ -83,9 +83,11 @@ public class DistanceSensor : Sensor
 
         List<Target> targetList = new List<Target>();
 
+        var mask = GetTeamTagMask(team);
+
         foreach (var target in targets)
         {
-            if (target.team == team)
+            if (mask.Contains(target.team))
             {
                 targetList.Add(target);
             }
@@ -143,9 +145,11 @@ public class DistanceSensor : Sensor
     {
         List<Target> targets = new List<Target>();
 
+        var mask = GetTeamTagMask(team);
+
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (target.team == team)
+            if (mask.Contains(target.team))
             {
                 targets.Add(target);
             }
@@ -175,9 +179,11 @@ public class DistanceSensor : Sensor
 
         var targets = GameObject.FindObjectsOfType<Target>();
 
+        var mask = GetTeamTagMask(team);
+
         foreach (var unit in targets)
         {
-            if (unit.team == team)
+            if (mask.Contains(unit.team))
             {
                 totalTargets++;
 
@@ -193,26 +199,25 @@ public class DistanceSensor : Sensor
 
     Score GetClosestUnitProximity(TeamTag team)
     {
-
         var targets = GameObject.FindObjectsOfType<Target>();
 
         if (targets.Length == 0)
         {
             return new Score(int.MaxValue, 0);
         }
-
-        Target closestUnit = null;
+        
         float closestDistance = int.MaxValue;
+
+        var mask = GetTeamTagMask(team);
 
         foreach (var unit in targets)
         {
-            if (unit.team == team)
+            if (mask.Contains(unit.team))
             {
                 var newDistance = _ground.GetDistance(_owner.currentGroundTile, unit.currentGroundTile, _pathProfile);
 
                 if (newDistance < closestDistance)
                 {
-                    closestUnit = unit;
                     closestDistance = newDistance;
                 }
             }

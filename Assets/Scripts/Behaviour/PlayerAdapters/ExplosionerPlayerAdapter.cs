@@ -72,11 +72,11 @@ public class ExplosionerPlayerAdapter : Adapter, ISelectorObserver
             {
                 foreach (var tile in _ground.GetTilesInRange(_selectedTile, _explosioner.explosionRange))
                 {
-                    _highlighter.AddHighlightable(tile.highlightable);
+                    _highlighter.AddDangerededHighlightable(tile.highlightable);
 
                     if (tile.unit)
                     {
-                        _highlighter.AddHighlightable(tile.unit.highlightable);
+                        _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
                     }
 
                 }

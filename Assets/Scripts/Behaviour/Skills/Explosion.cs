@@ -25,6 +25,8 @@ public class Explosion : MonoBehaviour
 
     public void Explode(GroundTile centerTile)
     {
+        Debug.Log("Explosion in " + centerTile.name + " with a range of " + _range);
+
         var tiles = _ground.GetTilesInRange(centerTile, _range);
 
         foreach (var tile in tiles)

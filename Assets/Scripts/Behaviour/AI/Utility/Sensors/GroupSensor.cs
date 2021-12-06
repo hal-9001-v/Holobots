@@ -28,9 +28,12 @@ public class GroupSensor : Sensor
 
         int targetCount = 0;
         int noTargetCount = 0;
+
+        var mask = GetTeamTagMask(targetTeam);
+
         foreach (var target in targets)
         {
-            if (target.team == targetTeam)
+            if (mask.Contains(target.team))
             {
                 targetCount++;
             }
@@ -50,7 +53,6 @@ public class GroupSensor : Sensor
 
     public List<Target> GetGroupedTargets()
     {
-
         List<Target> targets = new List<Target>();
 
         foreach (var target in GameObject.FindObjectsOfType<Target>())
@@ -87,6 +89,23 @@ public class GroupSensor : Sensor
         }
 
         return groupedTargets;
+    }
+
+    public List<Target> GetGroupedTargetsWithTag(TeamTag tag)
+    {
+        var targets = GetGroupedTargets();
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            if (targets[i].team != tag)
+            {
+                targets.RemoveAt(i);
+
+                i--;
+            }
+        }
+
+        return targets;
     }
 
     class TargetGroup

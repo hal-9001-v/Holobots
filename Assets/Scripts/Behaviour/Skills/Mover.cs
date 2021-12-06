@@ -136,7 +136,9 @@ public class MoverExecuter
 
     public void Execute(List<GroundTile> tileList)
     {
-        Debug.Log(_target.name + " is moving from " + _target.currentGroundTile.name + " to " + tileList[tileList.Count - 1].name);
+        if (tileList.Count > 1)
+            Debug.Log(_target.name + " is moving from " + _target.currentGroundTile.name + " to " + tileList[tileList.Count - 1].name);
+
         _actor.StartCoroutine(MoveToTarget(tileList.ToArray()));
     }
 
