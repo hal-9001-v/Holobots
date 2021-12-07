@@ -19,13 +19,20 @@ public class UIInfoManager : MonoBehaviour
 
     [SerializeField] private Sprite[] _portraitSprites;
 
-    public TargetType currentUnit;
+    public Target currentUnitTarget;
 
     [SerializeField] private Image _currentSprite;
- 
+    [SerializeField] private Image _currentSpriteBackground;
+    Target target;
+
+    private void Start() {
+        target = FindObjectOfType<Target>();
+    }
+
+   
     public void UpdatePortrait(){
 
-        /*switch(currentUnit){
+        switch(currentUnitTarget.targetType){
 
             case TargetType.Fighter:
                 _unitName.text = "Fighter";
@@ -54,11 +61,29 @@ public class UIInfoManager : MonoBehaviour
                 _currentSprite.sprite = _portraitSprites[4];
 
             break;
-        }*/
+        }
+
+
+        switch(currentUnitTarget.team) {
+
+            case TeamTag.Player :
+                _currentSpriteBackground.color = Color.blue;
+            break;
+            case TeamTag.AI :
+                _currentSpriteBackground.color = Color.red;
+            break;
+            case TeamTag.Mob :
+                _currentSpriteBackground.color = Color.green;
+            break;
+
+        }
+
+        if(currentUnitTarget != null) _unitName.text += " " + currentUnitTarget.targetCode; 
     } 
 
 
     private void Update() {
         UpdatePortrait();
+        
     }
 }

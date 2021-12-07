@@ -118,9 +118,9 @@ public class TurnActor : MonoBehaviour
         _endTurnCallback += callback;
     }
 
-    public TargetType  GetUnitTypes(){
+    public Target  GetTargetType(){
 
-        return TargetType.Tank;
+        return _target;
 
     }
 }

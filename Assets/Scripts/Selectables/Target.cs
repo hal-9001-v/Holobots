@@ -12,6 +12,14 @@ public class Target : MonoBehaviour
     [Header("Settings")]
     [SerializeField] TargetType _targetType;
     [SerializeField] TeamTag _team;
+    
+    private string _targetCode;
+    public String targetCode{
+        get
+        {
+            return _targetCode;
+        }
+    }
 
     public TargetType targetType
     {
@@ -67,8 +75,18 @@ public class Target : MonoBehaviour
 
         selectable.selectAction += DisplayStats;
         selectable.deselectAction += HideStats;
-
+        GenerateTargetCode();
         HideStats();
+    }
+
+    private void GenerateTargetCode(){
+
+      _targetCode = "";
+      _targetCode+= UnityEngine.Random.Range(0,10);
+      _targetCode+= UnityEngine.Random.Range(0,10);
+      _targetCode+= UnityEngine.Random.Range(0,10);
+      _targetCode+= UnityEngine.Random.Range(0,10);
+      
     }
 
     public void SetCurrentGroundTile(GroundTile tile)
@@ -152,4 +170,6 @@ public class Target : MonoBehaviour
             currentHealth = _maxHealth;
         }
     }
+
+    
 }

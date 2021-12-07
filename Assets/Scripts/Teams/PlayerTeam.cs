@@ -100,7 +100,7 @@ public class PlayerTeam : Team
             _unitIndex = index;
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
             _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
-            //_uiInfo.currentUnit = _actorsInTurn[_unitIndex].GetType();
+            _uiInfo.currentUnitTarget = _actorsInTurn[_unitIndex].GetTargetType();
         }
     }
 

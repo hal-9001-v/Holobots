@@ -9,11 +9,13 @@ public class AITeam : Team
 
     private CameraMovement _cameraFollower;
     private Transform _cameraTarget;
+    private UIInfoManager _uiInfo;
     public AITeam(Transform target) : base(TeamTag.AI)
     {
         _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
         _cameraTarget = target;
+        _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
         _cameraFollower = GameObject.FindObjectOfType<CameraMovement>();
         UpdateTeam();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
@@ -48,6 +50,7 @@ public class AITeam : Team
     void ExecuteBotStep()
     {
         _botsInTurn[0].ExecuteStep();
+        _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
         _cameraFollower.LookAt(_botsInTurn[0].transform.position);
         _cameraFollower.FixLookAt(_botsInTurn[0].transform);
     }
