@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Building
-  m_Shader: {fileID: 4800000, guid: c8d46ec6c051c0c4b89fca55cdaf76ff, type: 3}
+  m_Name: SeeThrough
+  m_Shader: {fileID: 4800000, guid: 24ac287871ed980489b2dcd06cfb33fd, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,12 +19,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_d07fb8e8e4104d889a9cf0898523773d:
-        m_Texture: {fileID: 2800000, guid: 438b403609a46f742ab95225c1f1b4a3, type: 3}
+    - Texture2D_15b08835f3194b2b92c6de129bbbbdca:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: adcef374e4923e944aef3a0e8a0d9f7a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -48,7 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: adcef374e4923e944aef3a0e8a0d9f7a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -96,12 +96,12 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0.4
+    - _Opacity: 0.551
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 10
-    - _Smoothness: 1
+    - _Size: 0.89
+    - _Smoothness: 0.669
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -109,17 +109,15 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_091b4394a16f41e1a48ad9eb8cb374d3: {r: 0, g: 0, b: 0, a: 0}
-    - Color_1: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0}
-    - Color_2: {r: 0.8, g: 0.7422935, b: 0.027450992, a: 0}
-    - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 0}
-    - _BaseColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+    - Color_07f87ef2f0fc4aa5a5c74ced73031173: {r: 1, g: 1, b: 1, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _PlayerPos: {r: 0.49079546, g: 0.77299833, b: 9.379371, a: 0}
+    - _PlayerPos: {r: 0.5017228, g: 0.6128244, b: 16.970808, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _playerPos: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2996245587560283479
+--- !u!114 &8081240080980724313
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

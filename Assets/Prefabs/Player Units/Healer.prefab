@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 6755506608045809807}
   - component: {fileID: 1830093134633849132}
   - component: {fileID: 7147693655462807100}
+  - component: {fileID: 3649478519851027282}
   m_Layer: 0
   m_Name: Healer
   m_TagString: Untagged
@@ -615,6 +616,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
   _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
+--- !u!114 &3649478519851027282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053618713726190353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7de7f801ed36a4f9f1bd00051feb3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heal: 2
+  _healRange: 2
+  _healCost: 1
 --- !u!1001 &6797912871405933135
 PrefabInstance:
   m_ObjectHideFlags: 0
