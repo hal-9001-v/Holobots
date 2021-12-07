@@ -6,7 +6,7 @@ public class HealBotAction : UtilityAction
 
     Target _healTarget;
 
-    public HealBotAction(Healer healer, Func<float> valueCalculation) : base(valueCalculation)
+    public HealBotAction(Healer healer, string name, Func<float> valueCalculation) : base(name,valueCalculation)
     {
         _healer = healer;
     }

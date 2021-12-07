@@ -15,7 +15,6 @@ public class TankAI : Bot, IUtilityAI
     Meleer _meleer;
 
     Target _target;
-    Target _selectedTarget;
 
     UtilityUnit _utilityUnit;
 
@@ -23,6 +22,7 @@ public class TankAI : Bot, IUtilityAI
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _shieldWeight;
+    [SerializeField] [Range(0, 5)] float _fleeWeight;
     [SerializeField] [Range(0, 5)] float _meleeWeight;
     [SerializeField] [Range(2, 10)] int _meleeThreshold;
 
@@ -57,7 +57,7 @@ public class TankAI : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log(name + "is executing Action: " + action.GetType().ToString());
+        Debug.Log(name + "is executing Action: " + action.name);
 
         action.Execute();
     }
@@ -72,13 +72,13 @@ public class TankAI : Bot, IUtilityAI
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region MELEE TREE
-        BehaviourTreeAction meleeTree = new BehaviourTreeAction(() =>
-        {
-            var distValue = _playerUnitDistanceSensor.GetScore();
-            return _meleeWeight * distValue;
-        });
+        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
+         {
+             var distValue = _playerUnitDistanceSensor.GetScore();
+             return _meleeWeight * distValue;
+         });
 
-        EngageAction engageAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAction = new EngageAction(_mover, "Melee Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
@@ -100,7 +100,7 @@ public class TankAI : Bot, IUtilityAI
             return false;
         });
 
-        MeleeAction meleeAction = new MeleeAction(_meleer, () => { return 0; });
+        MeleeAction meleeAction = new MeleeAction(_meleer, "Melee", () => { return 0; });
 
         meleeAction.AddPreparationListener(() =>
         {
@@ -128,15 +128,15 @@ public class TankAI : Bot, IUtilityAI
 
         #region SHIELD TREE
 
-        BehaviourTreeAction shieldTree = new BehaviourTreeAction(() =>
-        {
-            var distValue = _botDistanceSensor.GetScore();
-            var lowHealth = _lowHealthSensor.GetScore();
+        BehaviourTreeAction shieldTree = new BehaviourTreeAction("Shield Tree", () =>
+         {
+             var distValue = _botDistanceSensor.GetScore();
+             var lowHealth = _lowHealthSensor.GetScore();
 
-            return distValue * _shieldWeight * lowHealth;
-        });
+             return distValue * _shieldWeight * lowHealth;
+         });
 
-        EngageAction engageAllyAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAllyAction = new EngageAction(_mover, "Shield Engage", () => { return 0; });
 
         engageAllyAction.AddPreparationListener(() =>
         {
@@ -164,7 +164,7 @@ public class TankAI : Bot, IUtilityAI
             return false;
         });
 
-        ShieldBotAction shieldAction = new ShieldBotAction(_shielder, () =>
+        ShieldBotAction shieldAction = new ShieldBotAction(_shielder,"Shield", () =>
         {
             return 0;
         });
@@ -198,8 +198,25 @@ public class TankAI : Bot, IUtilityAI
 
         #endregion
 
+        #region FLEE
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
+         {
+             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var healthScore = 1 - _healthSensor.GetScore();
+
+             return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
+         });
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+        #endregion
+
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, () =>
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
          {
              return _idleWeight;
          });

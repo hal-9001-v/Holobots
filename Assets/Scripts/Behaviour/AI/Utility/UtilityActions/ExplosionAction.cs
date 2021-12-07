@@ -8,7 +8,7 @@ public class ExplosionAction : UtilityAction
     Explosioner _explosioner;
     GroundTile _targetTile;
 
-    public ExplosionAction(Explosioner explosioner, Func<float> valueCalculation) : base(valueCalculation)
+    public ExplosionAction(Explosioner explosioner, string name, Func<float> valueCalculation) : base(name,valueCalculation)
     {
         _explosioner = explosioner;
     }

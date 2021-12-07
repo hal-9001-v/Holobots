@@ -43,7 +43,7 @@ public class Hunter : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log("Executing Action: " +action.GetType().ToString());
+        Debug.Log("Executing Action: " + action.name);
 
         action.Execute();
     }
@@ -57,7 +57,7 @@ public class Hunter : Bot, IUtilityAI
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
 
-        ShootAction shootAction = new ShootAction(_shooter, () =>
+        ShootAction shootAction = new ShootAction(_shooter, "Shoot",() =>
         {
             var value1 = _sightSensor.GetScore();
             var value2 = _distanceSensor.GetScore();
@@ -72,7 +72,7 @@ public class Hunter : Bot, IUtilityAI
         _utilityUnit.AddAction(shootAction);
 
 
-        EngageAction engageAction = new EngageAction(_mover, () =>
+        EngageAction engageAction = new EngageAction(_mover, "Shoot Engage", () =>
         {
             var distValue = _distanceSensor.GetScore();
             var sightValue = _sightSensor.GetScore();
@@ -88,7 +88,7 @@ public class Hunter : Bot, IUtilityAI
         });
         _utilityUnit.AddAction(engageAction);
 
-        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, () =>
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile,"Flee", () =>
          {
              var healthValue = 1 - _healthSensor.GetScore();
              var distanceValue = _distanceSensor.GetScore();

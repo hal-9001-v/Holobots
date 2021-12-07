@@ -9,7 +9,7 @@ public class EngageAction : UtilityAction
 
     GroundTile _target;
 
-    public EngageAction(Mover mover, Func<float> valueCalculation) : base(valueCalculation)
+    public EngageAction(Mover mover, string name, Func<float> valueCalculation) : base(name, valueCalculation)
     {
         _mover = mover;
     }
