@@ -71,9 +71,9 @@ public class SettingsMenuManager : MonoBehaviour
             if(_pauseAnimator!=null){
                 _pauseAnimator.SetTrigger("Start");
                 _settingsAnimator.SetTrigger("End");
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(0.1f);
                 _pauseAnimator.ResetTrigger("Start");
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(1.9f);
                 _settingsAnimator.ResetTrigger("End");
             }
         }
