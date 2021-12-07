@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 2741450701446339549}
-  _targetType: 0
+  _targetType: 4
   _team: 0
   _maxHealth: 8
 --- !u!114 &1507600130565845914
