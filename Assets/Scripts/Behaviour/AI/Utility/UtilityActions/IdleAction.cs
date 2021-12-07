@@ -15,8 +15,13 @@ public class IdleAction : UtilityAction
 
     public override void Execute()
     {
-        _actor.StartStep(1);
-        _actor.EndStep();
-
+        _actor.StartCoroutine(Execution());
     }
+
+    IEnumerator Execution() {
+        _actor.StartStep(1);
+        yield return new WaitForSeconds(0.5f);
+        _actor.EndStep();
+    }
+
 }

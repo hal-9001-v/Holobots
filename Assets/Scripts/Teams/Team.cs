@@ -44,15 +44,25 @@ public abstract class Team
     /// <summary>
     /// UpdateTeam() and call StartTurn on every unit belonging to this team. Besides, update _actorsInTurn with all units
     /// </summary>
-    public virtual void StartTurn()
+    public virtual bool StartTurn()
     {
         UpdateTeam();
 
-        foreach (var actor in actors)
+        if (actors.Count != 0)
         {
-            _actorsInTurn.Add(actor);
 
-            actor.StartTurn();
+            foreach (var actor in actors)
+            {
+                _actorsInTurn.Add(actor);
+
+                actor.StartTurn();
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
         }
 
     }
@@ -78,16 +88,19 @@ public abstract class Team
     /// <param name="actor"></param>
     public virtual void ActorFinishedTurn(TurnActor actor)
     {
-        _actorsInTurn.Remove(actor);
-
-        if (_actorsInTurn.Count == 0)
+        if (_actorsInTurn.Contains(actor))
         {
-            EndTurn();
+            _actorsInTurn.Remove(actor);
+
+            if (_actorsInTurn.Count == 0)
+            {
+                EndTurn();
+            }
         }
     }
 
     public abstract void ActorFinishedStep(TurnActor actor);
-    
+
     public abstract void ActorStartedStep(TurnActor actor);
 
 

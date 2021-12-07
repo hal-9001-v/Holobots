@@ -19,7 +19,7 @@ public class AITeam : Team
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
-    public override void StartTurn()
+    public override bool StartTurn()
     {
         UpdateTeam();
 
@@ -38,10 +38,13 @@ public class AITeam : Team
         if (_botsInTurn.Count != 0)
         {
             ExecuteBotStep();
+
+            return true;
         }
         else
         {
             EndTurn();
+            return false;
         }
     }
 

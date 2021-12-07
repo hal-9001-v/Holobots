@@ -86,13 +86,14 @@ public class TankAI : Bot, IUtilityAI
             engageAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(engageAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)
             {
+                engageAction.Execute();
                 return true;
             }
 
@@ -107,13 +108,14 @@ public class TankAI : Bot, IUtilityAI
             meleeAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(meleeAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
             {
+                meleeAction.Execute();
                 return true;
             }
 
@@ -145,7 +147,7 @@ public class TankAI : Bot, IUtilityAI
         });
 
 
-        shieldTree.AddAction(engageAllyAction, () =>
+        shieldTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
             var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
@@ -154,6 +156,7 @@ public class TankAI : Bot, IUtilityAI
             {
                 if (_mover.DistanceToTarget((GroundTile)target.currentGroundTile) > _shielder.maxShieldRange)
                 {
+                    engageAllyAction.Execute();
                     return true;
                 }
             }
@@ -174,7 +177,7 @@ public class TankAI : Bot, IUtilityAI
             shieldAction.SetShieldTarget(target);
         });
 
-        shieldTree.AddAction(shieldAction, () =>
+        shieldTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
             var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
@@ -183,6 +186,7 @@ public class TankAI : Bot, IUtilityAI
             {
                 if (_mover.DistanceToTarget((GroundTile)target.currentGroundTile) <= _shielder.maxShieldRange)
                 {
+                    shieldAction.Execute();
                     return true;
                 }
             }

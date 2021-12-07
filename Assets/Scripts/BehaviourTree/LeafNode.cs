@@ -5,24 +5,14 @@ using UnityEngine;
 
 public class LeafNode : BehaviourNode
 {
-    Action _executionAction;
 
-
-    public LeafNode(BehaviourNode parent, Action executionAction) : base(parent, NodeType.Leaf)
+    public LeafNode(BehaviourNode parent, Func<bool> execution) : base(parent, execution, NodeType.Leaf)
     {
-        _executionAction = executionAction;
+
     }
 
-    public LeafNode(Action executionAction) : base(NodeType.Leaf)
+    public LeafNode(Func<bool> execution) : base(execution, NodeType.Leaf)
     {
-        _executionAction = executionAction;
-    }
 
-    public override void Execute()
-    {
-        if (_executionAction != null)
-        {
-            _executionAction.Invoke();
-        }
     }
 }

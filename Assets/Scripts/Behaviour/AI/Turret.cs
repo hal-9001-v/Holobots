@@ -30,8 +30,6 @@ public class Turret : Bot
         _target = GetComponent<Target>();
         _actor = GetComponent<TurnActor>();
 
-
-
         InitializeFSM();
 
     }

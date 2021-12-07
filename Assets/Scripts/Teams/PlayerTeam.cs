@@ -57,11 +57,13 @@ public class PlayerTeam : Team
         };
     }
 
-    public override void StartTurn()
+    public override bool StartTurn()
     {
         base.StartTurn();
 
         SelectUnit(0);
+
+        return true;
     }
 
     public override void EndTurn()

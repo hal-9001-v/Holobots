@@ -32,22 +32,32 @@ public class GameDirector : MonoBehaviour
     {
         _teamTurnTree = new BehaviourTree();
 
-        SequenceNode rootNode = new SequenceNode(null);
+        FullSequenceNode rootNode = new FullSequenceNode();
+        rootNode.name = "Root";
         _teamTurnTree.root = rootNode;
+
 
         foreach (var team in _teams)
         {
-            SequenceNode startTurnNode = new SequenceNode(rootNode, () =>
+            SequenceNode sequenceNode = new SequenceNode(rootNode);
+            sequenceNode.name = "Turn of: " + team.tag.ToString();
+
+            LeafNode startTurnNode = new LeafNode(sequenceNode, () =>
             {
                 StartTeamTurn(team);
+                return true;
             });
+            startTurnNode.name = "Start turn of";
 
-            startTurnNode.name = "Start turn of " + team.tag.ToString();
-
-            WaitForTickNode waitforTickNode = new WaitForTickNode(startTurnNode, null);
+            WaitForTickNode waitforTickNode = new WaitForTickNode(sequenceNode);
             waitforTickNode.name = "Wait of " + team.tag.ToString();
 
-            LeafNode endTurnNode = new LeafNode(waitforTickNode, null);
+            LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
+            {
+                Debug.Log("End turn of " + team.tag.ToString());
+                TickTree();
+                return true;
+            });
             endTurnNode.name = "End of " + team.tag.ToString();
         }
     }

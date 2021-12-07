@@ -37,10 +37,7 @@ public class SkillHolder : MonoBehaviour
         {
             _skillSelector.SetSelectedSkill(this);
         });
-        _pauseButton.onClick.AddListener(() =>
-        {
-            DisplayPauseMenu();    
-        });
+      
     }
 
     public void DisplayPauseMenu(){
