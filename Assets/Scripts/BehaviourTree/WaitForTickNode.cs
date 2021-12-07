@@ -5,24 +5,19 @@ using UnityEngine;
 
 public class WaitForTickNode : BehaviourNode
 {
-    Action _executionAction;
 
-    public WaitForTickNode(BehaviourNode parent, Action executionAction) : base(parent, NodeType.WaitForTick)
+    public WaitForTickNode() : base(null, NodeType.WaitForTick)
     {
-        _executionAction = executionAction;
+
     }
 
-    public WaitForTickNode(Action executionAction) : base(NodeType.WaitForTick)
+    public WaitForTickNode(BehaviourNode parent) : base(parent, null, NodeType.WaitForTick)
     {
-        _executionAction = executionAction;
+
     }
 
-
-    public override void Execute()
+    public WaitForTickNode(BehaviourNode parent, BehaviourNode child) : base(parent, null, NodeType.WaitForTick)
     {
-        if (_executionAction != null)
-        {
-            _executionAction.Invoke();
-        }
+        children.Add(child);
     }
 }

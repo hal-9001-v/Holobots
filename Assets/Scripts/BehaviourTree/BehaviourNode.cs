@@ -1,30 +1,45 @@
+using System;
 using System.Collections.Generic;
 
 public abstract class BehaviourNode
 {
     public string name;
 
-    public List<BehaviourNode> children { get; private set;}
+    public List<BehaviourNode> children { get; private set; }
 
-    public NodeType nodeType { get; private set;}
+    protected Func<bool> _execution;
 
-    public BehaviourNode(NodeType type)
+    public NodeType nodeType { get; private set; }
+
+    public BehaviourNode(BehaviourNode parent, Func<bool> executionAction, NodeType nodeType)
     {
-        nodeType = type;
-
         children = new List<BehaviourNode>();
 
-    }
-
-    public BehaviourNode(BehaviourNode parent, NodeType type)
-    {
         parent.children.Add(this);
 
-        nodeType = type;
+        _execution = executionAction;
+
+        this.nodeType = nodeType;
+    }
+
+    public BehaviourNode(Func<bool> execution, NodeType nodeType)
+    {
+        _execution = execution;
 
         children = new List<BehaviourNode>();
 
+        this.nodeType = nodeType;
     }
 
-    public abstract void Execute();
+    public bool Execute()
+    {
+        return _execution.Invoke();
+
+    }
+
+    public bool CheckSuccess()
+    {
+        return _execution.Invoke();
+
+    }
 }

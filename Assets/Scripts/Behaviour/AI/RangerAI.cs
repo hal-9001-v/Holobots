@@ -92,10 +92,11 @@ public class RangerAI : Bot, IUtilityAI
             engageAction.SetTarget(_distanceSensor.GetClosestTarget());
         });
 
-        shootTree.AddAction(engageAction, () =>
+        shootTree.AddAction(() =>
         {
             if (_sightSensor.GetScore() == 0)
             {
+                engageAction.Execute(); 
                 return true;
             }
             return false;
@@ -115,10 +116,11 @@ public class RangerAI : Bot, IUtilityAI
             shootAction.SetTarget(closestTarget);
         });
 
-        shootTree.AddAction(shootAction, () =>
+        shootTree.AddAction(() =>
         {
             if (_sightSensor.GetScore() != 0)
             {
+                shootAction.Execute();
                 return true;
             }
 
@@ -150,7 +152,7 @@ public class RangerAI : Bot, IUtilityAI
             engageAction.SetTarget(closestTarget);
         });
 
-        explosionerTree.AddAction(engageAction, () =>
+        explosionerTree.AddAction(() =>
         {
             var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
@@ -158,6 +160,7 @@ public class RangerAI : Bot, IUtilityAI
 
             if (_mover.DistanceToTarget(closestTarget.currentGroundTile) > _explosioner.exploderRange)
             {
+                engageAction.Execute();
                 return true;
             }
 
@@ -178,7 +181,7 @@ public class RangerAI : Bot, IUtilityAI
             explosionAction.SetTarget(closestTarget.currentGroundTile);
         });
 
-        explosionerTree.AddAction(explosionAction, () =>
+        explosionerTree.AddAction( () =>
         {
             var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
@@ -186,6 +189,7 @@ public class RangerAI : Bot, IUtilityAI
 
             if (_mover.DistanceToTarget(closestTarget.currentGroundTile) <= _explosioner.exploderRange)
             {
+                explosionAction.Execute();
                 return true;
             }
 

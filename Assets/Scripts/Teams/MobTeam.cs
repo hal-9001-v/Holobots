@@ -16,7 +16,7 @@ public class MobTeam : Team
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
-    public override void StartTurn()
+    public override bool StartTurn()
     {
         UpdateTeam();
 
@@ -34,10 +34,12 @@ public class MobTeam : Team
         if (_botsInTurn.Count != 0)
         {
             ExecuteBotStep();
+            return true;
         }
         else
         {
             EndTurn();
+            return false;
         }
     }
 
@@ -55,11 +57,16 @@ public class MobTeam : Team
     {
         _bots.Clear();
 
-        foreach (var actorBot in GameObject.FindObjectsOfType<Bot>())
+        var bots = GameObject.FindObjectsOfType<Bot>();
+
+        if (bots != null && bots.Length > 0)
         {
-            if (actorBot.actor.teamTag == tag)
+            foreach (var actorBot in bots)
             {
-                _bots.Add(actorBot);
+                if (actorBot.actor.teamTag == tag)
+                {
+                    _bots.Add(actorBot);
+                }
             }
         }
     }

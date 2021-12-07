@@ -71,13 +71,14 @@ public class RogueAI: Bot, IUtilityAI
             engageAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(engageAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)
             {
+                engageAction.Execute();
                 return true;
             }
 
@@ -92,13 +93,14 @@ public class RogueAI: Bot, IUtilityAI
             meleeAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(meleeAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
             {
+                meleeAction.Execute();
                 return true;
             }
 

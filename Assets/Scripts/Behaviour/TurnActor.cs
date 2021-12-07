@@ -43,7 +43,10 @@ public class TurnActor : MonoBehaviour
     private void Awake()
     {
         _target = GetComponent<Target>();
-
+        _target.dieAction += () =>
+        {
+            _team.ActorFinishedTurn(this);
+        };
         currentTurnPoints = maxTurnPoints;
     }
 
@@ -117,6 +120,7 @@ public class TurnActor : MonoBehaviour
     {
         _endTurnCallback += callback;
     }
+
 
     public Target  GetTargetType(){
 

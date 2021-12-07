@@ -6,8 +6,9 @@ public enum NodeType
 {
     Leaf,
     Sequence,
+    FullSequence,
     Selector,
-    Selectable,
+    WaiterSelector,
     WaitForTick,
 
 

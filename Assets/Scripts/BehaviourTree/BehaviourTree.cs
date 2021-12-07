@@ -16,47 +16,53 @@ public class BehaviourTree
         _nodesForExecution = new Stack<BehaviourNode>();
     }
 
-    public void ExecuteNode(BehaviourNode node)
+    public bool ExecuteNode(BehaviourNode node)
     {
-        node.Execute();
-
-
         //Execute next Nodes
         switch (node.nodeType)
         {
             case NodeType.Leaf:
+                return node.Execute();
+
+            case NodeType.WaitForTick:
+                AddNodesForExecution(node.children);
+                return true;
+
+            case NodeType.FullSequence:
+                AddNodesForExecution(node.children);
+
                 Tick();
                 break;
 
             case NodeType.Sequence:
-                AddNodesForExecution(node.children);
-
-                Tick();
-                break;
-
-            case NodeType.WaitForTick:
-                AddNodesForExecution(node.children);
-                break;
-
-            case NodeType.Selector:
-
-                var selectorNode = (SelectorNode)node;
-
-                foreach (var child in selectorNode.selectableChildren)
+                foreach (var child in node.children)
                 {
-                    if (child.CheckSuccess())
+                    if (ExecuteNode(child) == false)
                     {
-                        AddNodesForExecution(child.children);
-
-                        Tick();
-                        return;
+                        return false;
                     }
                 }
 
+                return true;
+
+            case NodeType.Selector:
+
+                foreach (var child in node.children)
+                {
+                    if (ExecuteNode(child))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+
+            case NodeType.WaiterSelector:
                 break;
 
         }
 
+        return true;
     }
 
     public void Tick()
@@ -81,6 +87,8 @@ public class BehaviourTree
 
     public void StartTree()
     {
+        _nodesForExecution.Clear();
+
         ExecuteNode(root);
     }
 

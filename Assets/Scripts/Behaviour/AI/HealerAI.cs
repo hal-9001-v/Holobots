@@ -99,13 +99,14 @@ public class HealerAI : Bot, IUtilityAI
             engageAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(engageAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)
             {
+                engageAction.Execute();
                 return true;
             }
 
@@ -120,13 +121,14 @@ public class HealerAI : Bot, IUtilityAI
             meleeAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(meleeAction, () =>
+        meleeTree.AddAction(() =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
             {
+                meleeAction.Execute();
                 return true;
             }
 
@@ -156,7 +158,7 @@ public class HealerAI : Bot, IUtilityAI
             engageAllyAction.SetTarget(target);
         });
 
-        healTree.AddAction(engageAllyAction, () =>
+        healTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
             var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
@@ -166,6 +168,7 @@ public class HealerAI : Bot, IUtilityAI
                 var distance = _mover.DistanceToTarget((GroundTile)target.currentGroundTile);
                 if (distance > _healer.range)
                 {
+                    engageAllyAction.Execute();
                     return true;
                 }
             }
@@ -186,7 +189,7 @@ public class HealerAI : Bot, IUtilityAI
             healAction.SetHealTarget(target);
         });
 
-        healTree.AddAction(healAction, () =>
+        healTree.AddAction(() =>
         {
 
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
@@ -196,6 +199,7 @@ public class HealerAI : Bot, IUtilityAI
             {
                 if (_mover.DistanceToTarget((GroundTile)target.currentGroundTile) <= _healer.range)
                 {
+                    healAction.Execute();
                     return true;
                 }
             }
