@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 3785444139509796878}
   - component: {fileID: 8083174176324870573}
   - component: {fileID: 754719720139372221}
+  - component: {fileID: 2095325412609000319}
   m_Layer: 0
   m_Name: Attacker
   m_TagString: Untagged
@@ -319,6 +320,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
   _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
+--- !u!114 &2095325412609000319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507600130565845904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6696ff7437bd2047bafe9c9d13a1528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circleSize: 1
+  circleSmoothness: 0.731
+  circleOpacity: 1
+  WallMaterial:
+  - {fileID: 2100000, guid: 75a97fd4371ba41419d785995b9804eb, type: 2}
+  - {fileID: 2100000, guid: 68ce8656dff00254c8584a19a99e649a, type: 2}
+  Camera: {fileID: 0}
+  Mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3680261056622117956
 GameObject:
   m_ObjectHideFlags: 0

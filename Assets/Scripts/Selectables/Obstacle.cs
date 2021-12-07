@@ -36,8 +36,10 @@ public class Obstacle : MonoBehaviour
         {
             _debrisPrototype.enabled = false;
         }
+
     }
 
+   
     void OccupyTile()
     {
         GroundTile tile;

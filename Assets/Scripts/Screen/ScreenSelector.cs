@@ -71,6 +71,7 @@ public class ScreenSelector : MonoBehaviour
 
             if (onSelectionCallback != null &&  !EventSystem.current.IsPointerOverGameObject())
             {
+                FindObjectOfType<AudioManager>().Play("TestSelect");
                 onSelectionCallback.Invoke(_selectedObject);
             }
 
@@ -86,7 +87,7 @@ public class ScreenSelector : MonoBehaviour
             if (_selectedObject != null)
             {
                 _selectedObject.Click();
-
+                
                 if (onLeftClickCallback != null)
                     onLeftClickCallback.Invoke(_selectedObject);
             }

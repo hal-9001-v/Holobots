@@ -6,13 +6,19 @@ public class MobTeam : Team
 {
     List<Bot> _bots;
     List<Bot> _botsInTurn;
+    private CameraMovement _cameraFollower;
+    private Transform _cameraTarget;
+    private UIInfoManager _uiInfo;
 
-    public MobTeam() : base(TeamTag.Mob)
+    public MobTeam(Transform target) : base(TeamTag.Mob)
     {
         _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
 
         UpdateTeam();
+        _cameraTarget = target;
+        _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
+        _cameraFollower = GameObject.FindObjectOfType<CameraMovement>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
@@ -46,6 +52,11 @@ public class MobTeam : Team
     void ExecuteBotStep()
     {
         _botsInTurn[0].ExecuteStep();
+        if(_botsInTurn[0] != null) {
+            _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
+            _cameraFollower.LookAt(_botsInTurn[0].transform.position);
+            _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+        }
     }
 
     void BotEndedStep(TurnActor actor)

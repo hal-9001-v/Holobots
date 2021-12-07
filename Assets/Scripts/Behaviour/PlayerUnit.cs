@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Target))]
 [RequireComponent(typeof(Selectable))]
 [RequireComponent(typeof(TurnActor))]
+
 public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 {
     public Target target { get; private set; }
@@ -21,7 +22,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
             return target.isDead;
         }
     }
-
     private void Awake()
     {
         target = GetComponent<Target>();
@@ -29,12 +29,14 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 
         CreateAdapters();
     }
+    
+   
 
     private void Start()
     {
         target.dieAction += Dead;
     }
-
+  
     void CreateAdapters()
     {
         adapters = new List<Adapter>();
