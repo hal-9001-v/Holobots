@@ -9,7 +9,7 @@ public class MeleeAction : UtilityAction
 
     Target _target;
 
-    public MeleeAction( Meleer meleer, Func<float> valueCalculation) : base(valueCalculation)
+    public MeleeAction( Meleer meleer, string name, Func<float> valueCalculation) : base(name, valueCalculation)
     {
         _meleer = meleer;
     }

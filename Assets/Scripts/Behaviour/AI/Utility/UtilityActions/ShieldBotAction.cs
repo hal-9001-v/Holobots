@@ -6,7 +6,7 @@ public class ShieldBotAction : UtilityAction
 
     Target _shieldTarget;
 
-    public ShieldBotAction(Shielder shielder, Func<float> valueCalculation) : base(valueCalculation)
+    public ShieldBotAction(Shielder shielder, string name, Func<float> valueCalculation) : base(name, valueCalculation)
     {
         _shielder = shielder;
     }

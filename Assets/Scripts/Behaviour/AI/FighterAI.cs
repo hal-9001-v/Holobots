@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Meleer))]
-public class FighterAI: Bot, IUtilityAI
+public class FighterAI : Bot, IUtilityAI
 {
     TurnActor _actor;
 
@@ -22,6 +22,7 @@ public class FighterAI: Bot, IUtilityAI
     [SerializeField] [Range(2, 10)] int _meleeThreshold;
 
     [SerializeField] [Range(0.1f, 1)] float _idleWeight = 0.1f;
+    [SerializeField] [Range(0.1f, 3)] float _fleeWeight = 0.1f;
 
     //Sensors
     DistanceSensor _playerUnitDistanceSensor;
@@ -44,7 +45,7 @@ public class FighterAI: Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log(name + "is executing Action: " + action.GetType().ToString());
+        Debug.Log(name + "is executing Action: "+action.name);
 
         action.Execute();
     }
@@ -56,14 +57,31 @@ public class FighterAI: Bot, IUtilityAI
         _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
+        #region FLEE
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee",() =>
+        {
+            var dangerScore = _playerUnitDistanceSensor.GetScore();
+            var healthScore = 1 - _healthSensor.GetScore();
+
+            return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
+        });
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+        #endregion
+
         #region MELEE TREE
-        BehaviourTreeAction meleeTree = new BehaviourTreeAction(() =>
+        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree",() =>
         {
             var distValue = _playerUnitDistanceSensor.GetScore();
             return _meleeWeight * distValue;
         });
 
-        EngageAction engageAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAction = new EngageAction(_mover,"Melee Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
@@ -85,7 +103,7 @@ public class FighterAI: Bot, IUtilityAI
             return false;
         });
 
-        MeleeAction meleeAction = new MeleeAction(_meleer, () => { return 0; });
+        MeleeAction meleeAction = new MeleeAction(_meleer,"Melee", () => { return 0; });
 
         meleeAction.AddPreparationListener(() =>
         {
@@ -112,7 +130,7 @@ public class FighterAI: Bot, IUtilityAI
         #endregion
 
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, () =>
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
          {
              return _idleWeight;
          });

@@ -95,9 +95,9 @@ public class Mover : MonoBehaviour
         List<DistancedTile> tilesInRange = new List<DistancedTile>();
         GroundTile newTile;
 
-        for (int i = -1; i <= range; i++)
+        for (int i = -range + 1; i <= range; i++)
         {
-            for (int j = -1; j <= range; j++)
+            for (int j = -range + 1; j <= range; j++)
             {
                 if (_ground.groundMap.TryGetValue(_target.currentGroundTile.cellCoord + new Vector2Int(i, j), out newTile))
                 {
@@ -105,7 +105,6 @@ public class Mover : MonoBehaviour
                     //Paths are 0 if there is no possible path.
                     if (pathLength != 0)
                     {
-
                         tilesInRange.Add(new DistancedTile(newTile, pathLength));
                     }
                 }

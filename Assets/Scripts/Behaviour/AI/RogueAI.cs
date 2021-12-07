@@ -19,6 +19,7 @@ public class RogueAI: Bot, IUtilityAI
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
+    [SerializeField] [Range(0, 5)] int _fleeWeight;
     [SerializeField] [Range(2, 10)] int _meleeThreshold;
 
     [SerializeField] [Range(0.1f, 1)] float _idleWeight = 0.1f;
@@ -44,7 +45,7 @@ public class RogueAI: Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log(name + "is executing Action: " + action.GetType().ToString());
+        Debug.Log(name + "is executing Action: " + action.name);
 
         action.Execute();
     }
@@ -57,13 +58,13 @@ public class RogueAI: Bot, IUtilityAI
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region MELEE TREE
-        BehaviourTreeAction meleeTree = new BehaviourTreeAction(() =>
+        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree",() =>
         {
             var distValue = _playerUnitDistanceSensor.GetScore();
             return _meleeWeight * distValue;
         });
 
-        EngageAction engageAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAction = new EngageAction(_mover,"Melee Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
@@ -85,7 +86,7 @@ public class RogueAI: Bot, IUtilityAI
             return false;
         });
 
-        MeleeAction meleeAction = new MeleeAction(_meleer, () => { return 0; });
+        MeleeAction meleeAction = new MeleeAction(_meleer, "Melee",() => { return 0; });
 
         meleeAction.AddPreparationListener(() =>
         {
@@ -111,8 +112,26 @@ public class RogueAI: Bot, IUtilityAI
 
         #endregion
 
+
+        #region FLEE
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee",() =>
+        {
+            var dangerScore = _playerUnitDistanceSensor.GetScore();
+            var healthScore = 1 - _healthSensor.GetScore();
+
+            return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
+        });
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+        #endregion
+
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, () =>
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
          {
              return _idleWeight;
          });

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class UtilityAction
 {
+    public string name { get; private set; }
+
     public float value { get; private set; }
 
     protected Action _preparationAction;
@@ -12,8 +14,9 @@ public abstract class UtilityAction
 
     
 
-    public UtilityAction(Func<float> valueCalculation)
+    public UtilityAction(string name, Func<float> valueCalculation)
     {
+        this.name = name;
         _valueCalculation = valueCalculation;
     }
 

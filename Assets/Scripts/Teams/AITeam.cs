@@ -52,13 +52,17 @@ public class AITeam : Team
 
     void ExecuteBotStep()
     {
-        _botsInTurn[0].ExecuteStep();
-        _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
-        _cameraFollower.LookAt(_botsInTurn[0].transform.position);
-        _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+        if (_botsInTurn.Count != 0)
+        {
+            _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
+            _cameraFollower.LookAt(_botsInTurn[0].transform.position);
+            _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+
+            _botsInTurn[0].ExecuteStep();
+        }
     }
 
-  
+
 
     void BotEndedStep(TurnActor actor)
     {
