@@ -63,7 +63,7 @@ public class CircleSync : MonoBehaviour
 
                 if(m == hit.collider.gameObject.GetComponent<MeshRenderer>().material){
 
-                        Debug.Log("Behind");
+                        //Debug.Log("Behind");
                         if(timeElapsed < lerpDuration){
                             circleSize = Mathf.Lerp(startValue,endValue, timeElapsed/lerpDuration);
                             timeElapsed += Time.deltaTime;
@@ -89,7 +89,7 @@ public class CircleSync : MonoBehaviour
                 for (int i = 0; i < WallMaterial.Length; i++){
                      WallMaterial[i].SetFloat(SizeID, 0);
 
-                Debug.Log("InFront");
+                //Debug.Log("InFront");
                 
             }    
         }

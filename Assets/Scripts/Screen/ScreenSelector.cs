@@ -12,6 +12,7 @@ public class ScreenSelector : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] [Range(1, 100)] float _range;
+    [SerializeField] LayerMask _selectableMask;
 
     Selectable _selectedObject;
 
@@ -31,7 +32,7 @@ public class ScreenSelector : MonoBehaviour
         RaycastHit hit;
         Ray selectionRay = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-        if (Physics.Raycast(selectionRay, out hit, _range))
+        if (Physics.Raycast(selectionRay, out hit, _range, _selectableMask))
         {
             if (_selectedObject == null || _selectedObject.gameObject != hit.collider.gameObject)
             {

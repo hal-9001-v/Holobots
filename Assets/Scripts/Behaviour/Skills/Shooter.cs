@@ -97,6 +97,8 @@ public class ShooterExecuter
     {
         _turnActor.StartStep(_owner.shootCost);
 
+        yield return new WaitForSeconds(0.5f);
+
         float duration = Vector3.Distance(origin, destination) / speed;
         float elapsedTime = 0;
         _projectile.transform.position = origin;

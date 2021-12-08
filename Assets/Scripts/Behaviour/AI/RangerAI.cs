@@ -110,8 +110,15 @@ public class RangerAI : Bot, IUtilityAI
         BehaviourTreeAction shootTree = new BehaviourTreeAction("Shoot Tree", () =>
          {
              var shootValue = _sightSensor.GetScore();
+             var dangerValue = 1 - _distanceSensor.GetScore();
+             dangerValue = Mathf.Sign(dangerValue) * Mathf.Pow(dangerValue, 2);
 
-             return shootValue * _shootWeight + _shootWeight*0.2f;
+             if (_actor.currentTurnPoints == 1 && shootValue == 0)
+             {
+                 return _shootWeight * 0.05f;
+             }
+
+             return shootValue * _shootWeight + _shootWeight * 0.2f - dangerValue;
          });
 
         #region ENGAGE
@@ -168,7 +175,16 @@ public class RangerAI : Bot, IUtilityAI
          {
              var explosionValue = _groupSensor.GetScore();
 
-             return explosionValue * _explosionerWeight;
+             if (explosionValue >= 1)
+             {
+                 var groupedTargets = _groupSensor.GetGroupedTargets();
+                 var distanceValue = 2 - _distanceSensor.GetScore(_distanceSensor.GetClosestTargetFromList(groupedTargets));
+
+                 return distanceValue * explosionValue * _explosionerWeight;
+             }
+
+             return explosionValue;
+
          });
 
         #region ENGAGE

@@ -9,7 +9,7 @@ public class BehaviourTreeAction : UtilityAction
 
     SelectorNode _root;
 
-    public BehaviourTreeAction(string name, Func<float> valueCalculation) : base(name,valueCalculation)
+    public BehaviourTreeAction(string name, Func<float> valueCalculation) : base(name, valueCalculation)
     {
         _tree = new BehaviourTree();
 

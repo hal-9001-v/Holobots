@@ -3,14 +3,12 @@ using UnityEngine;
 public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 {
     Shielder _shielder;
-    Target _target;
 
     GroundTile _selectedTile;
 
     public ShielderPlayerAdapter(Shielder shielder, Target target) : base(AdapterType.Shield)
     {
         _shielder = shielder;
-        _target = target;
 
         SetNotifications();
     }
@@ -26,6 +24,8 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
         if (_selectedTile)
         {
             _shielder.SetProtectingShield(_selectedTile);
+
+            _selectedTile = null;
         }
     }
 
@@ -58,9 +58,13 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
         if (tile)
         {
-            _selectedTile = tile;
+            if (!tile.shield)
+            {
+                _selectedTile = tile;
 
-            _shielder.SetPlanningShield(tile);
+                _shielder.ShowPlanningShield();
+                _shielder.SetPlanningShield(tile);
+            }
         }
 
     }
@@ -77,7 +81,6 @@ public class ShielderPlayerAdapter : Adapter, ISelectorObserver
 
     public override void OnStartControl()
     {
-        _shielder.ShowPlanningShield();
     }
 
     public override void OnStopControl()

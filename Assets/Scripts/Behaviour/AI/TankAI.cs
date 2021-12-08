@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,8 +36,10 @@ public class TankAI : Bot, IUtilityAI
     //Sensors
     DistanceSensor _botDistanceSensor;
     DistanceSensor _playerUnitDistanceSensor;
+    DistanceSensor _shieldedPlayerUnitDistanceSensor;
     LowHealthBotSensor _lowHealthSensor;
     HealthSensor _healthSensor;
+
 
     private void Start()
     {
@@ -47,6 +50,8 @@ public class TankAI : Bot, IUtilityAI
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
         _meleer = GetComponent<Meleer>();
+
+
 
         InitializeUtilityUnit();
     }
@@ -68,38 +73,74 @@ public class TankAI : Bot, IUtilityAI
 
         _botDistanceSensor = new DistanceSensor(_target, TeamTag.AI, _mover.pathProfile, _shielder.maxShieldRange, new LinearMinUtilityFunction(0.2f));
         _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+
+        _shieldedPlayerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 1, new ThresholdUtilityFunction(1f));
+
         _lowHealthSensor = new LowHealthBotSensor(_lowHealthThreshold, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
-        #region MELEE TREE
-        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
+        #region FLEE
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
          {
-             var distValue = _playerUnitDistanceSensor.GetScore();
-             return _meleeWeight * distValue;
+             if (_target.currentGroundTile.shield) return 0;
+
+             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var healthScore = 1 - _healthSensor.GetScore();
+
+             return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
+         });
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+        #endregion
+
+        #region IDLE
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+         {
+             return _idleWeight;
          });
 
-        EngageAction engageAction = new EngageAction(_mover, "Melee Engage", () => { return 0; });
+        _utilityUnit.AddAction(idleAction);
 
-        engageAction.AddPreparationListener(() =>
+        #endregion
+
+        #region SHIELDED MELEE
+        MeleeAction shieldedMeleeAction = new MeleeAction(_meleer, "Shielded Melee", () =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
-            engageAction.SetTarget(target);
+            if (!_target.currentGroundTile.shield) return 0;
+
+            var meleeScore = _shieldedPlayerUnitDistanceSensor.GetScore();
+
+            return meleeScore * _meleeWeight;
+
+        });
+        shieldedMeleeAction.AddPreparationListener(() =>
+        {
+            var target = _shieldedPlayerUnitDistanceSensor.GetClosestTarget();
+
+            shieldedMeleeAction.SetTarget(target);
+        });
+        #endregion
+
+        _utilityUnit.AddAction(shieldedMeleeAction);
+
+        _utilityUnit.AddAction(GetMeleeTree());
+        _utilityUnit.AddAction(GetShieldTree());
+    }
+
+    BehaviourTreeAction GetMeleeTree()
+    {
+        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
+        {
+            var distValue = _playerUnitDistanceSensor.GetScore();
+            return _meleeWeight * distValue;
         });
 
-        meleeTree.AddAction(() =>
-        {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
-            int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
-
-            if (distance > _meleer.meleeRange)
-            {
-                engageAction.Execute();
-                return true;
-            }
-
-            return false;
-        });
-
+        #region MELEE
         MeleeAction meleeAction = new MeleeAction(_meleer, "Melee", () => { return 0; });
 
         meleeAction.AddPreparationListener(() =>
@@ -108,7 +149,7 @@ public class TankAI : Bot, IUtilityAI
             meleeAction.SetTarget(target);
         });
 
-        meleeTree.AddAction(() =>
+        Func<bool> meleeFunc = () =>
         {
             var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
@@ -120,21 +161,83 @@ public class TankAI : Bot, IUtilityAI
             }
 
             return false;
-        });
+        };
 
-        _utilityUnit.AddAction(meleeTree);
-
+        meleeTree.AddAction(meleeFunc);
         #endregion
 
-        #region SHIELD TREE
+        #region SHIELD
+        ShieldBotAction shieldAction = new ShieldBotAction(_shielder, "Shield", () =>
+        {
+            return 0;
+        });
 
+        shieldAction.AddPreparationListener(() =>
+        {
+            shieldAction.SetShieldTarget(_target);
+        });
+
+        Func<bool> shieldFunc = () =>
+        {
+            if (_actor.currentTurnPoints == 1)
+            {
+                shieldAction.Execute();
+                return true;
+            }
+
+            return false;
+        };
+
+        meleeTree.AddAction(shieldFunc);
+        #endregion
+
+        #region ENGAGE
+        EngageAction engageAction = new EngageAction(_mover, "Melee Engage", () => { return 0; });
+
+        engageAction.AddPreparationListener(() =>
+        {
+            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            engageAction.SetTarget(target);
+        });
+
+        Func<bool> engageFunc = () =>
+        {
+            engageAction.Execute();
+            return true;
+        };
+
+        meleeTree.AddAction(engageFunc);
+        #endregion
+
+        
+        return meleeTree;
+    }
+
+    BehaviourTreeAction GetShieldTree()
+    {
         BehaviourTreeAction shieldTree = new BehaviourTreeAction("Shield Tree", () =>
-         {
-             var distValue = _botDistanceSensor.GetScore();
-             var lowHealth = _lowHealthSensor.GetScore();
+        {
+            if (_target.currentGroundTile.shield) return 0;
 
-             return distValue * _shieldWeight * lowHealth;
-         });
+            var distValue = _botDistanceSensor.GetScore();
+            var lowHealth = _lowHealthSensor.GetScore();
+
+            float dangerScore = 0;
+
+            foreach (var unit in _lowHealthSensor.GetLowHealthBots())
+            {
+
+                var auxScore = _playerUnitDistanceSensor.GetScore(unit);
+
+                if (auxScore > dangerScore)
+                {
+                    dangerScore = auxScore;
+                }
+            }
+
+
+            return distValue * _shieldWeight * lowHealth * dangerScore;
+        });
 
         EngageAction engageAllyAction = new EngageAction(_mover, "Shield Engage", () => { return 0; });
 
@@ -164,7 +267,7 @@ public class TankAI : Bot, IUtilityAI
             return false;
         });
 
-        ShieldBotAction shieldAction = new ShieldBotAction(_shielder,"Shield", () =>
+        ShieldBotAction shieldAction = new ShieldBotAction(_shielder, "Shield", () =>
         {
             return 0;
         });
@@ -194,35 +297,7 @@ public class TankAI : Bot, IUtilityAI
             return false;
         });
 
-        _utilityUnit.AddAction(shieldTree);
-
-        #endregion
-
-        #region FLEE
-        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
-         {
-             var dangerScore = _playerUnitDistanceSensor.GetScore();
-             var healthScore = 1 - _healthSensor.GetScore();
-
-             return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
-         });
-        fleeAction.AddPreparationListener(() =>
-        {
-            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
-        });
-
-        _utilityUnit.AddAction(fleeAction);
-
-        #endregion
-
-        #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
-         {
-             return _idleWeight;
-         });
-
-        _utilityUnit.AddAction(idleAction);
-        #endregion
+        return shieldTree;
     }
 
     public void ResetBehaviourComponents()

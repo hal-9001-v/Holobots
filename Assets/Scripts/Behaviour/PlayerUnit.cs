@@ -29,14 +29,7 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 
         CreateAdapters();
     }
-    
-   
-
-    private void Start()
-    {
-        target.dieAction += Dead;
-    }
-  
+      
     void CreateAdapters()
     {
         adapters = new List<Adapter>();
@@ -77,20 +70,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
             adapters.Add(new HealerPlayerAdapter(healer, target));
         }
     }
-
-    void Dead()
-    {
-        foreach (var renderer in GetComponentsInChildren<Renderer>())
-        {
-            renderer.enabled = false;
-        }
-
-        foreach (var collider in GetComponentsInChildren<Collider>())
-        {
-            collider.enabled = false;
-        }
-    }
-
 
     public TurnPreview[] GetPossibleMoves()
     {

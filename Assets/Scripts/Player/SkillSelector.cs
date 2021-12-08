@@ -5,15 +5,17 @@ using UnityEngine;
 public class SkillSelector : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField]  SkillHolder[] _skillHolders;
-    public SkillHolder[] skillHolders{
-         get{
-             return _skillHolders;
-         }
-     }
+    [SerializeField] SkillHolder[] _skillHolders;
+    public SkillHolder[] skillHolders
+    {
+        get
+        {
+            return _skillHolders;
+        }
+    }
 
     PlayerUnit _selectedUnit;
-     SkillHolder _selectedSkill;
+    SkillHolder _selectedSkill;
 
     public void SetSelectedUnit(PlayerUnit unit)
     {
@@ -66,7 +68,7 @@ public class SkillSelector : MonoBehaviour
 
     public void EnableInput()
     {
-        
+
     }
 
     public void DisableInput()
@@ -76,14 +78,17 @@ public class SkillSelector : MonoBehaviour
 
     public void Hide()
     {
-        foreach (var skill in _selectedUnit.adapters)
+        if (_selectedUnit)
         {
-            skill.DisableInput();
-        }
+            foreach (var skill in _selectedUnit.adapters)
+            {
+                skill.DisableInput();
+            }
 
-        foreach (var holder in _skillHolders)
-        {
-            holder.Hide();
+            foreach (var holder in _skillHolders)
+            {
+                holder.Hide();
+            }
         }
     }
 
