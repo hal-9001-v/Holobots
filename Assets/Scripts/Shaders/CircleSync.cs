@@ -50,60 +50,60 @@ public class CircleSync : MonoBehaviour
     private void Update() {
 
          currentUnit = ui.currentUnitTarget;
-        Vector3 currentUnitTransformPosition = new Vector3(currentUnit.transform.position.x, 
-        currentUnit.transform.position.y - 1.5f, currentUnit.transform.position.z);
-        var dir = Camera.transform.position - currentUnitTransformPosition;
-        var ray = new Ray(currentUnitTransformPosition, dir.normalized);
-        RaycastHit hit;
-         if(Physics.Raycast(ray, out hit, 5000, Mask)){
-            int i = 0;
-            Material raycastMat = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
-            if(raycastMat != null){
-                foreach(Material m in WallMaterial){
-
-                if(m == hit.collider.gameObject.GetComponent<MeshRenderer>().material){
-
-                        Debug.Log("Behind");
-                        if(timeElapsed < lerpDuration){
-                            circleSize = Mathf.Lerp(startValue,endValue, timeElapsed/lerpDuration);
-                            timeElapsed += Time.deltaTime;
-                            WallMaterial[i].SetFloat(SizeID, circleSize);
-                            WallMaterial[i].SetFloat(SmoothID, circleSmoothness);
-                            WallMaterial[i].SetFloat(OpID ,circleOpacity);
-                            currentI = i;   
-                            previous = WallMaterial[i];
-                        } else if(WallMaterial[i]!= previous) {
-                            
-                            timeElapsed = 0;
-                        }  
-
-                    }    
-                    i++;
-                } 
-                        
-            }    else WallMaterial[i].SetFloat(SizeID, 0);
+        if(currentUnit != null) 
+        {
+            Vector3 currentUnitTransformPosition = new Vector3(currentUnit.transform.position.x, 
+            currentUnit.transform.position.y - 1.5f, currentUnit.transform.position.z);
+            var dir = Camera.transform.position - currentUnitTransformPosition;
+            var ray = new Ray(currentUnitTransformPosition, dir.normalized);
             
-        
-        } else{
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit, 5000, Mask)){
+                int i = 0;
+                Material raycastMat = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
+                if(raycastMat != null){
+                    foreach(Material m in WallMaterial){
 
-                for (int i = 0; i < WallMaterial.Length; i++){
-                     WallMaterial[i].SetFloat(SizeID, 0);
+                    if(m == hit.collider.gameObject.GetComponent<MeshRenderer>().material){
 
-                Debug.Log("InFront");
+                            if(timeElapsed < lerpDuration){
+                                circleSize = Mathf.Lerp(startValue,endValue, timeElapsed/lerpDuration);
+                                timeElapsed += Time.deltaTime;
+                                WallMaterial[i].SetFloat(SizeID, circleSize);
+                                WallMaterial[i].SetFloat(SmoothID, circleSmoothness);
+                                WallMaterial[i].SetFloat(OpID ,circleOpacity);
+                                currentI = i;   
+                                previous = WallMaterial[i];
+                            } else if(WallMaterial[i]!= previous) {
+                                
+                                timeElapsed = 0;
+                            }  
+
+                        }    
+                        i++;
+                    } 
+                            
+                }    else WallMaterial[i].SetFloat(SizeID, 0);
                 
-            }    
-        }
-    
-        
-            currentUnit = ui.currentUnitTarget;
-            var view = Camera.WorldToViewportPoint(currentUnitTransformPosition);
-            for(int j = 0; j < WallMaterial.Length; j++){
-                
-                WallMaterial[j].SetVector(PosID, view);
+            
+            } else{
+
+                    for (int i = 0; i < WallMaterial.Length; i++){
+                        WallMaterial[i].SetFloat(SizeID, 0);
+                    
+                }    
             }
-
         
+            
+                currentUnit = ui.currentUnitTarget;
+                var view = Camera.WorldToViewportPoint(currentUnitTransformPosition);
+                for(int j = 0; j < WallMaterial.Length; j++){
+                    
+                    WallMaterial[j].SetVector(PosID, view);
+                }
 
+            
 
+        }
     }
 }

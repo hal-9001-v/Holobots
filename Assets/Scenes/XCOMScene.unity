@@ -184,9 +184,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &60063933
@@ -277,9 +277,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &72733429
@@ -509,9 +509,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &129756876
@@ -685,9 +685,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &188577698
@@ -849,9 +849,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &250602186 stripped
@@ -872,9 +872,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &270114758
@@ -1049,9 +1049,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &338548258
@@ -1316,9 +1316,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &384691934
@@ -1970,9 +1970,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &507951868
@@ -2063,9 +2063,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &521422825 stripped
@@ -2086,11 +2086,77 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
+--- !u!1 &531481763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 531481766}
+  - component: {fileID: 531481765}
+  - component: {fileID: 531481764}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &531481764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531481763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &531481765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531481763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &531481766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531481763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &536497958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2657,9 +2723,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!224 &653934830 stripped
@@ -2973,6 +3039,7 @@ GameObject:
   - component: {fileID: 743043132}
   - component: {fileID: 743043131}
   - component: {fileID: 743043130}
+  - component: {fileID: 743043142}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -3013,8 +3080,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _maxRange: 4
-  _shootWeight: 1
-  _idleWeight: 1
 --- !u!114 &743043132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3027,7 +3092,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661d86b4cc4f86441847b24f3bebe7fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxShoots: 5
+  _shootCost: 1
   _damage: 1
   _speed: 5
   _projectile: {fileID: 2072919189}
@@ -3044,10 +3109,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxMoves: 1
+  _moveCost: 1
   _pathProfile:
     canTraspass: 0
     canFly: 0
-  _stepDuration: 0.5
+  _movingSpeed: 0
 --- !u!114 &743043134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3060,6 +3126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4204fc269d85e408ea2ee0f74064a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxTurnPoints: 2
 --- !u!114 &743043135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3073,6 +3140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 982072784}
+  _targetType: 0
+  _team: 0
   _maxHealth: 2
 --- !u!114 &743043136
 MonoBehaviour:
@@ -3182,6 +3251,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &743043142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743043129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f1d0a8e746dc3409e3334902735691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dangerMaterial: {fileID: 0}
+  _healMaterial: {fileID: 0}
 --- !u!1001 &747692166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3497,9 +3580,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &790599064
@@ -3863,9 +3946,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &829942070 stripped
@@ -3886,9 +3969,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &851984927 stripped
@@ -3909,9 +3992,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &878218958
@@ -3957,6 +4040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c414ba4074722e46aeb2ca93f63a10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraTarget: {fileID: 0}
 --- !u!1001 &885113152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4046,9 +4130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &908839058 stripped
@@ -4069,9 +4153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!4 &946815114 stripped
@@ -4168,9 +4252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &958754857
@@ -4314,9 +4398,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &970677611 stripped
@@ -4337,9 +4421,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &982072783
@@ -5029,9 +5113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1103484698 stripped
@@ -5052,9 +5136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1107735603 stripped
@@ -5075,9 +5159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!114 &1107735610
@@ -5092,9 +5176,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b8ce7e8ab53aff4abb03aa532d15fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _protectingShield: {fileID: 0}
+  _protectingShields: []
   _planningShield: {fileID: 0}
   _range: 2
+  _shieldCost: 1
   avaliableTiles: []
 --- !u!114 &1107735611
 MonoBehaviour:
@@ -5109,6 +5194,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 0}
+  _targetType: 0
+  _team: 0
   _maxHealth: 0
 --- !u!1001 &1108205413
 PrefabInstance:
@@ -5559,9 +5646,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1252587115 stripped
@@ -5582,9 +5669,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1267446706 stripped
@@ -5605,9 +5692,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1269545518
@@ -5769,9 +5856,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1294956983 stripped
@@ -5792,9 +5879,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1305862846
@@ -5956,9 +6043,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1344627004
@@ -6121,9 +6208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1400977642
@@ -6215,9 +6302,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1404646567 stripped
@@ -6238,9 +6325,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1423429569
@@ -6478,9 +6565,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1441913090 stripped
@@ -6501,9 +6588,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1451139467
@@ -6680,9 +6767,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1497399026
@@ -6999,80 +7086,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4371514924180868232, guid: 908d5430e1c840740a5c1e0f964a883f, type: 3}
   m_PrefabInstance: {fileID: 1536677441}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1554211887
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1554211890}
-  - component: {fileID: 1554211889}
-  - component: {fileID: 1554211888}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1554211888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1554211887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
---- !u!114 &1554211889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1554211887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1554211890
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1554211887}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1560355901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4371514924180868239, guid: 908d5430e1c840740a5c1e0f964a883f, type: 3}
@@ -7091,9 +7104,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1568336457
@@ -7185,9 +7198,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!4 &1584897616 stripped
@@ -7213,9 +7226,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1614278601
@@ -7266,9 +7279,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1686226652 stripped
@@ -7289,9 +7302,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!4 &1690598006 stripped
@@ -7317,9 +7330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!114 &1723682949 stripped
@@ -7502,9 +7515,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1816759793
@@ -7596,9 +7609,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1864809059
@@ -7902,9 +7915,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &1951137870 stripped
@@ -7925,9 +7938,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1962739781
@@ -8019,9 +8032,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &2021947083 stripped
@@ -8042,9 +8055,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &2036953760
@@ -8280,9 +8293,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1 &2130848985 stripped
@@ -8303,9 +8316,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours: []
-  isClosed: 0
   tileType: 0
   weight: 1
+  isClosed: 0
   gCost: 0
   parent: {fileID: 0}
 --- !u!1001 &1979888831975679193

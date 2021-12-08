@@ -41,6 +41,14 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Touch"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc637340-6c2e-4be5-91e7-be0a3ac96d96"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -228,6 +236,17 @@ public class @GameInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b1025a7-4df8-430f-b0e5-fdbb9d4bfc0c"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -420,6 +439,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         m_Camera_RotateCamera = m_Camera.FindAction("Rotate Camera", throwIfNotFound: true);
         m_Camera_MoveCamera = m_Camera.FindAction("MoveCamera", throwIfNotFound: true);
         m_Camera_Scroll = m_Camera.FindAction("Scroll", throwIfNotFound: true);
+        m_Camera_Touch = m_Camera.FindAction("Touch", throwIfNotFound: true);
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_ExecuteSteps = m_Game.FindAction("Execute Steps", throwIfNotFound: true);
@@ -483,6 +503,7 @@ public class @GameInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Camera_RotateCamera;
     private readonly InputAction m_Camera_MoveCamera;
     private readonly InputAction m_Camera_Scroll;
+    private readonly InputAction m_Camera_Touch;
     public struct CameraActions
     {
         private @GameInput m_Wrapper;
@@ -490,6 +511,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         public InputAction @RotateCamera => m_Wrapper.m_Camera_RotateCamera;
         public InputAction @MoveCamera => m_Wrapper.m_Camera_MoveCamera;
         public InputAction @Scroll => m_Wrapper.m_Camera_Scroll;
+        public InputAction @Touch => m_Wrapper.m_Camera_Touch;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -508,6 +530,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Scroll.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
                 @Scroll.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
                 @Scroll.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
+                @Touch.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnTouch;
+                @Touch.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnTouch;
+                @Touch.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnTouch;
             }
             m_Wrapper.m_CameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -521,6 +546,9 @@ public class @GameInput : IInputActionCollection, IDisposable
                 @Scroll.started += instance.OnScroll;
                 @Scroll.performed += instance.OnScroll;
                 @Scroll.canceled += instance.OnScroll;
+                @Touch.started += instance.OnTouch;
+                @Touch.performed += instance.OnTouch;
+                @Touch.canceled += instance.OnTouch;
             }
         }
     }
@@ -627,6 +655,7 @@ public class @GameInput : IInputActionCollection, IDisposable
         void OnRotateCamera(InputAction.CallbackContext context);
         void OnMoveCamera(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnTouch(InputAction.CallbackContext context);
     }
     public interface IGameActions
     {
