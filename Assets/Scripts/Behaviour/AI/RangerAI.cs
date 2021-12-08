@@ -13,6 +13,7 @@ public class RangerAI : Bot, IUtilityAI
     Explosioner _explosioner;
 
     Target _target;
+    TurnActor _actor;
 
     UtilityUnit _utilityUnit;
 
@@ -24,6 +25,8 @@ public class RangerAI : Bot, IUtilityAI
     [SerializeField] [Range(0, 5)] float _shootWeight;
     [SerializeField] [Range(0, 5)] float _engageAllyWeight;
     [SerializeField] [Range(0, 5)] float _explosionerWeight;
+    [SerializeField] [Range(0, 5)] float _fleeWeight;
+    [SerializeField] [Range(0, 5)] float _idleWeight;
 
 
     //Sensors
@@ -34,10 +37,11 @@ public class RangerAI : Bot, IUtilityAI
 
     DistanceSensor _distanceToTankSensor;
 
-
     private void Start()
     {
         _target = GetComponent<Target>();
+        _actor = GetComponent<TurnActor>();
+
         _mover = GetComponent<Mover>();
         _shooter = GetComponent<Shooter>();
         _explosioner = GetComponent<Explosioner>();
@@ -51,7 +55,7 @@ public class RangerAI : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log(name + " is executing Action: " + action.GetType().ToString());
+        Debug.Log(name + " is executing Action: " + action.name);
 
         action.Execute();
     }
@@ -62,7 +66,7 @@ public class RangerAI : Bot, IUtilityAI
 
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _groupSensor = new GroupSensor(TeamTag.Player, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
-        _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 5, new ThresholdUtilityFunction(0.9f));
+        _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 6, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleMask, new ThresholdUtilityFunction(0.9f));
 
@@ -72,20 +76,47 @@ public class RangerAI : Bot, IUtilityAI
         _utilityUnit.AddAction(GetExplosionerTree());
         _utilityUnit.AddAction(GetEngangeAllyAction());
 
+
+        #region IDLE
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+         {
+             return _idleWeight;
+         });
+
+        _utilityUnit.AddAction(idleAction);
+        #endregion
+
+
+        #region FLEE
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
+         {
+             var dangerScore = 1 - _distanceSensor.GetScore();
+             var healthScore = 1 - _healthSensor.GetScore();
+
+             return (dangerScore * 0.5f + healthScore * 0.5f) * _fleeWeight;
+         });
+        fleeAction.AddPreparationListener(() =>
+        {
+            fleeAction.SetTarget(_distanceSensor.GetClosestTarget());
+        });
+
+        _utilityUnit.AddAction(fleeAction);
+
+        #endregion
     }
 
     UtilityAction GetShootTree()
     {
-        BehaviourTreeAction shootTree = new BehaviourTreeAction(() =>
-        {
-            var shootValue = _sightSensor.GetScore();
+        BehaviourTreeAction shootTree = new BehaviourTreeAction("Shoot Tree", () =>
+         {
+             var shootValue = _sightSensor.GetScore();
 
-            return (shootValue + 0.5f) * _shootWeight;
-        });
+             return shootValue * _shootWeight + _shootWeight*0.2f;
+         });
 
         #region ENGAGE
 
-        EngageAction engageAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAction = new EngageAction(_mover, "Shoot Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
@@ -96,7 +127,7 @@ public class RangerAI : Bot, IUtilityAI
         {
             if (_sightSensor.GetScore() == 0)
             {
-                engageAction.Execute(); 
+                engageAction.Execute();
                 return true;
             }
             return false;
@@ -105,7 +136,7 @@ public class RangerAI : Bot, IUtilityAI
         #endregion
 
         #region SHOOT
-        ShootAction shootAction = new ShootAction(_shooter, () => { return 0; });
+        ShootAction shootAction = new ShootAction(_shooter, "Shoot", () => { return 0; });
 
         shootAction.AddPreparationListener(() =>
         {
@@ -133,15 +164,15 @@ public class RangerAI : Bot, IUtilityAI
 
     UtilityAction GetExplosionerTree()
     {
-        BehaviourTreeAction explosionerTree = new BehaviourTreeAction(() =>
-        {
-            var explosionValue = _groupSensor.GetScore();
+        BehaviourTreeAction explosionerTree = new BehaviourTreeAction("Explosion Tree", () =>
+         {
+             var explosionValue = _groupSensor.GetScore();
 
-            return explosionValue * _explosionerWeight;
-        });
+             return explosionValue * _explosionerWeight;
+         });
 
         #region ENGAGE
-        EngageAction engageAction = new EngageAction(_mover, () => { return 0; });
+        EngageAction engageAction = new EngageAction(_mover, "Explosion Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
@@ -170,7 +201,7 @@ public class RangerAI : Bot, IUtilityAI
 
         #region EXPLOSION
 
-        ExplosionAction explosionAction = new ExplosionAction(_explosioner, () => { return 0; });
+        ExplosionAction explosionAction = new ExplosionAction(_explosioner, "Launch Explosion", () => { return 0; });
 
         explosionAction.AddPreparationListener(() =>
         {
@@ -181,20 +212,20 @@ public class RangerAI : Bot, IUtilityAI
             explosionAction.SetTarget(closestTarget.currentGroundTile);
         });
 
-        explosionerTree.AddAction( () =>
-        {
-            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
+        explosionerTree.AddAction(() =>
+       {
+           var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
 
-            var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
+           var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
-            if (_mover.DistanceToTarget(closestTarget.currentGroundTile) <= _explosioner.exploderRange)
-            {
-                explosionAction.Execute();
-                return true;
-            }
+           if (_mover.DistanceToTarget(closestTarget.currentGroundTile) <= _explosioner.exploderRange)
+           {
+               explosionAction.Execute();
+               return true;
+           }
 
-            return false;
-        });
+           return false;
+       });
         #endregion
 
         return explosionerTree;
@@ -202,13 +233,13 @@ public class RangerAI : Bot, IUtilityAI
 
     UtilityAction GetEngangeAllyAction()
     {
-        EngageAction engangeAlly = new EngageAction(_mover, () =>
-        {
-            var healthScore = 1 - _healthSensor.GetScore();
-            var distanceToTankScore = _distanceToTankSensor.GetScore();
+        EngageAction engangeAlly = new EngageAction(_mover, "Ally Engage", () =>
+         {
+             var healthScore = 1 - _healthSensor.GetScore();
+             var distanceToTankScore = _distanceToTankSensor.GetScore();
 
-            return healthScore * distanceToTankScore * _engageAllyWeight;
-        });
+             return healthScore * distanceToTankScore * _engageAllyWeight;
+         });
 
         engangeAlly.AddPreparationListener(() =>
         {

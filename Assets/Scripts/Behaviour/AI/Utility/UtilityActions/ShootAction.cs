@@ -9,7 +9,7 @@ public class ShootAction : UtilityAction
 
     Target _target;
 
-    public ShootAction( Shooter shooter, Func<float> valueCalculation) : base(valueCalculation)
+    public ShootAction( Shooter shooter, string name, Func<float> valueCalculation) : base(name,valueCalculation)
     {
         _shooter = shooter;
     }

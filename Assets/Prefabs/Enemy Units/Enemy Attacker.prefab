@@ -128,7 +128,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2497745662402846198}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1414208, y: -3.2471116, z: -6.089737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -321,6 +321,7 @@ MonoBehaviour:
   _meleeWeight: 2.5
   _meleeThreshold: 6
   _idleWeight: 0.3
+  _fleeWeight: 2
 --- !u!1 &4303427805793189550
 GameObject:
   m_ObjectHideFlags: 0

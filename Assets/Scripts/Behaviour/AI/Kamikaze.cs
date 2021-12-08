@@ -53,14 +53,14 @@ public class Kamikaze : Bot
     {
         _distanceSensor = new DistanceSensor(_target, TeamTag.AIorPlayer, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(1f));
 
-        ExplosionAction explosionAction = new ExplosionAction(_explosioner, () => { return -1; });
+        ExplosionAction explosionAction = new ExplosionAction(_explosioner, "Explosion Kamikaze", () => { return -1; });
 
         explosionAction.AddPreparationListener(() =>
         {
             explosionAction.SetTarget(_target.currentGroundTile);
         });
 
-        EngageAction engageAction = new EngageAction(_mover, () => { return -1; });
+        EngageAction engageAction = new EngageAction(_mover, "Kamikaze Engage", () => { return -1; });
         engageAction.AddPreparationListener(() =>
         {
             var closestTarget = _distanceSensor.GetClosestTarget();
@@ -68,7 +68,7 @@ public class Kamikaze : Bot
             engageAction.SetTarget(closestTarget);
         });
 
-        IdleAction idleAction = new IdleAction(_actor, () => { return -1; });
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () => { return -1; });
 
         _tree = new BehaviourTree();
         SelectorNode rootNode = new SelectorNode();
@@ -99,7 +99,7 @@ public class Kamikaze : Bot
         #endregion
 
         #region ROAM
-        EngageAction roamAction = new EngageAction(_mover, () => { return -1; });
+        EngageAction roamAction = new EngageAction(_mover, "Roam Engage", () => { return -1; });
         roamAction.AddPreparationListener(() =>
         {
             var tiles = _ground.GetTilesInRange(_target.currentGroundTile, _roamRange);

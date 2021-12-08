@@ -44,7 +44,7 @@ public class Turret : Bot
         _distanceSensor = new DistanceSensor(_target, TeamTag.AIorPlayer, _mover.pathProfile, _maxRange, new ThresholdUtilityFunction(1f));
         _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
 
-        ShootAction shootAction = new ShootAction(_shooter, () => { return -1; });
+        ShootAction shootAction = new ShootAction(_shooter, "Shoot", () => { return -1; });
 
         shootAction.AddPreparationListener(() =>
         {
@@ -54,7 +54,7 @@ public class Turret : Bot
 
         });
 
-        IdleAction idleAction = new IdleAction(_actor, () => { return -1; });
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () => { return -1; });
 
         FSMState idleState = new FSMState("Idle State", () =>
          {

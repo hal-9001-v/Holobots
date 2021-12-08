@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class IdleAction : UtilityAction
 {
-
     TurnActor _actor;
 
-    public IdleAction(TurnActor actor, Func<float> valueCalculation) : base(valueCalculation)
+    public IdleAction(TurnActor actor, string name, Func<float> valueCalculation) : base(name, valueCalculation)
     {
         _actor = actor;
     }
@@ -18,10 +17,13 @@ public class IdleAction : UtilityAction
         _actor.StartCoroutine(Execution());
     }
 
-    IEnumerator Execution() {
+    IEnumerator Execution()
+    {
+
         _actor.StartStep(1);
         yield return new WaitForSeconds(0.5f);
         _actor.EndStep();
+
     }
 
 }
