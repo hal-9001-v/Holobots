@@ -12,7 +12,7 @@ public class IsOnTouchDevice : MonoBehaviour
         
          
     
-        if(SystemInfo.deviceType != DeviceType.Handheld){
+        if(SystemInfo.deviceType == DeviceType.Handheld){
 
             Debug.Log("Mobile!");
             foreach(GameObject go in DesktopArray){
