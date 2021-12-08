@@ -51,7 +51,8 @@ public class Shooter : MonoBehaviour
 
     public void AddShoot(Target target)
     {
-        _executer.Execute(target.transform.position);
+
+        _executer.Execute(target);
     }
 
     [Serializable]
@@ -73,6 +74,8 @@ public class ShooterExecuter
 {
     Projectile _projectile;
 
+    Highlighter _highligher;
+
     TurnActor _turnActor;
     Shooter _owner;
 
@@ -86,20 +89,25 @@ public class ShooterExecuter
         _turnActor = turnActor;
 
         _speed = speed;
+
+        _highligher = new Highlighter();
     }
 
-    public void Execute(Vector3 destination)
+    public void Execute(Target target)
     {
-        _owner.StartCoroutine(MoveProjectileToTarget(_speed, _turnActor.transform.position, destination));
+        _owner.StartCoroutine(MoveProjectileToTarget(_speed, _turnActor.transform.position, target));
     }
 
-    IEnumerator MoveProjectileToTarget(float speed, Vector3 origin, Vector3 destination)
+    IEnumerator MoveProjectileToTarget(float speed, Vector3 origin, Target target)
     {
         _turnActor.StartStep(_owner.shootCost);
+        
+        _highligher.AddDangerededHighlightable(target.highlightable);
+        _highligher.AddDangerededHighlightable(target.currentGroundTile.highlightable);
 
         yield return new WaitForSeconds(0.5f);
 
-        float duration = Vector3.Distance(origin, destination) / speed;
+        float duration = Vector3.Distance(origin, target.transform.position) / speed;
         float elapsedTime = 0;
         _projectile.transform.position = origin;
 
@@ -108,14 +116,16 @@ public class ShooterExecuter
         {
             elapsedTime += Time.deltaTime;
 
-            _projectile.transform.position = Vector3.Lerp(origin, destination, elapsedTime / duration);
+            _projectile.transform.position = Vector3.Lerp(origin, target.transform.position, elapsedTime / duration);
 
             yield return null;
 
         }
 
-        _projectile.transform.position = destination;
+        _projectile.transform.position = target.transform.position;
         _projectile.DisableProjectile();
+
+        _highligher.Unhighlight();
         _turnActor.EndStep();
     }
 

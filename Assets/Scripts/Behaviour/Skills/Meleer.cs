@@ -72,12 +72,15 @@ public class Meleer : MonoBehaviour
 class MeleerExecuter
 {
     TurnActor _actor;
+    Highlighter _highlighter;
     int _cost = 0;
 
     public MeleerExecuter(TurnActor actor, int cost)
     {
         _actor = actor;
         _cost = cost;
+
+        _highlighter = new Highlighter();
     }
 
     public void Execute(Target target, int damage)
@@ -90,7 +93,11 @@ class MeleerExecuter
     IEnumerator MakeHit(Target target, int damage)
     {
         _actor.StartStep(_cost);
+        _highlighter.AddDangerededHighlightable(target.highlightable);
+        _highlighter.AddDangerededHighlightable(target.currentGroundTile.highlightable);
         yield return new WaitForSeconds(1f);
+
+        _highlighter.Unhighlight();
         target.Hurt(damage);
 
         _actor.EndStep();
