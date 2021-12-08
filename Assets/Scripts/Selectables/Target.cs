@@ -140,7 +140,7 @@ public class Target : MonoBehaviour
         if (currentGroundTile != null)
             currentGroundTile.FreeUnit();
 
-        Destroy(gameObject);
+       DestroyImmediate(gameObject);
     }
 
     void DisplayStats()

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Target))]
@@ -6,8 +8,11 @@ public class Meleer : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] [Range(2, 5)] int _meleeRange = 2;
-    [SerializeField] [Range(1, 5)] int _meleerDamage = 1;
+    [SerializeField] [Range(1, 5)] int _defaultMeleerDamage = 1;
     [SerializeField] [Range(1, 5)] int _meleerCost = 1;
+
+    [Header("Specific Damage")]
+    [SerializeField] List<DamageForType> _specificDamages;
 
     public int meleeRange
     {
@@ -16,9 +21,6 @@ public class Meleer : MonoBehaviour
             return _meleeRange;
         }
     }
-
-    [Header("References")]
-    [SerializeField] MeleeHit _planningHit;
 
     MeleerExecuter _executer;
     TurnActor _actor;
@@ -30,19 +32,39 @@ public class Meleer : MonoBehaviour
         _executer = new MeleerExecuter(_actor, _meleerCost);
     }
 
-    public void Hit(GroundTile tile)
+    public void Hit(Target target)
     {
-        _executer.Execute(tile, _meleerDamage);
+        int damage = _defaultMeleerDamage;
+
+        foreach (var specificDamage in _specificDamages)
+        {
+            if (specificDamage.type == target.targetType)
+            {
+                damage = specificDamage.damage;
+                break;
+            }
+        }
+
+        _executer.Execute(target, damage);
     }
 
-    public void SetPlanningHit(GroundTile tile)
+    [Serializable]
+    class DamageForType
     {
-        _planningHit.SetTile(tile);
-    }
+        [SerializeField] TargetType _type;
+        [SerializeField] [Range(0, 10)] int _damage;
+        public TargetType type
+        {
+            get
+            {
+                return _type;
+            }
+        }
 
-    public void Hide()
-    {
-        _planningHit.Hide();
+        public int damage
+        {
+            get { return _damage; }
+        }
     }
 
 }
@@ -58,22 +80,19 @@ class MeleerExecuter
         _cost = cost;
     }
 
-    public void Execute(GroundTile tile, int damage)
+    public void Execute(Target target, int damage)
     {
-        Debug.Log(_actor.name + " is attacking with melee " + tile);
+        Debug.Log(_actor.name + " is attacking with melee " + target.name);
 
-        _actor.StartCoroutine(MakeHit(tile, damage));
+        _actor.StartCoroutine(MakeHit(target, damage));
     }
 
-    IEnumerator MakeHit(GroundTile tile, int damage)
+    IEnumerator MakeHit(Target target, int damage)
     {
         _actor.StartStep(_cost);
         yield return new WaitForSeconds(1f);
+        target.Hurt(damage);
 
-        if (tile.unit != null)
-        {
-            tile.unit.Hurt(damage);
-        }
         _actor.EndStep();
     }
 }

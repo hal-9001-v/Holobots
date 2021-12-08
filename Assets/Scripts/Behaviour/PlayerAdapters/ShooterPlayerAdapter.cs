@@ -9,10 +9,13 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 
     GridLine _gridLine;
 
+    Highlighter _highlighter;
+
     public ShooterPlayerAdapter(Target target, Shooter shooter) : base(AdapterType.Attack)
     {
         _shooter = shooter;
         _target = target;
+        _highlighter = new Highlighter();
 
 
         GridLineProvider provider = GameObject.FindObjectOfType<GridLineProvider>();
@@ -28,6 +31,8 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
 
         _shootTarget = selectable.GetComponent<Target>();
 
+        _highlighter.Unhighlight();
+
         if (_shootTarget == null)
         {
             var tile = selectable.GetComponent<GroundTile>();
@@ -39,12 +44,15 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
         }
 
 
-        if (_shootTarget)
+        if (_shootTarget && _shootTarget.team != _target.team)
         {
             var points = new Vector3[2]
                 {_target.transform.position, _shootTarget.currentGroundTile.transform.position};
 
             _gridLine.SetPoints(points);
+
+            _highlighter.AddDangerededHighlightable(_shootTarget.highlightable);
+            _highlighter.AddDangerededHighlightable(_shootTarget.currentGroundTile.highlightable);
 
         }
     }
@@ -79,7 +87,7 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
     public override void OnStopControl()
     {
         _gridLine.HideLine();
-
+        _highlighter.Unhighlight();
     }
 
     public void OnNothingSelectNotify()

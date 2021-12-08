@@ -63,9 +63,10 @@ public class DistanceSensor : Sensor
         {
             int newDistance = _ground.GetDistance(_owner.currentGroundTile, targets[i].currentGroundTile, _pathProfile);
 
-            if (currentDistance < newDistance)
+            if (currentDistance > newDistance)
             {
                 currentDistance = newDistance;
+                closestTarget = targets[i];
             }
         }
 
@@ -169,7 +170,12 @@ public class DistanceSensor : Sensor
 
     public override float GetScore()
     {
-        return function.GetValue(GetClosestUnitProximity(teamForScoreCalculation));
+        return function.GetValue(GetClosestUnitProximity(_owner, teamForScoreCalculation));
+    }
+
+    public float GetScore(Target target)
+    {
+        return function.GetValue(GetClosestUnitProximity(target, teamForScoreCalculation));
     }
 
     Score GetTotalProximityScore(TeamTag team)
@@ -197,7 +203,7 @@ public class DistanceSensor : Sensor
         return new Score(value, totalTargets);
     }
 
-    Score GetClosestUnitProximity(TeamTag team)
+    Score GetClosestUnitProximity(Target target, TeamTag team)
     {
         var targets = GameObject.FindObjectsOfType<Target>();
 
@@ -205,7 +211,7 @@ public class DistanceSensor : Sensor
         {
             return new Score(int.MaxValue, 0);
         }
-        
+
         float closestDistance = int.MaxValue;
 
         var mask = GetTeamTagMask(team);
@@ -214,7 +220,7 @@ public class DistanceSensor : Sensor
         {
             if (mask.Contains(unit.team))
             {
-                var newDistance = _ground.GetDistance(_owner.currentGroundTile, unit.currentGroundTile, _pathProfile);
+                var newDistance = _ground.GetDistance(target.currentGroundTile, unit.currentGroundTile, _pathProfile);
 
                 if (newDistance < closestDistance)
                 {

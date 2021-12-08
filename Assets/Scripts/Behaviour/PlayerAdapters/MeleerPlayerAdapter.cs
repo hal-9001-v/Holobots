@@ -10,12 +10,16 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
 
     Ground _ground;
 
-    GroundTile _selectedTile;
+    Target _selectedUnit;
+
+    Highlighter _highlighter;
 
     public MeleerPlayerAdapter(Meleer meleer, Target target) : base(AdapterType.Meleer)
     {
         _meleer = meleer;
         _target = target;
+
+        _highlighter = new Highlighter();
 
         _ground = GameObject.FindObjectOfType<Ground>();
 
@@ -27,9 +31,10 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
         if (!_inputIsActive) return;
 
 
-        if (_selectedTile)
+        if (_selectedUnit)
         {
-            _meleer.Hit(_selectedTile);
+            _meleer.Hit(_selectedUnit);
+            _highlighter.Unhighlight();
         }
     }
 
@@ -37,8 +42,8 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
     {
         if (!_inputIsActive) return;
 
-        _selectedTile = null;
-        _meleer.Hide();
+        _selectedUnit = null;
+        _highlighter.Unhighlight();
     }
 
     public void OnRightClickNotify(Selectable selectable)
@@ -49,43 +54,40 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
     public void OnSelectNotify(Selectable selectable)
     {
         if (!_inputIsActive) return;
+        _highlighter.Unhighlight();
 
-        var tile = selectable.GetComponent<GroundTile>();
+        var unit = selectable.GetComponent<Target>();
 
-        if (tile == null)
+        if (unit == null)
         {
-            var unit = selectable.GetComponent<Target>();
+            var tile = selectable.GetComponent<GroundTile>();
 
-            if (unit)
+            if (tile)
             {
-                tile = unit.currentGroundTile;
+                unit = tile.unit;
             }
         }
 
-        if (tile == _target.currentGroundTile)
+        if (unit)
         {
-            _selectedTile = null;
-            _meleer.Hide();
-            return;
-        }
-
-        if (tile)
-        {
-            if (_ground.GetTilesInRange(_target.currentGroundTile, _meleer.meleeRange).Contains(tile))
+            if (unit.team != _target.team)
             {
-                _meleer.SetPlanningHit(tile);
+                if (_ground.GetTilesInRange(_target.currentGroundTile, _meleer.meleeRange).Contains(unit.currentGroundTile))
+                {
+                    _selectedUnit = unit;
 
-                _selectedTile = tile;
+                    _highlighter.AddDangerededHighlightable(unit.highlightable);
+                    _highlighter.AddDangerededHighlightable(unit.currentGroundTile.highlightable);
+                }
+                else
+                {
+                    _selectedUnit = null;
+                    
+                }
             }
-            else
-            {
-                _selectedTile = null;
-                _meleer.Hide();
-                return;
-            }
+
+        
         }
-
-        _selectedTile = tile;
     }
 
     public override void OnStartControl()
@@ -95,8 +97,9 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
 
     public override void OnStopControl()
     {
-        _meleer.Hide();
-        _selectedTile = null;
+        _selectedUnit = null;
+
+        _highlighter.Unhighlight();
     }
 
 

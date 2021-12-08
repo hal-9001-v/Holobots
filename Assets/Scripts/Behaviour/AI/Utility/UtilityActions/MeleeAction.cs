@@ -24,7 +24,7 @@ public class MeleeAction : UtilityAction
         if (_preparationAction != null)
             _preparationAction.Invoke();
 
-        _meleer.Hit(_target.currentGroundTile);
+        _meleer.Hit(_target);
     }
 
 

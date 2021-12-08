@@ -45,7 +45,7 @@ public class FighterAI : Bot, IUtilityAI
 
         var action = _utilityUnit.GetHighestAction();
 
-        Debug.Log(name + "is executing Action: "+action.name);
+        Debug.Log(name + "is executing Action: " + action.name);
 
         action.Execute();
     }
@@ -58,13 +58,13 @@ public class FighterAI : Bot, IUtilityAI
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region FLEE
-        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee",() =>
-        {
-            var dangerScore = _playerUnitDistanceSensor.GetScore();
-            var healthScore = 1 - _healthSensor.GetScore();
+        FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
+         {
+             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var healthScore = 1 - _healthSensor.GetScore();
 
-            return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
-        });
+             return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
+         });
         fleeAction.AddPreparationListener(() =>
         {
             fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
@@ -74,36 +74,30 @@ public class FighterAI : Bot, IUtilityAI
 
         #endregion
 
-        #region MELEE TREE
-        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree",() =>
+        #region IDLE
+        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+         {
+             if (_actor.currentTurnPoints == 1) return _idleWeight * 2;
+
+             return _idleWeight;
+         });
+
+        _utilityUnit.AddAction(idleAction);
+        #endregion
+
+        _utilityUnit.AddAction(GetMeleeTree());
+    }
+
+    public BehaviourTreeAction GetMeleeTree()
+    {
+        BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
         {
             var distValue = _playerUnitDistanceSensor.GetScore();
-            return _meleeWeight * distValue;
+            return _meleeWeight * distValue + _meleeWeight;
         });
 
-        EngageAction engageAction = new EngageAction(_mover,"Melee Engage", () => { return 0; });
-
-        engageAction.AddPreparationListener(() =>
-        {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
-            engageAction.SetTarget(target);
-        });
-
-        meleeTree.AddAction(() =>
-        {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
-            int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
-
-            if (distance > _meleer.meleeRange)
-            {
-                engageAction.Execute();
-                return true;
-            }
-
-            return false;
-        });
-
-        MeleeAction meleeAction = new MeleeAction(_meleer,"Melee", () => { return 0; });
+        #region MELEE
+        MeleeAction meleeAction = new MeleeAction(_meleer, "Melee", () => { return 0; });
 
         meleeAction.AddPreparationListener(() =>
         {
@@ -124,19 +118,34 @@ public class FighterAI : Bot, IUtilityAI
 
             return false;
         });
-
-        _utilityUnit.AddAction(meleeTree);
-
         #endregion
 
-        #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
-         {
-             return _idleWeight;
-         });
+        #region ENGAGE
+        EngageAction engageAction = new EngageAction(_mover, "Melee Engage", () => { return 0; });
 
-        _utilityUnit.AddAction(idleAction);
+        engageAction.AddPreparationListener(() =>
+        {
+            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            engageAction.SetTarget(target);
+        });
+
+        meleeTree.AddAction(() =>
+        {
+            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
+
+            if (distance > _meleer.meleeRange)
+            {
+                engageAction.Execute();
+                return true;
+            }
+
+            return false;
+        });
         #endregion
+
+        return meleeTree;
+
     }
 
     public void ResetBehaviourComponents()

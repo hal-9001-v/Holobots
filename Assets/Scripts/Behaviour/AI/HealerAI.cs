@@ -24,6 +24,7 @@ public class HealerAI : Bot, IUtilityAI
     [SerializeField] [Range(0, 5)] float _meleeWeight;
     [SerializeField] [Range(2, 10)] int _meleeThreshold;
     [SerializeField] [Range(0, 5)] float _healWeight;
+    [SerializeField] [Range(0, 5)] float _followWeight;
     [SerializeField] [Range(0, 5)] float _fleeWeight;
 
 
@@ -66,7 +67,7 @@ public class HealerAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _botDistanceSensor = new DistanceSensor(_target, TeamTag.AI, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0.2f));
+        _botDistanceSensor = new DistanceSensor(_target, TeamTag.AI, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0f));
         _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _lowHealthSensor = new LowHealthBotSensor(_lowHealthThreshold, new ThresholdUtilityFunction(0.3f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
@@ -83,15 +84,38 @@ public class HealerAI : Bot, IUtilityAI
         _utilityUnit.AddAction(idleAction);
         #endregion
 
+        #region FOLLOW ALLY
+        EngageAction followAction = new EngageAction(_mover, "Follow", () =>
+        {
+            var allies = _botDistanceSensor.FindTargetsOfTeam();
+            allies.Remove(_target);
+
+            var distanceValue = _botDistanceSensor.GetScore(_botDistanceSensor.GetClosestTargetFromList(allies));
+
+            return _followWeight * distanceValue;
+        });
+        followAction.AddPreparationListener(() =>
+        {
+            var allies = _botDistanceSensor.FindTargetsOfTeam();
+            allies.Remove(_target);
+
+            followAction.SetTarget(_botDistanceSensor.GetClosestTargetFromList(allies));
+        });
+
+        _utilityUnit.AddAction(followAction);
+
+        #endregion
 
         #region FLEE
         FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
          {
-             var dangerScore = 1 - _playerUnitDistanceSensor.GetScore();
+             var dangerScore = _playerUnitDistanceSensor.GetScore();
              var healthScore = 1 - _healthSensor.GetScore();
 
-             return (dangerScore * 0.5f + healthScore * 0.6f) * _fleeWeight;
+             var value = Mathf.Pow(healthScore * _fleeWeight, 2) - dangerScore;
+             return value;
          });
+
         fleeAction.AddPreparationListener(() =>
         {
             fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());

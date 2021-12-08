@@ -89,6 +89,10 @@ public class Shielder : MonoBehaviour
     public void SetPlanningShield(GroundTile tile)
     {
         SetShield(tile, _planningShield);
+
+        tile.UnsetShield(_planningShield);
+
+
     }
 
     bool SetShield(GroundTile tile, Shield shield)
