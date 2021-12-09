@@ -27,9 +27,14 @@ public class PlayerTeam : Team
         _skillSelector = GameObject.FindObjectOfType<SkillSelector>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
-
+            _inputContainer.inputMap.Game.NextUnit.Enable();
+            _inputContainer.inputMap.Game.EndTurn.Enable();
+            _inputContainer.inputMap.Game.SelectAbility1.Enable();
+            _inputContainer.inputMap.Game.SelectAbility2.Enable();
+            _inputContainer.inputMap.Game.SelectAbility3.Enable();
+            _inputContainer.inputMap.Game.SelectAbility4.Enable();
         _inputContainer.inputMap.Game.NextUnit.performed += ctx =>
-        {
+        {   
             SelectNextUnit();
         };
 

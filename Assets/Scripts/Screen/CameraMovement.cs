@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-
+[RequireComponent(typeof(Rigidbody))]
 public class CameraMovement : MonoBehaviour
 {
     [Header("Settings")]
@@ -17,7 +17,7 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] Transform[] _cameraLimiters;
 
-    Rigidbody _followRigidbody;
+    public Rigidbody _followRigidbody;
 
     [Header("Settings")]
     [SerializeField] [Range(50f, 250f)] float _rotationSpeed = 1;
@@ -36,6 +36,10 @@ public class CameraMovement : MonoBehaviour
 
         if (inputMapContainer)
         {
+
+            inputMapContainer.inputMap.Camera.RotateCamera.Enable();
+            inputMapContainer.inputMap.Camera.MoveCamera.Enable();
+            inputMapContainer.inputMap.Camera.Scroll.Enable();
             inputMapContainer.inputMap.Camera.RotateCamera.performed += ctx =>
             {
                 _rotationInput = ctx.ReadValue<float>();
@@ -85,6 +89,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
+        if (_cameraFollow)  _followRigidbody = _cameraFollow.GetComponent<Rigidbody>();
         if (_isRotating)
         {
             RotateCamera(_rotationInput);
