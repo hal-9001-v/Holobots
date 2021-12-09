@@ -24,7 +24,9 @@ public class MoverPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnRightClickNotify(Selectable selectable)
     {
-        if (!_inputIsActive) return;
+        if (!_inputIsActive){ 
+            return;
+        }
 
         if (_turnActor.currentTurnPoints > 0 && _tempPath != null && _tempPath.Count != 0)
         {

@@ -78,13 +78,15 @@ public class ScreenSelector : MonoBehaviour
             selectionRay = _camera.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(selectionRay, out hit, _range))
             {
-                if(!EventSystem.current.IsPointerOverGameObject()){
-                    if (_selectedObject == null || _selectedObject.gameObject != hit.collider.gameObject)
-                    {
-                        TryToSelect(hit.collider.gameObject);
-                    }
+                if(EventSystem.current !=null) {
+                    if(!EventSystem.current.IsPointerOverGameObject()){
+                        if (_selectedObject == null || _selectedObject.gameObject != hit.collider.gameObject)
+                        {
+                            TryToSelect(hit.collider.gameObject);
+                        }
 
-                    CheckClick();
+                        CheckClick();
+                    }
                 }
             }
             else
@@ -128,6 +130,7 @@ public class ScreenSelector : MonoBehaviour
 
         return _selectedObject != null;
     }
+    
     bool TryToSelectTouch(GameObject objectForSelection, Touch t)
     {
         if (_selectedObject)
@@ -167,11 +170,16 @@ public class ScreenSelector : MonoBehaviour
         }
 
         if (Mouse.current.rightButton.wasReleasedThisFrame && !EventSystem.current.IsPointerOverGameObject())
-        {
+        {   
+            Debug.Log("Input Registered no GO");
             if (_selectedObject != null)
-            {
-                if (onRightClickCallback != null)
+            {   
+            Debug.Log("Selected Object !=null");
+            
+                if (onRightClickCallback != null) {
+                    Debug.Log("callback != null");
                     onRightClickCallback.Invoke(_selectedObject);
+                }
             }
         }
       } 
@@ -182,15 +190,18 @@ public class ScreenSelector : MonoBehaviour
     }
 
     public void ConfirmTouch(){
-
-        if(_selectedObject != null){   
-            _selectedObject.Click();
-            
-            if (onLeftClickCallback != null)
-                onLeftClickCallback.Invoke(_selectedObject);
-            if (onRightClickCallback != null)
-            onRightClickCallback.Invoke(_selectedObject);
-        }
+         Touch t;
+         if(Input.touchCount > 0){
+            t = Input.GetTouch(0);
+            if(_selectedObject != null && !EventSystem.current.IsPointerOverGameObject(t.fingerId)){   
+                _selectedObject.Click();
+                
+                if (onLeftClickCallback != null)
+                    onLeftClickCallback.Invoke(_selectedObject);
+                if (onRightClickCallback != null)
+                onRightClickCallback.Invoke(_selectedObject);
+            }
+         }
     }
 
             

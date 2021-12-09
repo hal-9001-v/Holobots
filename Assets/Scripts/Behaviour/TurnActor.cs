@@ -58,6 +58,7 @@ public class TurnActor : MonoBehaviour
     void Die()
     {
         isDead = true;
+        
     }
 
     public void SetTeam(Team team)

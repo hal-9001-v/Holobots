@@ -1,7 +1,8 @@
+
 using System;
 using TMPro;
 using UnityEngine;
-
+using System.Collections;
 [RequireComponent(typeof(Selectable))]
 [RequireComponent(typeof(Highlightable))]
 public class Target : MonoBehaviour
@@ -130,19 +131,28 @@ public class Target : MonoBehaviour
         }
     }
 
-    void Die()
+
+
+   void Die()
     {
-        if (dieAction != null)
-        {
-            dieAction.Invoke();
-        }
-
-        if (currentGroundTile != null)
-            currentGroundTile.FreeUnit();
-
-       DestroyImmediate(gameObject);
+        StartCoroutine(DieCoroutine());
+        //StartCoroutine(GetComponent<DissolvingController>().Dissolve());
     }
 
+    public IEnumerator DieCoroutine(){
+
+        //yield return new WaitForSeconds(GetComponent<DissolvingController>().VFXGraph.GetFloat("Duration")+2f);
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("Hey");
+        if (dieAction != null)
+                {
+                    dieAction.Invoke();
+                }
+
+                if (currentGroundTile != null)
+                    currentGroundTile.FreeUnit();
+        DestroyImmediate(this);
+    }
     void DisplayStats()
     {
         if (_healthMesh)
@@ -171,5 +181,10 @@ public class Target : MonoBehaviour
         }
     }
 
+        [ContextMenu("Die")] void DieC(){
+
+        Die();
+
+    }
     
 }

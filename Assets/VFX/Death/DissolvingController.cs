@@ -7,7 +7,7 @@ public class DissolvingController : MonoBehaviour
    [SerializeField]Animator anim;
    [SerializeField] SkinnedMeshRenderer skinnedMesh;
    [SerializeField] MeshRenderer[] meshes;
-    [SerializeField] VisualEffect VFXGraph;
+    [SerializeField] public VisualEffect VFXGraph;
 
     public float dissolveRate =  0.02f;
     public float refreshRate = 0.05f;
@@ -47,7 +47,7 @@ public class DissolvingController : MonoBehaviour
 
    
     public IEnumerator Dissolve(){
-
+    
         if(anim!=null){
             
             //Play Death Anim
@@ -77,7 +77,7 @@ public class DissolvingController : MonoBehaviour
             }
 
         }
-        //Destroy(gameObject,1);
+        Destroy(gameObject,1);
     }
 
 }

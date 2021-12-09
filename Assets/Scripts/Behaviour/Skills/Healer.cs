@@ -69,7 +69,11 @@ class HealerExecuter
         _highlighter.AddHealedHighlightable(target.highlightable);
         _highlighter.AddHealedHighlightable(target.currentGroundTile.highlightable);
 
-        yield return new WaitForSeconds(1);
+        VFXManager m = GameObject.FindObjectOfType<VFXManager>();
+        m.Play("Heal", target.transform);
+        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
+        c.FixLookAt(target.transform);
+        yield return new WaitForSeconds(m.GetDuration());
 
         target.Heal(points);
 

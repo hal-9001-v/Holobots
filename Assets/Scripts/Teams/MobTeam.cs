@@ -57,7 +57,7 @@ public class MobTeam : Team
             {
                 _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
                 _cameraFollower.LookAt(_botsInTurn[0].transform.position);
-                _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+                _cameraFollower.FixLookAtC(_botsInTurn[0].transform);
         
                 _botsInTurn[0].ExecuteStep();
             }

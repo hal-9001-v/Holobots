@@ -11,7 +11,6 @@ public class Explosioner : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Explosion _explosion;
-
     Highlighter _highlighter;
 
     public int explosionRange
@@ -86,12 +85,18 @@ class ExplosionerExecuter
         }
 
         _actor.StartStep(_cost);
-        yield return new WaitForSeconds(1f);
+        VFXManager m = GameObject.FindObjectOfType<VFXManager>();
+        m.Play("Explosion", centerTile.transform);
+        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
+        c.FixLookAt(m.VFXObject.transform);
+        yield return new WaitForSeconds(m.GetDuration() + 1.2f);
+
         _actor.EndStep();
 
         _highlighter.Unhighlight();
 
         _explosion.Explode(centerTile);
+
     }
 
 

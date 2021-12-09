@@ -105,9 +105,19 @@ public class CameraMovement : MonoBehaviour
     }
 
     public void FixLookAt(Transform t){
+     
+       _virtualCamera.LookAt = t;
+        _virtualCamera.Follow = t;  
+
+    }
+
+    public IEnumerator FixLookAtC(Transform t){
+
+
+        yield return new WaitForSeconds(0.4f);
 
         _virtualCamera.LookAt = t;
-        _virtualCamera.Follow = t;
+        _virtualCamera.Follow = t;  
     }
 
     void RotateCamera(float input)

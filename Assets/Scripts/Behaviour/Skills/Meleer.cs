@@ -95,7 +95,14 @@ class MeleerExecuter
         _actor.StartStep(_cost);
         _highlighter.AddDangerededHighlightable(target.highlightable);
         _highlighter.AddDangerededHighlightable(target.currentGroundTile.highlightable);
-        yield return new WaitForSeconds(1f);
+
+        
+        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
+        c.FixLookAt(target.transform);
+        yield return new WaitForSeconds(0.5f);
+        VFXManager v = GameObject.FindObjectOfType<VFXManager>();
+        v.Play("Hit", target.transform);
+        yield return new WaitForSeconds(v.GetDuration()-1.5f);
 
         _highlighter.Unhighlight();
         target.Hurt(damage);

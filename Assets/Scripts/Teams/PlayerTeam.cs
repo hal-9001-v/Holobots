@@ -116,7 +116,7 @@ public class PlayerTeam : Team
 
     public override void ActorStartedStep(TurnActor actor)
     {
-        _cameraMovement.FixLookAt(_actorsInTurn[_unitIndex].transform);
+        _cameraMovement.FixLookAtC(_actorsInTurn[_unitIndex].transform);
         _skillSelector.Hide();
 
     }

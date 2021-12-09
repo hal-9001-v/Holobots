@@ -35,29 +35,39 @@ public class UIInfoManager : MonoBehaviour
         switch(currentUnitTarget.targetType){
 
             case TargetType.Fighter:
-                _unitName.text = "Fighter";
+                _unitName.text = "F1GHT3R" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[0];
             break;
 
             case TargetType.Healer:
-                _unitName.text = "Healer";
+                _unitName.text = "H34L3R" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[1];
 
             break;
 
             case TargetType.Ranger:
-                _unitName.text = "Ranger";
+                _unitName.text = "R4NG3R" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[2];
 
             break;
         
             case TargetType.Rogue:
-                _unitName.text = "Rogue";
+                _unitName.text = "R0G3" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[3];
 
             break;
             case TargetType.Tank:
-                _unitName.text = "Tank";
+                _unitName.text = "T4Nk" + currentUnitTarget.targetCode;
+                _currentSprite.sprite = _portraitSprites[4];
+
+            break;
+            case TargetType.Turret:
+                _unitName.text = "K4M1K4Z3" + currentUnitTarget.targetCode;
+                _currentSprite.sprite = _portraitSprites[4];
+
+            break;
+            case TargetType.Kamikaze:
+                _unitName.text = "TURR3T" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[4];
 
             break;
@@ -74,11 +84,13 @@ public class UIInfoManager : MonoBehaviour
             break;
             case TeamTag.Mob :
                 _currentSpriteBackground.color = Color.green;
+                break;
+            case TeamTag.AI2:
+                _currentSpriteBackground.color = Color.gray;
             break;
 
         }
 
-        if(currentUnitTarget != null) _unitName.text += " " + currentUnitTarget.targetCode; 
     } 
 
 
