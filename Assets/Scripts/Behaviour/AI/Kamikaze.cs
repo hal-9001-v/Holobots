@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Explosioner))]
+[RequireComponent(typeof(SelfExplosion))]
 [RequireComponent(typeof(TurnActor))]
 [RequireComponent(typeof(Mover))]
 public class Kamikaze : Bot
@@ -15,7 +15,7 @@ public class Kamikaze : Bot
 
     Target _target;
     TurnActor _actor;
-    Explosioner _explosioner;
+    SelfExplosion _selfExplosion;
     Mover _mover;
 
     DistanceSensor _distanceSensor;
@@ -28,7 +28,7 @@ public class Kamikaze : Bot
 
     private void Start()
     {
-        _explosioner = GetComponent<Explosioner>();
+        _selfExplosion = GetComponent<SelfExplosion>();
         _mover = GetComponent<Mover>();
         _target = GetComponent<Target>();
         _actor = GetComponent<TurnActor>();
@@ -60,12 +60,7 @@ public class Kamikaze : Bot
     {
         _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(1f));
 
-        ExplosionAction explosionAction = new ExplosionAction(_explosioner, "Explosion Kamikaze", () => { return -1; });
-
-        explosionAction.AddPreparationListener(() =>
-        {
-            explosionAction.SetTarget(_target.currentGroundTile);
-        });
+        SelfDestructionAction explosionAction = new SelfDestructionAction(_selfExplosion, "Explosion Kamikaze", () => { return -1; });
 
         EngageAction engageAction = new EngageAction(_mover, "Kamikaze Engage", () => { return -1; });
         engageAction.AddPreparationListener(() =>

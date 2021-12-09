@@ -13,9 +13,10 @@ public class Target : MonoBehaviour
     [Header("Settings")]
     [SerializeField] TargetType _targetType;
     [SerializeField] TeamTag _team;
-    
+
     private string _targetCode;
-    public String targetCode{
+    public String targetCode
+    {
         get
         {
             return _targetCode;
@@ -80,14 +81,15 @@ public class Target : MonoBehaviour
         HideStats();
     }
 
-    private void GenerateTargetCode(){
+    private void GenerateTargetCode()
+    {
 
-      _targetCode = "";
-      _targetCode+= UnityEngine.Random.Range(0,10);
-      _targetCode+= UnityEngine.Random.Range(0,10);
-      _targetCode+= UnityEngine.Random.Range(0,10);
-      _targetCode+= UnityEngine.Random.Range(0,10);
-      
+        _targetCode = "";
+        _targetCode += UnityEngine.Random.Range(0, 10);
+        _targetCode += UnityEngine.Random.Range(0, 10);
+        _targetCode += UnityEngine.Random.Range(0, 10);
+        _targetCode += UnityEngine.Random.Range(0, 10);
+
     }
 
     public void SetCurrentGroundTile(GroundTile tile)
@@ -133,27 +135,30 @@ public class Target : MonoBehaviour
 
 
 
-   void Die()
+    void Die()
     {
         Debug.Log(this.name + " is dead");
         StartCoroutine(DieCoroutine());
         DissolvingController d = GetComponent<DissolvingController>();
-        if(d !=null)  StartCoroutine(d.Dissolve());
+        if (d != null) StartCoroutine(d.Dissolve());
     }
 
-    public IEnumerator DieCoroutine(){
+    public IEnumerator DieCoroutine()
+    {
         CameraMovement c = FindObjectOfType<CameraMovement>();
         c.FixLookAt(this.transform);
         yield return new WaitForSeconds(2);
-        if (dieAction != null)
-                {
-                    dieAction.Invoke();
-                }
 
-                if (currentGroundTile != null)
-                    currentGroundTile.FreeUnit();
+        if (currentGroundTile != null)
+            currentGroundTile.FreeUnit();
+
+        if (dieAction != null)
+        {
+            dieAction.Invoke();
+        }
+
         DestroyImmediate(gameObject);
-    }   
+    }
     void DisplayStats()
     {
         if (_healthMesh)
@@ -182,10 +187,12 @@ public class Target : MonoBehaviour
         }
     }
 
-        [ContextMenu("Die")] void DieC(){
+    [ContextMenu("Die")]
+    void DieC()
+    {
 
         Die();
 
     }
-    
+
 }

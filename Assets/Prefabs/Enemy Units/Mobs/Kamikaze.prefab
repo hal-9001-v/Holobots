@@ -199,12 +199,12 @@ GameObject:
   - component: {fileID: 1815672251607148769}
   - component: {fileID: 1815672251607148768}
   - component: {fileID: 1815672251607148783}
-  - component: {fileID: 1815672251607148782}
   - component: {fileID: 1815672251607148781}
   - component: {fileID: 1815672251607148780}
   - component: {fileID: 1815672251607148779}
   - component: {fileID: 4366520161091536072}
   - component: {fileID: 2932673605497842312}
+  - component: {fileID: 193813135660323607}
   m_Layer: 0
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -346,21 +346,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxTurnPoints: 1
---- !u!114 &1815672251607148782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1815672251607148778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28054fe19d713cb43a26a6f7e361c602, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _exploderCost: 1
-  _exploderRange: 2
-  _explosion: {fileID: 1815672252795066482}
 --- !u!114 &1815672251607148781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +436,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &193813135660323607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815672251607148778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d033677d291b2bf46a9ecb6edf460ff1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 4
+  _range: 3
 --- !u!1 &1815672252795066480
 GameObject:
   m_ObjectHideFlags: 0
