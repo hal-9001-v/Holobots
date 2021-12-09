@@ -8,6 +8,7 @@ using UnityEngine;
 public class Kamikaze : Bot
 {
     [Header("Settings")]
+    [SerializeField] [Range(0, 100)] float _rotationSpeed;
     [SerializeField] List<TeamTag> _enemyTeamMask;
     [SerializeField] [Range(2, 10)] int _detectionRange;
     [SerializeField] [Range(2, 10)] int _roamRange;
@@ -36,6 +37,11 @@ public class Kamikaze : Bot
 
 
         InitializeTree();
+    }
+
+    private void FixedUpdate()
+    {
+        transform.localEulerAngles += new Vector3(0, _rotationSpeed * Time.fixedDeltaTime, 0);
     }
 
     public override void ExecuteStep()
