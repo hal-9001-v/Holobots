@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 8083174176324870573}
   - component: {fileID: 754719720139372221}
   - component: {fileID: 2095325412609000319}
+  - component: {fileID: -2219765885842711300}
   m_Layer: 0
   m_Name: Attacker
   m_TagString: Untagged
@@ -247,6 +248,24 @@ MonoBehaviour:
   Mask:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &-2219765885842711300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507600130565845904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77751d86af5b2224da86523317c915f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  skinnedMesh: {fileID: 0}
+  meshes: []
+  VFXGraph: {fileID: 0}
+  dissolveRate: 0.02
+  refreshRate: 0.05
 --- !u!1 &4834017779295530492
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +277,7 @@ GameObject:
   - component: {fileID: 6872754647821953770}
   - component: {fileID: 2054654844223708927}
   - component: {fileID: 2741450701446339549}
+  - component: {fileID: 9125240254038944685}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -417,6 +437,18 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &9125240254038944685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4834017779295530492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c310fda527e446488c991c7cb9aa686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5415801879306720628
 PrefabInstance:
   m_ObjectHideFlags: 0

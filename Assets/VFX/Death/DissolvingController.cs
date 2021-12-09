@@ -45,16 +45,8 @@ public class DissolvingController : MonoBehaviour
 
     }
 
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.Space)){
-
-            StartCoroutine(Dissolve());
-
-        }
-    }
-
-
-    IEnumerator Dissolve(){
+   
+    public IEnumerator Dissolve(){
 
         if(anim!=null){
             
@@ -85,7 +77,7 @@ public class DissolvingController : MonoBehaviour
             }
 
         }
-        Destroy(gameObject,1);
+        //Destroy(gameObject,1);
     }
 
 }

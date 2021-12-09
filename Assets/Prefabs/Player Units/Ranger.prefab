@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 2151016059814724001}
   - component: {fileID: 5964902078315023527}
   - component: {fileID: 6328470708349215236}
+  - component: {fileID: -4804757667245439709}
   m_Layer: 0
   m_Name: Ranger
   m_TagString: Untagged
@@ -470,6 +471,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
   _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
+--- !u!114 &-4804757667245439709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962367221777819480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77751d86af5b2224da86523317c915f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  skinnedMesh: {fileID: 0}
+  meshes: []
+  VFXGraph: {fileID: 0}
+  dissolveRate: 0.02
+  refreshRate: 0.05
 --- !u!1001 &4793238054560852328
 PrefabInstance:
   m_ObjectHideFlags: 0

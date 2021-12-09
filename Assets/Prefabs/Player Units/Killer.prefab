@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4238073778090798626}
   - component: {fileID: 8733568074073315895}
   - component: {fileID: 4880726302826176277}
+  - component: {fileID: 7470898028007206197}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -170,6 +171,18 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &7470898028007206197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2784814305520740660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c310fda527e446488c991c7cb9aa686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8168498386649872216
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,6 +203,7 @@ GameObject:
   - component: {fileID: 5852670941069874374}
   - component: {fileID: 1557524483304858981}
   - component: {fileID: 8054980145926894197}
+  - component: {fileID: 6429426082268378847}
   m_Layer: 0
   m_Name: Killer
   m_TagString: Untagged
@@ -398,6 +412,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
   _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
+--- !u!114 &6429426082268378847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8168498386649872216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77751d86af5b2224da86523317c915f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  skinnedMesh: {fileID: 0}
+  meshes: []
+  VFXGraph: {fileID: 0}
+  dissolveRate: 0.02
+  refreshRate: 0.05
 --- !u!1001 &3194897480116254101
 PrefabInstance:
   m_ObjectHideFlags: 0

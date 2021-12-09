@@ -89,6 +89,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DissolveAmount: 0
+    - _DissolveScale: 30
+    - _DissolveWidth: 0.05
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -96,9 +99,11 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _Opacity: 0.5
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Size: 1
     - _Smoothness: 0.41
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -113,7 +118,9 @@ Material:
     - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 1, g: 0.18947022, b: 0, a: 0}
     - _BaseColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolveColor: {r: 0, g: 3.07451, b: 4, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _PlayerPos: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2996245587560283479

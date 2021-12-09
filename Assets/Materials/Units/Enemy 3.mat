@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground
+  m_Name: Enemy 3
   m_Shader: {fileID: -6465566751694194690, guid: 95c1295c239dc1a40a6a5a28202ee662, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_15b08835f3194b2b92c6de129bbbbdca:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_d07fb8e8e4104d889a9cf0898523773d:
         m_Texture: {fileID: 2800000, guid: 438b403609a46f742ab95225c1f1b4a3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -99,12 +103,12 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Opacity: 0
+    - _Opacity: 0.5
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 0
-    - _Smoothness: 0
+    - _Size: 1
+    - _Smoothness: 0.41
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -112,10 +116,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_07f87ef2f0fc4aa5a5c74ced73031173: {r: 1, g: 1, b: 1, a: 0}
     - Color_091b4394a16f41e1a48ad9eb8cb374d3: {r: 0, g: 0, b: 0, a: 0}
     - Color_1: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0}
-    - Color_2: {r: 0.21784072, g: 0, b: 0.7924528, a: 0}
-    - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}
+    - Color_2: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 0}
+    - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 0, g: 3.07451, b: 4, a: 1}
