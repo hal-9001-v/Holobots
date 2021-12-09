@@ -21,11 +21,13 @@ public class TankAI : Bot, IUtilityAI
 
     [Header("Settings")]
 
+    [SerializeField] List<TeamTag> _enemyTeamMask;
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _shieldWeight;
     [SerializeField] [Range(0, 5)] float _fleeWeight;
     [SerializeField] [Range(0, 5)] float _meleeWeight;
     [SerializeField] [Range(2, 10)] int _meleeThreshold;
+
 
 
     [SerializeField] [Range(0.1f, 1)] float _idleWeight = 0.1f;
@@ -34,10 +36,10 @@ public class TankAI : Bot, IUtilityAI
 
 
     //Sensors
-    DistanceSensor _botDistanceSensor;
-    DistanceSensor _playerUnitDistanceSensor;
-    DistanceSensor _shieldedPlayerUnitDistanceSensor;
-    LowHealthBotSensor _lowHealthSensor;
+    DistanceSensor _allyDistanceSensor;
+    DistanceSensor _enemyDistanceSensor;
+    DistanceSensor _shieldEnemyDistanceSensor;
+    LowHealthSensor _lowHealthSensor;
     HealthSensor _healthSensor;
 
 
@@ -71,12 +73,12 @@ public class TankAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _botDistanceSensor = new DistanceSensor(_target, TeamTag.AI, _mover.pathProfile, _shielder.maxShieldRange, new LinearMinUtilityFunction(0.2f));
-        _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.team }, _mover.pathProfile, _shielder.maxShieldRange, new LinearMinUtilityFunction(0.2f));
+        _enemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
 
-        _shieldedPlayerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 1, new ThresholdUtilityFunction(1f));
+        _shieldEnemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, 1, new ThresholdUtilityFunction(1f));
 
-        _lowHealthSensor = new LowHealthBotSensor(_lowHealthThreshold, new LinearUtilityFunction());
+        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.team }, _lowHealthThreshold, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region FLEE
@@ -84,14 +86,14 @@ public class TankAI : Bot, IUtilityAI
          {
              if (_target.currentGroundTile.shield) return 0;
 
-             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var dangerScore = _enemyDistanceSensor.GetScore();
              var healthScore = 1 - _healthSensor.GetScore();
 
              return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
          });
         fleeAction.AddPreparationListener(() =>
         {
-            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+            fleeAction.SetTarget(_enemyDistanceSensor.GetClosestTarget());
         });
 
         _utilityUnit.AddAction(fleeAction);
@@ -113,14 +115,14 @@ public class TankAI : Bot, IUtilityAI
         {
             if (!_target.currentGroundTile.shield) return 0;
 
-            var meleeScore = _shieldedPlayerUnitDistanceSensor.GetScore();
+            var meleeScore = _shieldEnemyDistanceSensor.GetScore();
 
             return meleeScore * _meleeWeight;
 
         });
         shieldedMeleeAction.AddPreparationListener(() =>
         {
-            var target = _shieldedPlayerUnitDistanceSensor.GetClosestTarget();
+            var target = _shieldEnemyDistanceSensor.GetClosestTarget();
 
             shieldedMeleeAction.SetTarget(target);
         });
@@ -136,7 +138,7 @@ public class TankAI : Bot, IUtilityAI
     {
         BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
         {
-            var distValue = _playerUnitDistanceSensor.GetScore();
+            var distValue = _enemyDistanceSensor.GetScore();
             return _meleeWeight * distValue;
         });
 
@@ -145,13 +147,13 @@ public class TankAI : Bot, IUtilityAI
 
         meleeAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             meleeAction.SetTarget(target);
         });
 
         Func<bool> meleeFunc = () =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _enemyDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
@@ -196,7 +198,7 @@ public class TankAI : Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             engageAction.SetTarget(target);
         });
 
@@ -209,7 +211,7 @@ public class TankAI : Bot, IUtilityAI
         meleeTree.AddAction(engageFunc);
         #endregion
 
-        
+
         return meleeTree;
     }
 
@@ -219,7 +221,7 @@ public class TankAI : Bot, IUtilityAI
         {
             if (_target.currentGroundTile.shield) return 0;
 
-            var distValue = _botDistanceSensor.GetScore();
+            var distValue = _allyDistanceSensor.GetScore();
             var lowHealth = _lowHealthSensor.GetScore();
 
             float dangerScore = 0;
@@ -227,7 +229,7 @@ public class TankAI : Bot, IUtilityAI
             foreach (var unit in _lowHealthSensor.GetLowHealthBots())
             {
 
-                var auxScore = _playerUnitDistanceSensor.GetScore(unit);
+                var auxScore = _enemyDistanceSensor.GetScore(unit);
 
                 if (auxScore > dangerScore)
                 {
@@ -244,7 +246,7 @@ public class TankAI : Bot, IUtilityAI
         engageAllyAction.AddPreparationListener(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = _botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = _allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             engageAllyAction.SetTarget(target);
         });
@@ -253,7 +255,7 @@ public class TankAI : Bot, IUtilityAI
         shieldTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = this._allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             if (target)
             {
@@ -275,7 +277,7 @@ public class TankAI : Bot, IUtilityAI
         shieldAction.AddPreparationListener(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = _botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = _allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             shieldAction.SetShieldTarget(target);
         });
@@ -283,7 +285,7 @@ public class TankAI : Bot, IUtilityAI
         shieldTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = this._allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             if (target)
             {

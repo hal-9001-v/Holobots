@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7605804530532908025}
   m_Layer: 0
-  m_Name: Enemy Units
+  m_Name: AI Team
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,6 +42,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7605804530532908025}
     m_Modifications:
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _fleeWeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _shootWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _explosionerWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _enemyTeamMask.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3274175220350729827, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209474648219834679, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
+      propertyPath: _team
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9209474648219834682, guid: d344ccdf5fc9f9443b04666d305516f4, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -104,6 +132,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7605804530532908025}
     m_Modifications:
+    - target: {fileID: 2658190862484939676, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _defaultMeleerDamage
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430728565280610508, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _idleWeight
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430728565280610508, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _meleeWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430728565280610508, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _enemyTeamMask.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430728565280610508, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3430728565280610508, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9017033362604156144, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
+      propertyPath: _team
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9017033362604156153, guid: 63ad828ef32010547b3b951437d9825f, type: 3}
       propertyPath: m_Name
       value: Enemy Tank
@@ -166,6 +222,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7605804530532908025}
     m_Modifications:
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _fleeWeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _idleWeight
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _meleeWeight
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _followWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _meleeThreshold
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _enemyTeamMask.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3541789514513209855, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5513000285222411306, guid: 56df73eeb90b6b64a82472b330d5f5ce, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -228,6 +316,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7605804530532908025}
     m_Modifications:
+    - target: {fileID: 2365446664472687207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _fleeWeight
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365446664472687207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _meleeWeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365446664472687207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _enemyMask.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365446664472687207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _enemyMask.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365446664472687207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _enemyMask.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2497745662402846194, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -276,6 +384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Attacker
       objectReference: {fileID: 0}
+    - target: {fileID: 2497745662402846207, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
+      propertyPath: _team
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e2093fd19452074fa2251397e96cc1c, type: 3}
 --- !u!4 &6554843486040671879 stripped
@@ -290,6 +402,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7605804530532908025}
     m_Modifications:
+    - target: {fileID: 1180156680348470964, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
+      propertyPath: _team
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1180156680348470969, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -337,6 +453,22 @@ PrefabInstance:
     - target: {fileID: 1180156680348470973, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
       propertyPath: m_Name
       value: Enemy Rogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 2673919377201936207, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
+      propertyPath: _meleeWeight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2673919377201936207, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
+      propertyPath: _enemyTeamMask.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2673919377201936207, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2673919377201936207, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}
+      propertyPath: _enemyTeamMask.Array.data[2]
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7b1faf97ae7e074bbd9207717a83274, type: 3}

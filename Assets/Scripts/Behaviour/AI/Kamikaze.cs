@@ -8,6 +8,7 @@ using UnityEngine;
 public class Kamikaze : Bot
 {
     [Header("Settings")]
+    [SerializeField] List<TeamTag> _enemyTeamMask;
     [SerializeField] [Range(2, 10)] int _detectionRange;
     [SerializeField] [Range(2, 10)] int _roamRange;
 
@@ -51,7 +52,7 @@ public class Kamikaze : Bot
 
     public void InitializeTree()
     {
-        _distanceSensor = new DistanceSensor(_target, TeamTag.AIorPlayer, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(1f));
+        _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(1f));
 
         ExplosionAction explosionAction = new ExplosionAction(_explosioner, "Explosion Kamikaze", () => { return -1; });
 

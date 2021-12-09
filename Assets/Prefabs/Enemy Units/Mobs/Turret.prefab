@@ -115,6 +115,7 @@ GameObject:
   - component: {fileID: 6663451073602726676}
   - component: {fileID: 6663451073602726677}
   - component: {fileID: 6663451073602726678}
+  - component: {fileID: 140635186267673880}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -130,7 +131,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6663451073602726679}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.338, y: 1.11, z: -1.958}
+  m_LocalPosition: {x: -2, y: 1.11, z: -2}
   m_LocalScale: {x: 0.5596991, y: 0.5596991, z: 0.5596991}
   m_Children:
   - {fileID: 6663451073801727819}
@@ -241,7 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 0}
   _targetType: 7
-  _team: 2
+  _team: 3
   _maxHealth: 2
 --- !u!114 &6663451073602726683
 MonoBehaviour:
@@ -302,10 +303,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9050304a68c25a45b3bcaa1add17408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyTeamMask: 000000000100000002000000
   _obstacleLayers:
     serializedVersion: 2
     m_Bits: 128
   _maxRange: 6
+--- !u!114 &140635186267673880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663451073602726679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75083d41d1b37743b340912b829db18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  XcellSize: 2
+  ZcellSize: 2
+  height: 0
+  _snapToHeight: 0
+  _localPosition: 0
 --- !u!1 &6663451073801727812
 GameObject:
   m_ObjectHideFlags: 0

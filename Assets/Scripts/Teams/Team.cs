@@ -9,7 +9,7 @@ using System;
 [Serializable]
 public abstract class Team
 {
-    public TeamTag tag;
+    public TeamTag teamTag;
 
     public List<TurnActor> actors;
 
@@ -19,7 +19,7 @@ public abstract class Team
 
     public Team(TeamTag tag)
     {
-        this.tag = tag;
+        this.teamTag = tag;
 
         actors = new List<TurnActor>();
         _actorsInTurn = new List<TurnActor>();
@@ -34,7 +34,7 @@ public abstract class Team
     {
         actors.Clear();
 
-        foreach (var actor in GetActorsWithTeamTag(tag))
+        foreach (var actor in GetActorsWithTeamTag(teamTag))
         {
             actors.Add(actor);
             actor.SetTeam(this);

@@ -12,6 +12,7 @@ public enum TargetType
     Building,
     Hunter,
     Turret,
+    Kamikaze,
     Any,
 
 }

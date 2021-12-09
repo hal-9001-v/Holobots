@@ -15,24 +15,22 @@ public class DistanceSensor : Sensor
     /// <summary>
     /// GetScore() will depend on this variable. Besides, methods will use this TeamTag for queries by default
     /// </summary>
-    public TeamTag teamForScoreCalculation { get; private set; }
     public TargetType typeForScoreCalculation { get; private set; }
 
-    public DistanceSensor(Target owner, TeamTag teamForScore, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function)
+    public DistanceSensor(Target owner, List<TeamTag> targetMask, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function, targetMask)
     {
 
         _owner = owner;
         _threshold = threshold;
         _pathProfile = pathProfile;
 
-        teamForScoreCalculation = teamForScore;
         typeForScoreCalculation = TargetType.Any;
 
         _ground = GameObject.FindObjectOfType<Ground>();
 
     }
 
-    public DistanceSensor(Target owner, TargetType typeForScore, TeamTag teamForScore, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function)
+    public DistanceSensor(Target owner, TargetType typeForScore, List<TeamTag> teamMask, PathProfile pathProfile, int threshold, UtilityFunction function) : base(function, teamMask)
     {
         typeForScoreCalculation = typeForScore;
 
@@ -40,7 +38,6 @@ public class DistanceSensor : Sensor
         _threshold = threshold;
         _pathProfile = pathProfile;
 
-        teamForScoreCalculation = teamForScore;
 
         _ground = GameObject.FindObjectOfType<Ground>();
 
@@ -78,17 +75,15 @@ public class DistanceSensor : Sensor
     /// </summary>
     /// <param name="team"></param>
     /// <returns></returns>
-    public Target GetClosestTarget(TeamTag team)
+    public Target GetClosestTarget(List<TeamTag> team)
     {
         var targets = GameObject.FindObjectsOfType<Target>();
 
         List<Target> targetList = new List<Target>();
 
-        var mask = GetTeamTagMask(team);
-
         foreach (var target in targets)
         {
-            if (mask.Contains(target.team))
+            if (team.Contains(target.team))
             {
                 targetList.Add(target);
             }
@@ -103,7 +98,7 @@ public class DistanceSensor : Sensor
     /// <returns></returns>
     public Target GetClosestTarget()
     {
-        return GetClosestTarget(teamForScoreCalculation);
+        return GetClosestTarget(teamMask);
     }
 
     /// <summary>
@@ -112,7 +107,7 @@ public class DistanceSensor : Sensor
     /// <param name="team"></param>
     /// <param name="targetType"></param>
     /// <returns></returns>
-    public List<Target> FindTargetsWithTag(TeamTag team, TargetType targetType)
+    public List<Target> FindTargetsWithTag(List<TeamTag> team, TargetType targetType)
     {
         List<Target> targets = FindTargetsOfTeam(team);
 
@@ -134,7 +129,7 @@ public class DistanceSensor : Sensor
     /// <returns></returns>
     public List<Target> FindTargetWithTag(TargetType targetType)
     {
-        return FindTargetsWithTag(teamForScoreCalculation, targetType);
+        return FindTargetsWithTag(teamMask, targetType);
     }
 
     /// <summary>
@@ -142,15 +137,13 @@ public class DistanceSensor : Sensor
     /// </summary>
     /// <param name="team"></param>
     /// <returns></returns>
-    public List<Target> FindTargetsOfTeam(TeamTag team)
+    public List<Target> FindTargetsOfTeam(List<TeamTag> team)
     {
         List<Target> targets = new List<Target>();
 
-        var mask = GetTeamTagMask(team);
-
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (mask.Contains(target.team))
+            if (team.Contains(target.team))
             {
                 targets.Add(target);
             }
@@ -165,27 +158,26 @@ public class DistanceSensor : Sensor
     /// <returns></returns>
     public List<Target> FindTargetsOfTeam()
     {
-        return FindTargetsOfTeam(teamForScoreCalculation);
+        return FindTargetsOfTeam(teamMask);
     }
 
     public override float GetScore()
     {
-        return function.GetValue(GetClosestUnitProximity(_owner, teamForScoreCalculation));
+        return function.GetValue(GetClosestUnitProximity(_owner, teamMask));
     }
 
     public float GetScore(Target target)
     {
-        return function.GetValue(GetClosestUnitProximity(target, teamForScoreCalculation));
+        return function.GetValue(GetClosestUnitProximity(target, teamMask));
     }
 
-    Score GetTotalProximityScore(TeamTag team)
+    Score GetTotalProximityScore(List<TeamTag> mask)
     {
         float value = 0;
         float totalTargets = 0;
 
         var targets = GameObject.FindObjectsOfType<Target>();
 
-        var mask = GetTeamTagMask(team);
 
         foreach (var unit in targets)
         {
@@ -203,7 +195,7 @@ public class DistanceSensor : Sensor
         return new Score(value, totalTargets);
     }
 
-    Score GetClosestUnitProximity(Target target, TeamTag team)
+    Score GetClosestUnitProximity(Target target, List<TeamTag> mask)
     {
         var targets = GameObject.FindObjectsOfType<Target>();
 
@@ -214,7 +206,6 @@ public class DistanceSensor : Sensor
 
         float closestDistance = int.MaxValue;
 
-        var mask = GetTeamTagMask(team);
 
         foreach (var unit in targets)
         {

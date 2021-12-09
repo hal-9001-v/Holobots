@@ -37,4 +37,9 @@ public class Explosion : MonoBehaviour
             }
         }
     }
+
+    public List<GroundTile> GetTilesInRange(GroundTile centerTile)
+    {
+        return _ground.GetTilesInRange(centerTile, _range);
+    }
 }

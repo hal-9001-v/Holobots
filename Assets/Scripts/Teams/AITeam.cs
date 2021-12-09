@@ -10,7 +10,7 @@ public class AITeam : Team
     private CameraMovement _cameraFollower;
     private Transform _cameraTarget;
     private UIInfoManager _uiInfo;
-    public AITeam(Transform target) : base(TeamTag.AI)
+    public AITeam(Transform target, TeamTag tag) : base(tag)
     {
         _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
@@ -62,8 +62,6 @@ public class AITeam : Team
         }
     }
 
-
-
     void BotEndedStep(TurnActor actor)
     {
         ExecuteBotStep();
@@ -75,9 +73,10 @@ public class AITeam : Team
 
         foreach (var actorBot in GameObject.FindObjectsOfType<Bot>())
         {
-            if (actorBot.actor.teamTag == tag)
+            if (actorBot.actor.teamTag == teamTag)
             {
                 _bots.Add(actorBot);
+                actorBot.actor.SetTeam(this);
             }
         }
     }

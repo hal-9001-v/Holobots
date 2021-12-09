@@ -19,6 +19,8 @@ public class Projectile : MonoBehaviour
 
     int _damage;
 
+    public Target damagedTarget { get; private set; }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -45,6 +47,8 @@ public class Projectile : MonoBehaviour
         _meshRenderer.enabled = true;
         _collider.enabled = true;
 
+        damagedTarget = null;
+
     }
 
     public void SetOwner(Target owner) {
@@ -57,12 +61,13 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (damagedTarget) return;
 
         var target = other.GetComponent<Target>();
 
         if (target && target.team != _owner.team)
         {
-            target.Hurt(_damage);
+            damagedTarget = target;
 
             DisableProjectile();
         }

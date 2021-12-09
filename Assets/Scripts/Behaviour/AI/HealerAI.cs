@@ -19,6 +19,7 @@ public class HealerAI : Bot, IUtilityAI
     UtilityUnit _utilityUnit;
 
     [Header("Settings")]
+    [SerializeField] List<TeamTag> _enemyTeamMask;
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
@@ -34,9 +35,9 @@ public class HealerAI : Bot, IUtilityAI
 
 
     //Sensors
-    DistanceSensor _botDistanceSensor;
-    DistanceSensor _playerUnitDistanceSensor;
-    LowHealthBotSensor _lowHealthSensor;
+    DistanceSensor _allyDistanceSensor;
+    DistanceSensor _enemyDistanceSensor;
+    LowHealthSensor _lowHealthSensor;
     HealthSensor _healthSensor;
 
     private void Start()
@@ -67,9 +68,9 @@ public class HealerAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _botDistanceSensor = new DistanceSensor(_target, TeamTag.AI, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0f));
-        _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
-        _lowHealthSensor = new LowHealthBotSensor(_lowHealthThreshold, new ThresholdUtilityFunction(0.3f));
+        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.team }, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0f));
+        _enemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.team }, _lowHealthThreshold, new ThresholdUtilityFunction(0.3f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         _utilityUnit.AddAction(GetMeleeTree());
@@ -87,19 +88,27 @@ public class HealerAI : Bot, IUtilityAI
         #region FOLLOW ALLY
         EngageAction followAction = new EngageAction(_mover, "Follow", () =>
         {
-            var allies = _botDistanceSensor.FindTargetsOfTeam();
+            var allies = _allyDistanceSensor.FindTargetsOfTeam();
             allies.Remove(_target);
 
-            var distanceValue = _botDistanceSensor.GetScore(_botDistanceSensor.GetClosestTargetFromList(allies));
+            float distanceValue;
+            if (allies.Count != 0)
+            {
+                distanceValue = _allyDistanceSensor.GetScore(_allyDistanceSensor.GetClosestTargetFromList(allies));
+            }
+            else
+            {
+                distanceValue = 0;
+            }
 
             return _followWeight * distanceValue;
         });
         followAction.AddPreparationListener(() =>
         {
-            var allies = _botDistanceSensor.FindTargetsOfTeam();
+            var allies = _allyDistanceSensor.FindTargetsOfTeam();
             allies.Remove(_target);
 
-            followAction.SetTarget(_botDistanceSensor.GetClosestTargetFromList(allies));
+            followAction.SetTarget(_allyDistanceSensor.GetClosestTargetFromList(allies));
         });
 
         _utilityUnit.AddAction(followAction);
@@ -109,7 +118,7 @@ public class HealerAI : Bot, IUtilityAI
         #region FLEE
         FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
          {
-             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var dangerScore = _enemyDistanceSensor.GetScore();
              var healthScore = 1 - _healthSensor.GetScore();
 
              var value = Mathf.Pow(healthScore * _fleeWeight, 2) - dangerScore;
@@ -118,7 +127,7 @@ public class HealerAI : Bot, IUtilityAI
 
         fleeAction.AddPreparationListener(() =>
         {
-            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+            fleeAction.SetTarget(_enemyDistanceSensor.GetClosestTarget());
         });
 
         _utilityUnit.AddAction(fleeAction);
@@ -131,21 +140,30 @@ public class HealerAI : Bot, IUtilityAI
     {
         BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
         {
-            var distValue = 1 - _playerUnitDistanceSensor.GetScore();
-            return _meleeWeight * distValue;
+
+            var distanceValue = _enemyDistanceSensor.GetScore();
+            if (distanceValue > 1f)
+            {
+                return 0;
+            }
+            else
+            {
+                return _meleeWeight * distanceValue;
+            }
+
         });
 
         EngageAction engageAction = new EngageAction(_mover, "Melee Engage", () => { return 0; });
 
         engageAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             engageAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _enemyDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)
@@ -161,13 +179,13 @@ public class HealerAI : Bot, IUtilityAI
 
         meleeAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             meleeAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _enemyDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
@@ -186,7 +204,7 @@ public class HealerAI : Bot, IUtilityAI
     {
         BehaviourTreeAction healTree = new BehaviourTreeAction("Heal Tree", () =>
          {
-             var distValue = _botDistanceSensor.GetScore();
+             var distValue = _allyDistanceSensor.GetScore();
              var lowHealth = _lowHealthSensor.GetScore();
 
              return distValue * _healWeight * lowHealth;
@@ -197,7 +215,7 @@ public class HealerAI : Bot, IUtilityAI
         engageAllyAction.AddPreparationListener(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = _botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = _allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             engageAllyAction.SetTarget(target);
         });
@@ -205,7 +223,7 @@ public class HealerAI : Bot, IUtilityAI
         healTree.AddAction(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = this._allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             if (target)
             {
@@ -228,7 +246,7 @@ public class HealerAI : Bot, IUtilityAI
         healAction.AddPreparationListener(() =>
         {
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = _botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = _allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             healAction.SetHealTarget(target);
         });
@@ -237,7 +255,7 @@ public class HealerAI : Bot, IUtilityAI
         {
 
             var lowHealthBots = _lowHealthSensor.GetLowHealthBots();
-            var target = this._botDistanceSensor.GetClosestTargetFromList(lowHealthBots);
+            var target = this._allyDistanceSensor.GetClosestTargetFromList(lowHealthBots);
 
             if (target)
             {

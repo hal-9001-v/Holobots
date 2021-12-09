@@ -2,12 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TeamTag
+public class TagMask
 {
-    Player,
-    AI,
-    AI2,
-    Mob,
-
-    None
+    
 }

@@ -12,6 +12,8 @@ public class Explosioner : MonoBehaviour
     [Header("References")]
     [SerializeField] Explosion _explosion;
 
+    Highlighter _highlighter;
+
     public int explosionRange
     {
         get
@@ -52,12 +54,16 @@ class ExplosionerExecuter
 
     int _cost;
 
+    Highlighter _highlighter;
+
     public ExplosionerExecuter(TurnActor actor, Explosion explosion, int cost)
     {
         _actor = actor;
         _explosion = explosion;
 
         _cost = cost;
+
+        _highlighter = new Highlighter();
     }
 
     public void Execute(GroundTile tile)
@@ -65,13 +71,27 @@ class ExplosionerExecuter
         _explosion.StartCoroutine(Explode(tile));
     }
 
-    IEnumerator Explode(GroundTile tile)
+    IEnumerator Explode(GroundTile centerTile)
     {
+        foreach (var tile in _explosion.GetTilesInRange(centerTile))
+        {
+
+            _highlighter.AddDangerededHighlightable(tile.highlightable);
+
+            if (tile.unit)
+            {
+                _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
+            }
+
+        }
+
         _actor.StartStep(_cost);
         yield return new WaitForSeconds(1f);
-        _explosion.Explode(tile);
-
         _actor.EndStep();
+
+        _highlighter.Unhighlight();
+
+        _explosion.Explode(centerTile);
     }
 
 

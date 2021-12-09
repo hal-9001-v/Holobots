@@ -14,6 +14,9 @@ public class Hunter : Bot, IUtilityAI
 
     UtilityUnit _utilityUnit;
 
+    [SerializeField] List<TeamTag> _enemyTeamMask;
+
+
     [SerializeField] [Range(0, 5)] int _maxRange;
 
     [SerializeField] [Range(0, 5)] float _shootWeight;
@@ -26,7 +29,7 @@ public class Hunter : Bot, IUtilityAI
     DistanceSensor _distanceSensor;
 
     HealthSensor _healthSensor;
-    SightToPlayerUnitSensor _sightSensor;
+    SightSensor _sightSensor;
 
     private void Start()
     {
@@ -53,9 +56,9 @@ public class Hunter : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceSensor(_target,TeamTag.Player, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target,_enemyTeamMask, _mover.pathProfile, _maxRange, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
+        _sightSensor = new SightSensor(_target,_enemyTeamMask, _obstacleLayer, new ThresholdUtilityFunction(0.5f));
 
         ShootAction shootAction = new ShootAction(_shooter, "Shoot",() =>
         {

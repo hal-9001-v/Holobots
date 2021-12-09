@@ -17,6 +17,8 @@ public class RogueAI: Bot, IUtilityAI
 
     [Header("Settings")]
 
+    [SerializeField] List<TeamTag> _enemyTeamMask;
+
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
     [SerializeField] [Range(0, 5)] int _fleeWeight;
@@ -31,7 +33,7 @@ public class RogueAI: Bot, IUtilityAI
     private void Start()
     {
         _actor = GetComponent<TurnActor>();
-
+        
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
         _meleer = GetComponent<Meleer>();
@@ -54,7 +56,7 @@ public class RogueAI: Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _playerUnitDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region MELEE TREE

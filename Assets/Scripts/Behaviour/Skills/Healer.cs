@@ -16,6 +16,7 @@ public class Healer : MonoBehaviour
     [SerializeField] [Range(1, 10)] int _healRange;
     [SerializeField] [Range(1, 5)] int _healCost;
 
+
     public int range
     {
         get
@@ -29,6 +30,7 @@ public class Healer : MonoBehaviour
         _turnActor = GetComponent<TurnActor>();
 
         _executer = new HealerExecuter(_turnActor, _healCost);
+
     }
 
     public void Heal(Target target)
@@ -44,10 +46,15 @@ class HealerExecuter
     TurnActor _actor;
     int _cost;
 
+    Highlighter _highlighter;
+
+
     public HealerExecuter(TurnActor actor, int cost)
     {
         _actor = actor;
         _cost = cost;
+
+        _highlighter = new Highlighter();
     }
 
     public void Execute(Target target, int points)
@@ -59,9 +66,14 @@ class HealerExecuter
     {
         _actor.StartStep(_cost);
 
+        _highlighter.AddHealedHighlightable(target.highlightable);
+        _highlighter.AddHealedHighlightable(target.currentGroundTile.highlightable);
+
         yield return new WaitForSeconds(1);
 
         target.Heal(points);
+
+        _highlighter.Unhighlight();
 
         _actor.EndStep();
     }

@@ -16,6 +16,7 @@ public class FighterAI : Bot, IUtilityAI
     UtilityUnit _utilityUnit;
 
     [Header("Settings")]
+    [SerializeField] List<TeamTag> _enemyMask;
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
@@ -25,7 +26,7 @@ public class FighterAI : Bot, IUtilityAI
     [SerializeField] [Range(0.1f, 3)] float _fleeWeight = 0.1f;
 
     //Sensors
-    DistanceSensor _playerUnitDistanceSensor;
+    DistanceSensor _enemyDistanceSensor;
     HealthSensor _healthSensor;
 
     private void Start()
@@ -54,20 +55,20 @@ public class FighterAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _playerUnitDistanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _enemyDistanceSensor = new DistanceSensor(_target, _enemyMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region FLEE
         FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee", () =>
          {
-             var dangerScore = _playerUnitDistanceSensor.GetScore();
+             var dangerScore = _enemyDistanceSensor.GetScore();
              var healthScore = 1 - _healthSensor.GetScore();
 
              return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
          });
         fleeAction.AddPreparationListener(() =>
         {
-            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+            fleeAction.SetTarget(_enemyDistanceSensor.GetClosestTarget());
         });
 
         _utilityUnit.AddAction(fleeAction);
@@ -92,7 +93,7 @@ public class FighterAI : Bot, IUtilityAI
     {
         BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree", () =>
         {
-            var distValue = _playerUnitDistanceSensor.GetScore();
+            var distValue = _enemyDistanceSensor.GetScore();
             return _meleeWeight * distValue + _meleeWeight;
         });
 
@@ -101,13 +102,13 @@ public class FighterAI : Bot, IUtilityAI
 
         meleeAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             meleeAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _enemyDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
@@ -125,13 +126,13 @@ public class FighterAI : Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _enemyDistanceSensor.GetClosestTarget();
             engageAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _enemyDistanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)

@@ -12,9 +12,13 @@ public class GroupSensor : Sensor
     float _targetTeamSum;
     float _noTargetTeamSum;
 
-    public GroupSensor(TeamTag targetTeam, float targetTeamSum, float noTargetTeamSum, int range, UtilityFunction function) : base(function)
+    List<TeamTag> _unwantedMask;
+
+    public GroupSensor(List<TeamTag> targetMask, List<TeamTag> unwantedMask, float targetTeamSum, float noTargetTeamSum, int range, UtilityFunction function) : base(function, targetMask)
     {
         this.targetTeam = targetTeam;
+
+        _unwantedMask = unwantedMask;
 
         _targetTeamSum = targetTeamSum;
         _noTargetTeamSum = noTargetTeamSum;
@@ -29,15 +33,13 @@ public class GroupSensor : Sensor
         int targetCount = 0;
         int noTargetCount = 0;
 
-        var mask = GetTeamTagMask(targetTeam);
-
         foreach (var target in targets)
         {
-            if (mask.Contains(target.team))
+            if (teamMask.Contains(target.team))
             {
                 targetCount++;
             }
-            else if (target.team != TeamTag.None)
+            else if (_unwantedMask.Contains(target.team))
             {
                 noTargetCount++;
             }
@@ -57,7 +59,7 @@ public class GroupSensor : Sensor
 
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (target.team != TeamTag.None)
+            if (teamMask.Contains(target.team))
             {
                 targets.Add(target);
             }
@@ -91,13 +93,13 @@ public class GroupSensor : Sensor
         return groupedTargets;
     }
 
-    public List<Target> GetGroupedTargetsWithTag(TeamTag tag)
+    public List<Target> GetGroupedTargetsOfTeam(List<TeamTag> teamMask)
     {
         var targets = GetGroupedTargets();
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (targets[i].team != tag)
+            if (!teamMask.Contains(targets[i].team))
             {
                 targets.RemoveAt(i);
 

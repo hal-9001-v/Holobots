@@ -9,6 +9,7 @@ using UnityEngine;
 public class Turret : Bot
 {
     [Header("Settings")]
+    [SerializeField] List<TeamTag> _enemyTeamMask;
     [SerializeField] LayerMask _obstacleLayers;
 
     [SerializeField] [Range(0, 10)] int _maxRange;
@@ -19,7 +20,7 @@ public class Turret : Bot
     Mover _mover;
 
     DistanceSensor _distanceSensor;
-    SightToPlayerUnitSensor _sightSensor;
+    SightSensor _sightSensor;
 
     FSMachine _machine;
 
@@ -41,14 +42,14 @@ public class Turret : Bot
 
     public void InitializeFSM()
     {
-        _distanceSensor = new DistanceSensor(_target, TeamTag.AIorPlayer, _mover.pathProfile, _maxRange, new ThresholdUtilityFunction(1f));
-        _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
+        _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _maxRange, new ThresholdUtilityFunction(1f));
+        _sightSensor = new SightSensor(_target,_enemyTeamMask, _obstacleLayers, new ThresholdUtilityFunction(0.5f));
 
         ShootAction shootAction = new ShootAction(_shooter, "Shoot", () => { return -1; });
 
         shootAction.AddPreparationListener(() =>
         {
-            var targets = _sightSensor.GetTargetsOnSight(TeamTag.AIorPlayer);
+            var targets = _sightSensor.GetTargetsOnSight(_enemyTeamMask);
 
             shootAction.SetTarget(targets[0]);
 
@@ -81,7 +82,7 @@ public class Turret : Bot
 
              if (distanceValue == 1)
              {
-                 var targets = _sightSensor.GetTargetsOnSight(TeamTag.AIorPlayer);
+                 var targets = _sightSensor.GetTargetsOnSight(_enemyTeamMask);
 
                  if (targets.Count != 0)
                  {

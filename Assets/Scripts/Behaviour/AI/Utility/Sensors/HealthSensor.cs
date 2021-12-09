@@ -6,7 +6,7 @@ public class HealthSensor : Sensor
 {
     Target _owner;
 
-    public HealthSensor(Target owner, UtilityFunction function) : base(function)
+    public HealthSensor(Target owner, UtilityFunction function) : base(function, null)
     {
         _owner = owner;
     }

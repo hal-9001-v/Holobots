@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SightToPlayerUnitSensor : Sensor
+public class SightSensor : Sensor
 {
     Target _owner;
 
     LayerMask _obstacleLayers;
 
-    public SightToPlayerUnitSensor(Target owner, LayerMask obstacleLayers, UtilityFunction function) : base(function)
+    public SightSensor(Target owner, List<TeamTag> targetMask, LayerMask obstacleLayers, UtilityFunction function) : base(function, targetMask)
     {
         _owner = owner;
         _obstacleLayers = obstacleLayers;
@@ -55,15 +55,13 @@ public class SightToPlayerUnitSensor : Sensor
 
     }
 
-    public List<Target> GetTargetsOnSight(TeamTag team)
+    public List<Target> GetTargetsOnSight(List<TeamTag> teamMask)
     {
         List<Target> targets = new List<Target>();
 
-        var mask = GetTeamTagMask(team);
-
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (mask.Contains(target.team))
+            if (teamMask.Contains(target.team))
             {
                 if (IsTargetOnSight(target))
                 {

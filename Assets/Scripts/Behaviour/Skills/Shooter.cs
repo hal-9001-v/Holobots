@@ -46,7 +46,7 @@ public class Shooter : MonoBehaviour
         _projectile.SetOwner(_target);
         _projectile.SetDamage(_damage);
 
-        _executer = new ShooterExecuter(_projectile, this, _turnActor, _speed);
+        _executer = new ShooterExecuter(_projectile,_damage, this, _turnActor, _speed);
     }
 
     public void AddShoot(Target target)
@@ -81,10 +81,14 @@ public class ShooterExecuter
 
     float _speed;
 
-    public ShooterExecuter(Projectile projectile, Shooter owner, TurnActor turnActor, float speed)
+    int _damage;
+
+    public ShooterExecuter(Projectile projectile, int damage, Shooter owner, TurnActor turnActor, float speed)
     {
         _projectile = projectile;
         _owner = owner;
+
+        _damage = damage;
 
         _turnActor = turnActor;
 
@@ -122,10 +126,14 @@ public class ShooterExecuter
 
         }
 
+        _highligher.Unhighlight();
+
         _projectile.transform.position = target.transform.position;
+
+        if (_projectile.damagedTarget) _projectile.damagedTarget.Hurt(_damage);
+
         _projectile.DisableProjectile();
 
-        _highligher.Unhighlight();
         _turnActor.EndStep();
     }
 

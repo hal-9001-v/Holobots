@@ -19,6 +19,7 @@ public class RangerAI : Bot, IUtilityAI
 
     [Header("Settings")]
 
+    [SerializeField] List<TeamTag> _enemyTeamMask;
     [SerializeField] LayerMask _obstacleMask;
 
     [Header("Utility")]
@@ -29,10 +30,11 @@ public class RangerAI : Bot, IUtilityAI
     [SerializeField] [Range(0, 5)] float _idleWeight;
 
 
+
     //Sensors
     DistanceSensor _distanceSensor;
     HealthSensor _healthSensor;
-    SightToPlayerUnitSensor _sightSensor;
+    SightSensor _sightSensor;
     GroupSensor _groupSensor;
 
     DistanceSensor _distanceToTankSensor;
@@ -65,12 +67,12 @@ public class RangerAI : Bot, IUtilityAI
         _utilityUnit = new UtilityUnit();
 
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _groupSensor = new GroupSensor(TeamTag.Player, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
-        _distanceSensor = new DistanceSensor(_target, TeamTag.Player, _mover.pathProfile, 6, new LinearUtilityFunction());
+        _groupSensor = new GroupSensor(_enemyTeamMask, new List<TeamTag>() { _target.team }, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, 6, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _sightSensor = new SightToPlayerUnitSensor(_target, _obstacleMask, new ThresholdUtilityFunction(0.9f));
+        _sightSensor = new SightSensor(_target, _enemyTeamMask, _obstacleMask, new ThresholdUtilityFunction(0.9f));
 
-        _distanceToTankSensor = new DistanceSensor(_target, TargetType.Tank, TeamTag.AI, _mover.pathProfile, 4, new ThresholdUtilityFunction(1));
+        _distanceToTankSensor = new DistanceSensor(_target, TargetType.Tank, new List<TeamTag>() { _target.team }, _mover.pathProfile, 4, new ThresholdUtilityFunction(1));
 
         _utilityUnit.AddAction(GetShootTree());
         _utilityUnit.AddAction(GetExplosionerTree());
@@ -147,7 +149,7 @@ public class RangerAI : Bot, IUtilityAI
 
         shootAction.AddPreparationListener(() =>
         {
-            var targets = _sightSensor.GetTargetsOnSight(TeamTag.Player);
+            var targets = _sightSensor.GetTargetsOnSight(_enemyTeamMask);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -192,7 +194,7 @@ public class RangerAI : Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
+            var targets = _groupSensor.GetGroupedTargetsOfTeam(_enemyTeamMask);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -201,7 +203,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(() =>
         {
-            var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
+            var targets = _groupSensor.GetGroupedTargetsOfTeam(_enemyTeamMask);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -230,7 +232,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(() =>
        {
-           var targets = _groupSensor.GetGroupedTargetsWithTag(TeamTag.Player);
+           var targets = _groupSensor.GetGroupedTargetsOfTeam(_enemyTeamMask);
 
            var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 

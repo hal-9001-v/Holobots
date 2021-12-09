@@ -40,7 +40,7 @@ public class GameDirector : MonoBehaviour
         foreach (var team in _teams)
         {
             SequenceNode sequenceNode = new SequenceNode(rootNode);
-            sequenceNode.name = "Turn of: " + team.tag.ToString();
+            sequenceNode.name = "Turn of: " + team.teamTag.ToString();
 
             LeafNode startTurnNode = new LeafNode(sequenceNode, () =>
             {
@@ -50,15 +50,15 @@ public class GameDirector : MonoBehaviour
             startTurnNode.name = "Start turn of";
 
             WaitForTickNode waitforTickNode = new WaitForTickNode(sequenceNode);
-            waitforTickNode.name = "Wait of " + team.tag.ToString();
+            waitforTickNode.name = "Wait of " + team.teamTag.ToString();
 
             LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
             {
-                Debug.Log("End turn of " + team.tag.ToString());
+                Debug.Log("End turn of " + team.teamTag.ToString());
                 TickTree();
                 return true;
             });
-            endTurnNode.name = "End of " + team.tag.ToString();
+            endTurnNode.name = "End of " + team.teamTag.ToString();
         }
     }
 
@@ -102,7 +102,8 @@ public class GameDirector : MonoBehaviour
         _teams = new List<Team>();
 
         _teams.Add(new MobTeam(cameraTarget));
-        _teams.Add(new AITeam(cameraTarget));
+        _teams.Add(new AITeam(cameraTarget, TeamTag.AI));
+        _teams.Add(new AITeam(cameraTarget, TeamTag.AI2));
         _teams.Add(new PlayerTeam(cameraTarget));
 
         foreach (var team in _teams)
@@ -116,7 +117,7 @@ public class GameDirector : MonoBehaviour
         _teamInTurn = team;
         team.StartTurn();
 
-        Debug.Log("Start Turn of " + team);
+        Debug.Log("Start Turn of " + team.teamTag);
     }
 
     public void TeamEndedTurn(Team team)

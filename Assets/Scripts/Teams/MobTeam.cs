@@ -51,11 +51,16 @@ public class MobTeam : Team
 
     void ExecuteBotStep()
     {
-        _botsInTurn[0].ExecuteStep();
-        if(_botsInTurn[0] != null) {
-            _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
-            _cameraFollower.LookAt(_botsInTurn[0].transform.position);
-            _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+        if (_botsInTurn.Count != 0)
+        {
+            if (_botsInTurn[0] != null)
+            {
+                _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
+                _cameraFollower.LookAt(_botsInTurn[0].transform.position);
+                _cameraFollower.FixLookAt(_botsInTurn[0].transform);
+        
+                _botsInTurn[0].ExecuteStep();
+            }
         }
     }
 
@@ -74,9 +79,11 @@ public class MobTeam : Team
         {
             foreach (var actorBot in bots)
             {
-                if (actorBot.actor.teamTag == tag)
+                if (actorBot.actor.teamTag == teamTag)
                 {
                     _bots.Add(actorBot);
+                    actorBot.actor.SetTeam(this);
+
                 }
             }
         }

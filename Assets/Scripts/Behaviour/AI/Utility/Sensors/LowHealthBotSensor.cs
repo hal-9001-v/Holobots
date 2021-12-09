@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LowHealthBotSensor : Sensor
+public class LowHealthSensor : Sensor
 {
     float _threshold;
 
     Target _owner;
 
-    public LowHealthBotSensor(float threshold, UtilityFunction function) : base(function)
+    public LowHealthSensor(List<TeamTag> teamMask, float threshold, UtilityFunction function) : base(function, teamMask)
     {
         SetThreshold(threshold);
     }
@@ -24,13 +24,19 @@ public class LowHealthBotSensor : Sensor
     {
         List<Target> bots = new List<Target>();
 
-        foreach (var bot in GameObject.FindObjectsOfType<Bot>())
+
+
+        foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            float currentHealth = bot.target.currentHealth;
-            float maxHealth = bot.target.maxHealth;
-            if (currentHealth / maxHealth < _threshold)
+            if (teamMask.Contains(target.team))
             {
-                bots.Add(bot.target);
+
+                float currentHealth = target.currentHealth;
+                float maxHealth = target.maxHealth;
+                if (currentHealth / maxHealth < _threshold)
+                {
+                    bots.Add(target);
+                }
             }
         }
 
