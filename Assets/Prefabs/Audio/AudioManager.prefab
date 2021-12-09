@@ -53,8 +53,8 @@ MonoBehaviour:
     time: 0
   - clip: {fileID: 8300000, guid: 8fa0902d77261e9408839bdaeb1c3e3d, type: 3}
     name: TestSelect
-    volume: 0.162
-    pitch: 1
+    volume: 0.579
+    pitch: 3
     loop: 0
     audioSource: {fileID: 0}
     time: 0

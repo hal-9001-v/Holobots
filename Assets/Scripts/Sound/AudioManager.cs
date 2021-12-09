@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Sound: " + name + " not found!");
             return;
         }
-        s.audioSource.Play();
+    if(s.audioSource != null)    s.audioSource.Play();
     }
 
     public void Pause(string name){

@@ -9,7 +9,7 @@ public class LevelLoader : MonoBehaviour
     private  Slider slider;
 
      private Animator loadingAnimator; 
-
+    bool loading;
     private void Awake() {
         
         _loader = FindObjectsOfType<LevelLoader>();
@@ -34,7 +34,8 @@ public class LevelLoader : MonoBehaviour
     }
 
     IEnumerator LoadAsync(int index){
-
+        if(!loading){
+        loading = true;
         loadingAnimator.SetTrigger("Start");
         yield return new WaitForSeconds(2f);
         loadingAnimator.ResetTrigger("Start");
@@ -50,6 +51,8 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds(2f);
         slider.value = 0f;
         loadingAnimator.ResetTrigger("End");
+        loading = false;
+     }
     }
 
 }
