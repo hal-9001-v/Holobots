@@ -31,7 +31,7 @@ public class Explosion : MonoBehaviour
 
         foreach (var tile in tiles)
         {
-            if (tile.unit)
+            if (tile.unit && tile.unit.targetType != TargetType.Ranger)
             {
                 
                 if(tile.unit.currentHealth <=0) tile.unit.dieAction(); 

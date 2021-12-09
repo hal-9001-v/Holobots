@@ -72,14 +72,15 @@ class ExplosionerExecuter
 
     IEnumerator Explode(GroundTile centerTile)
     {
+        
         foreach (var tile in _explosion.GetTilesInRange(centerTile))
         {
 
-            _highlighter.AddDangerededHighlightable(tile.highlightable);
+            //_highlighter.AddDangerededHighlightable(tile.highlightable);
 
             if (tile.unit)
             {
-                _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
+               // _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
             }
 
         }
@@ -90,7 +91,7 @@ class ExplosionerExecuter
         CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
         c.FixLookAt(m.VFXObject.transform);
         yield return new WaitForSeconds(m.GetDuration());
-        _highlighter.Unhighlight();
+        //_highlighter.Unhighlight();
         yield return new WaitForSeconds(1.2f);
 
         _actor.EndStep();

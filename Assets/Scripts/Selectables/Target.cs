@@ -137,7 +137,7 @@ public class Target : MonoBehaviour
 
     void Die()
     {
-        Debug.Log(this.name + " is dead");
+       // Debug.Log(this.name + " is dead");
         StartCoroutine(DieCoroutine());
         DissolvingController d = GetComponent<DissolvingController>();
         if (d != null) StartCoroutine(d.Dissolve());

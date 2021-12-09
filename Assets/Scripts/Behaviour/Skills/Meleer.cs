@@ -87,8 +87,16 @@ class MeleerExecuter
     {
         Debug.Log(_actor.name + " is attacking with melee " + target.name);
 
-        _actor.StartCoroutine(MakeHit(target, damage));
+      if(target.currentHealth > 0)  _actor.StartCoroutine(MakeHit(target, damage));
+      else {
+
+          _actor.StartStep(_cost);
+          _actor.EndStep();
+
+      }
     }
+
+    
 
     IEnumerator MakeHit(Target target, int damage)
     {

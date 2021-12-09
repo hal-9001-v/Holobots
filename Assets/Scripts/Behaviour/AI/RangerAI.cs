@@ -175,6 +175,7 @@ public class RangerAI : Bot, IUtilityAI
     {
         BehaviourTreeAction explosionerTree = new BehaviourTreeAction("Explosion Tree", () =>
          {
+             
              var explosionValue = _groupSensor.GetScore();
 
              if (explosionValue >= 1)
