@@ -45,9 +45,11 @@ public class Highlightable : MonoBehaviour
     [ContextMenu("Unhightlight")]
     public void Unhighlight()
     {
+            Debug.Log("Unhiglight" );
         for (int i = 0; i < _renderers.Length; i++)
         {
-            _renderers[i].material = _originalMaterials[i];
+         if(_renderers[i].material != null) _renderers[i].material = _originalMaterials[i];
+            Debug.Log("Unhiglight" + _renderers[i].material);
         }
     }
 

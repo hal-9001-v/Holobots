@@ -30,7 +30,7 @@ public class IsOnTouchDevice : MonoBehaviour
 
         else {
 
-            Debug.Log("Desktop!");
+//            Debug.Log("Desktop!");
             foreach(GameObject go in DesktopArray){
 
                 go.SetActive(true);

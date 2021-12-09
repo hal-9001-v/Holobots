@@ -106,9 +106,8 @@ class MeleerExecuter
 
         _highlighter.Unhighlight();
         if(target.currentHealth - damage <= 0){
-            target.Hurt(damage);
+        if(target!=null)   target.Hurt(damage);
             yield return new WaitForSeconds(2f);
-
         }  
       _actor.EndStep();
 

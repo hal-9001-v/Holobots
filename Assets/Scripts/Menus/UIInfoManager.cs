@@ -61,12 +61,12 @@ public class UIInfoManager : MonoBehaviour
                 _currentSprite.sprite = _portraitSprites[4];
 
             break;
-            case TargetType.Turret:
+            case TargetType.Kamikaze:
                 _unitName.text = "K4M1K4Z3" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[4];
 
             break;
-            case TargetType.Kamikaze:
+            case TargetType.Turret:
                 _unitName.text = "TURR3T" + currentUnitTarget.targetCode;
                 _currentSprite.sprite = _portraitSprites[4];
 

@@ -54,7 +54,7 @@ public class GameDirector : MonoBehaviour
 
             LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
             {
-                Debug.Log("End turn of " + team.teamTag.ToString());
+//                Debug.Log("End turn of " + team.teamTag.ToString());
                 TickTree();
                 return true;
             });
@@ -117,7 +117,7 @@ public class GameDirector : MonoBehaviour
         _teamInTurn = team;
         team.StartTurn();
 
-        Debug.Log("Start Turn of " + team.teamTag);
+//        Debug.Log("Start Turn of " + team.teamTag);
     }
 
     public void TeamEndedTurn(Team team)
