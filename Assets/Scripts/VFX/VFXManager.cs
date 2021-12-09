@@ -44,7 +44,7 @@ public class VFXManager : MonoBehaviour
 
     public float GetDuration(){
         
-        Debug.Log(VFXObject.GetFloat("Duration"));
+//        Debug.Log(VFXObject.GetFloat("Duration"));
         
         return VFXObject.GetFloat("Duration") + 1f;
 

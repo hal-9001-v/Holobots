@@ -13,10 +13,9 @@ public class SkinnedMeshToMesh : MonoBehaviour
     }
 
     private void Update() {
-        StartCoroutine(UpdateVFXGraph());
     }
 
-    IEnumerator UpdateVFXGraph(){
+    public IEnumerator UpdateVFXGraph(){
 
         while(gameObject.activeSelf){
             

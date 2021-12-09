@@ -94,7 +94,7 @@ public class TurnActor : MonoBehaviour
             currentTurnPoints = 0;
         }
 
-        Debug.Log(name + " starting step. Remaining turn points: " + currentTurnPoints);
+//        Debug.Log(name + " starting step. Remaining turn points: " + currentTurnPoints);
         _team.ActorStartedStep(this);
 
     }

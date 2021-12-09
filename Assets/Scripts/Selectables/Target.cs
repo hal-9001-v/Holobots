@@ -135,14 +135,16 @@ public class Target : MonoBehaviour
 
    void Die()
     {
+        Debug.Log(this.name + " is dead");
         StartCoroutine(DieCoroutine());
-       // StartCoroutine(GetComponent<DissolvingController>().Dissolve());
+        DissolvingController d = GetComponent<DissolvingController>();
+        if(d !=null)  StartCoroutine(d.Dissolve());
     }
 
     public IEnumerator DieCoroutine(){
         CameraMovement c = FindObjectOfType<CameraMovement>();
         c.FixLookAt(this.transform);
-        yield return new WaitForSeconds(FindObjectOfType<VFXManager>().GetDuration());
+        yield return new WaitForSeconds(2);
         if (dieAction != null)
                 {
                     dieAction.Invoke();
