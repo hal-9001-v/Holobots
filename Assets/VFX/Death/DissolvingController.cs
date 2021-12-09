@@ -43,7 +43,6 @@ public class DissolvingController : MonoBehaviour
    
     public IEnumerator Dissolve(){
     
-            Debug.Log("jaja");
         if(anim!=null){
             
             //Play Death Anim

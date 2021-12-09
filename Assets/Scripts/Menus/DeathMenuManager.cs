@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class DeathMenuManager : MonoBehaviour
 {
 
     private LevelLoader _levelLoader;
-    [SerializeField] private Button _returnToMenu;
     [SerializeField] private Button _continue;
     [SerializeField] private Button _quit;
 
@@ -27,6 +27,7 @@ public class DeathMenuManager : MonoBehaviour
      }
 
     private void Awake() {
+        
         _levelLoader = FindObjectOfType<LevelLoader>();
 
             _continue.onClick.AddListener(() =>
@@ -38,35 +39,27 @@ public class DeathMenuManager : MonoBehaviour
         {
             Application.Quit();
         });
-       _returnToMenu.onClick.AddListener(() =>
-        {
-            ReturnToMenu();
-        });
+     
     }
     
-
+private void Start() {
+  
+}
     private void Continue(){
 
-        if(_points > 0) {
+       
+              Resources.UnloadUnusedAssets();
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
 
-            NextLevel();
-
-        } else RestartLevel();
-        
     }
     private void NextLevel(){}
 
-    private void RestartLevel(){}
+    private void RestartLevel(){
+
+  
+    }
 
     
-    private void ReturnToMenu(){
-       
-        Time.timeScale = 1f;
-        _levelLoader.LoadLevel(0);
-
-
-
-    }
 
     public void UpdatePointsGUI(){
 

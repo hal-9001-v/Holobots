@@ -25,6 +25,6 @@ public class GridLine : MonoBehaviour
     }
 
     public void HideLine() {
-        _line.positionCount = 0;
+        if(_line != null) _line.positionCount = 0;
     }
 }

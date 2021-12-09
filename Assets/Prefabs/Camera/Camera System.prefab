@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _range: 100
+  confirm: {fileID: 0}
 --- !u!114 &7034239778695269444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,6 +441,7 @@ MonoBehaviour:
   _camera: {fileID: 7034239778695269441}
   _virtualCamera: {fileID: 7034239779227418530}
   _cameraLimiters: []
+  _followRigidbody: {fileID: 7034239779587648635}
   _rotationSpeed: 250
   _movementSpeed: 5
   _fovChange: 1

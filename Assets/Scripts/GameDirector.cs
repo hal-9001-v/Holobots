@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class GameDirector : MonoBehaviour
 {
     List<Team> _teams;
@@ -11,6 +11,9 @@ public class GameDirector : MonoBehaviour
 
     Team _teamInTurn;
     [SerializeField] Transform cameraTarget;
+
+    [SerializeField] TextMeshProUGUI winningtext;
+    
     enum GameStates
     {
         Intro,
@@ -19,7 +22,7 @@ public class GameDirector : MonoBehaviour
         EndGame
     }
 
-
+    
     private void Start()
     {
         CreateTeams();
@@ -126,7 +129,9 @@ public class GameDirector : MonoBehaviour
 
             if (_teams.Count == 1)
             {
-                Debug.Log("End Game, winner: "+ _teams[0].teamTag);
+
+                winningtext.text = "End Game, winner: " +  _teams[0].teamTag;
+                FindObjectOfType<DeathMenuManager>().GetComponent<Animator>().SetTrigger("Start");
             }
         }
 
