@@ -19,6 +19,7 @@ public class GameDirector : MonoBehaviour
         EndGame
     }
 
+
     private void Start()
     {
         CreateTeams();
@@ -54,7 +55,7 @@ public class GameDirector : MonoBehaviour
 
             LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
             {
-                Debug.Log("End turn of " + team.teamTag.ToString());
+//                Debug.Log("End turn of " + team.teamTag.ToString());
                 TickTree();
                 return true;
             });
@@ -115,9 +116,22 @@ public class GameDirector : MonoBehaviour
     void StartTeamTurn(Team team)
     {
         _teamInTurn = team;
-        team.StartTurn();
+        if (team.StartTurn())
+        {
+            Debug.Log("Start Turn of " + team.teamTag);
+        }
+        else
+        {
+            _teams.Remove(team);
 
-        Debug.Log("Start Turn of " + team.teamTag);
+            if (_teams.Count == 1)
+            {
+                Debug.Log("End Game, winner: "+ _teams[0].teamTag);
+            }
+        }
+
+
+
     }
 
     public void TeamEndedTurn(Team team)

@@ -25,7 +25,7 @@ public class Explosion : MonoBehaviour
 
     public void Explode(GroundTile centerTile)
     {
-        Debug.Log("Explosion in " + centerTile.name + " with a range of " + _range);
+//        Debug.Log("Explosion in " + centerTile.name + " with a range of " + _range);
 
         var tiles = _ground.GetTilesInRange(centerTile, _range);
 
@@ -33,7 +33,9 @@ public class Explosion : MonoBehaviour
         {
             if (tile.unit)
             {
-                tile.unit.Hurt(_damage);
+                
+                if(tile.unit.currentHealth <=0) tile.unit.dieAction(); 
+                else tile.unit.Hurt(_damage);
             }
         }
     }

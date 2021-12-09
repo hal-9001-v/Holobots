@@ -12,7 +12,8 @@ public class DissolvingController : MonoBehaviour
     public float refreshRate = 0.05f;
 
     private List<Material> dissolveMaterials;
-
+    
+    public SkinnedMeshToMesh s;
 
     private void Awake() {
        
@@ -49,9 +50,9 @@ public class DissolvingController : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
 
             
-            VFXManager v = FindObjectOfType<VFXManager>();
-            v.Play("Die", this.gameObject.transform);
-
+           // VFXManager v = FindObjectOfType<VFXManager>();
+        //    v.Play("Die", this.gameObject.transform);
+         //  if(s!=null) s.VFXGraph = v.VFXObject;
 
             float counter = 0;
 
@@ -62,6 +63,8 @@ public class DissolvingController : MonoBehaviour
                     counter += dissolveRate;
 
                     for(int i = 0; i<dissolveMaterials.Count; i++) {
+                        
+                        //if(s!=null) StartCoroutine(s.UpdateVFXGraph());
                         dissolveMaterials[i].SetFloat("_DissolveAmount",counter); 
                     }
                     yield return new WaitForSeconds(refreshRate);
