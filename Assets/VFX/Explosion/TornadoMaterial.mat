@@ -32,12 +32,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Dissolve: 0.862
+    - _Dissolve: 0.809
     - _NoisePower: 1
     - _NoiseScale: 20
     - _TwirlAmount: 7.9
+    - _WobbleAmount: 0.066
+    - _WobbleFrequency: 1
+    - _WobbleIntesity: 1
+    - _WobbleSpeed: 1
     m_Colors:
-    - _Color: {r: 44.727043, g: 20.138878, b: 6.791017, a: 1}
+    - _Color: {r: 5.5908823, g: 2.5173607, b: 0.84887743, a: 1}
     - _NoiseSpeed: {r: 0, g: 0.5, b: 0, a: 0}
     - _TwirlCenter: {r: 0.5, g: -0.5, b: 0, a: 0}
     - _TwirlSpeed: {r: 0, g: 0.5, b: 0, a: 0}
