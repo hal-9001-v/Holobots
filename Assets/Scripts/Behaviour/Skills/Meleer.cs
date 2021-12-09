@@ -44,7 +44,7 @@ public class Meleer : MonoBehaviour
                 break;
             }
         }
-
+        if(damage == 0 ) Debug.LogWarning("Nodamage");
         _executer.Execute(target, damage);
     }
 
