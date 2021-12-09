@@ -15,10 +15,10 @@ public class MobTeam : Team
         _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
 
-        UpdateTeam();
         _cameraTarget = target;
         _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
         _cameraFollower = GameObject.FindObjectOfType<CameraMovement>();
+        UpdateTeam();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
@@ -54,18 +54,20 @@ public class MobTeam : Team
         if (_botsInTurn.Count != 0)
         {
             if (_botsInTurn[0] != null)
-            {
+          {
                 _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
+                    GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_botsInTurn[0].target.gameObject);
                 _cameraFollower.LookAt(_botsInTurn[0].transform.position);
-                _cameraFollower.FixLookAtC(_botsInTurn[0].transform);
+                _cameraFollower.FixLookAt(_botsInTurn[0].transform);
         
                 _botsInTurn[0].ExecuteStep();
-            }
+          }
         }
     }
 
     void BotEndedStep(TurnActor actor)
     {
+        
         ExecuteBotStep();
     }
 
@@ -120,5 +122,6 @@ public class MobTeam : Team
 
     public override void ActorStartedStep(TurnActor actor)
     {
+
     }
 }

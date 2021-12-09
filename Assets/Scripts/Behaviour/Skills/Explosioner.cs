@@ -20,7 +20,7 @@ public class Explosioner : MonoBehaviour
             return _explosion.range;
         }
     }
-
+    
     public int exploderRange
     {
         get

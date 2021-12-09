@@ -69,7 +69,7 @@ public class TurnActor : MonoBehaviour
     public void StartTurn()
     {
         currentTurnPoints = maxTurnPoints;
-
+        
         if (_startTurnCallback != null)
         {
             _startTurnCallback.Invoke();

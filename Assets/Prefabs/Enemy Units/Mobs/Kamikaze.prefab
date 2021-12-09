@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f1d0a8e746dc3409e3334902735691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dangerMaterial: {fileID: 0}
-  _healMaterial: {fileID: 0}
+  _dangerMaterial: {fileID: 2100000, guid: 02c376fa18b77814fb20c868c09fb02c, type: 2}
+  _healMaterial: {fileID: 2100000, guid: f16693bebbf72424681c9825d3f22bd3, type: 2}
 --- !u!114 &1815672251607148768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd054bbdd5edc344ba43056ad785564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rotationSpeed: 0
   _enemyTeamMask: 000000000100000002000000
   _detectionRange: 4
   _roamRange: 3

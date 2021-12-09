@@ -7,7 +7,6 @@ public class DissolvingController : MonoBehaviour
    [SerializeField]Animator anim;
    [SerializeField] SkinnedMeshRenderer skinnedMesh;
    [SerializeField] MeshRenderer[] meshes;
-    [SerializeField] public VisualEffect VFXGraph;
 
     public float dissolveRate =  0.02f;
     public float refreshRate = 0.05f;
@@ -16,12 +15,7 @@ public class DissolvingController : MonoBehaviour
 
 
     private void Awake() {
-        
-        if(VFXGraph != null) {
-
-            VFXGraph.gameObject.SetActive(false);
-
-        }
+       
 
         dissolveMaterials = new List<Material>();
         if(skinnedMesh!=null) {
@@ -48,19 +42,18 @@ public class DissolvingController : MonoBehaviour
    
     public IEnumerator Dissolve(){
     
+            Debug.Log("jaja");
         if(anim!=null){
             
             //Play Death Anim
             yield return new WaitForSeconds(0.2f);
-            if(VFXGraph!=null){
 
-                VFXGraph.gameObject.SetActive(true);
-                VFXGraph.Play();
+            
+            VFXManager v = FindObjectOfType<VFXManager>();
+            v.Play("Die", this.gameObject.transform);
 
-            }
 
             float counter = 0;
-
 
             if(dissolveMaterials.Count > 0) {
                 
@@ -77,7 +70,6 @@ public class DissolvingController : MonoBehaviour
             }
 
         }
-        Destroy(gameObject,1);
     }
 
 }

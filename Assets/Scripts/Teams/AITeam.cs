@@ -55,6 +55,7 @@ public class AITeam : Team
         if (_botsInTurn.Count != 0)
         {
             _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
+            GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_botsInTurn[0].target.gameObject);
             _cameraFollower.LookAt(_botsInTurn[0].transform.position);
             _cameraFollower.FixLookAt(_botsInTurn[0].transform);
 

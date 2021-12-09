@@ -84,6 +84,7 @@ public class PlayerTeam : Team
     void SelectNextUnit()
     {
         SelectUnit(_unitIndex + 1);
+
     }
 
     void SelectUnit(int index)
@@ -103,6 +104,8 @@ public class PlayerTeam : Team
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
             _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
             _uiInfo.currentUnitTarget = _actorsInTurn[_unitIndex].GetTargetType();
+            GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
+
         }
     }
 
@@ -116,6 +119,8 @@ public class PlayerTeam : Team
 
     public override void ActorStartedStep(TurnActor actor)
     {
+        GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
+
         _cameraMovement.FixLookAtC(_actorsInTurn[_unitIndex].transform);
         _skillSelector.Hide();
 

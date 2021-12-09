@@ -26,7 +26,7 @@ public class VFXManager : MonoBehaviour
         VFX v = Array.Find(VFXs, vfx => vfx.vfxName == searchName);
         if(v==null) {
 
-            Debug.LogWarning("Sound: " + searchName + " not found!");
+            Debug.LogWarning("VFX: " + searchName + " not found!");
             return;
         }
         RealPlay(v, target);
@@ -35,8 +35,7 @@ public class VFXManager : MonoBehaviour
     private void RealPlay(VFX v, Transform target){
 
         v.vfxObject = VFXObject;
-        v.positionOffset += target.position;
-        v.vfxObject.transform.position = v.positionOffset;
+        v.vfxObject.transform.position = v.positionOffset + target.position;
         v.vfxObject.playRate = v.rate;
         v.vfxObject.transform.localScale= v.scale;
         v.vfxObject.visualEffectAsset = v.vfx;
@@ -51,5 +50,6 @@ public class VFXManager : MonoBehaviour
 
     }
 
+    
  
 }

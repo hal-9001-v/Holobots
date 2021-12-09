@@ -136,14 +136,13 @@ public class Target : MonoBehaviour
    void Die()
     {
         StartCoroutine(DieCoroutine());
-        //StartCoroutine(GetComponent<DissolvingController>().Dissolve());
+       // StartCoroutine(GetComponent<DissolvingController>().Dissolve());
     }
 
     public IEnumerator DieCoroutine(){
-
-        //yield return new WaitForSeconds(GetComponent<DissolvingController>().VFXGraph.GetFloat("Duration")+2f);
-        yield return new WaitForSeconds(0.1f);
-        Debug.Log("Hey");
+        CameraMovement c = FindObjectOfType<CameraMovement>();
+        c.FixLookAt(this.transform);
+        yield return new WaitForSeconds(FindObjectOfType<VFXManager>().GetDuration());
         if (dieAction != null)
                 {
                     dieAction.Invoke();
@@ -151,8 +150,8 @@ public class Target : MonoBehaviour
 
                 if (currentGroundTile != null)
                     currentGroundTile.FreeUnit();
-        DestroyImmediate(this);
-    }
+        DestroyImmediate(gameObject);
+    }   
     void DisplayStats()
     {
         if (_healthMesh)

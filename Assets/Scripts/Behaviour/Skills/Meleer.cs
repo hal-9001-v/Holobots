@@ -105,8 +105,12 @@ class MeleerExecuter
         yield return new WaitForSeconds(v.GetDuration()-1.5f);
 
         _highlighter.Unhighlight();
-        target.Hurt(damage);
+        if(target.currentHealth - damage <= 0){
+            target.Hurt(damage);
+            yield return new WaitForSeconds(2f);
 
-        _actor.EndStep();
+        }  
+      _actor.EndStep();
+
     }
 }
