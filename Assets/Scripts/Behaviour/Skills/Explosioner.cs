@@ -89,11 +89,14 @@ class ExplosionerExecuter
         m.Play("Explosion", centerTile.transform);
         CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
         c.FixLookAt(m.VFXObject.transform);
+        
+        yield return new WaitForSeconds(0.5f);
+        _highlighter.Unhighlight();
+      
         yield return new WaitForSeconds(m.GetDuration() + 1.2f);
 
         _actor.EndStep();
 
-        _highlighter.Unhighlight();
 
         _explosion.Explode(centerTile);
 
