@@ -27,7 +27,7 @@ public class RogueAI: Bot, IUtilityAI
     [SerializeField] [Range(0.1f, 1)] float _idleWeight = 0.1f;
 
     //Sensors
-    DistanceSensor _playerUnitDistanceSensor;
+    DistanceSensor _distanceSensor;
     HealthSensor _healthSensor;
 
     private void Start()
@@ -56,13 +56,13 @@ public class RogueAI: Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _playerUnitDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region MELEE TREE
         BehaviourTreeAction meleeTree = new BehaviourTreeAction("Melee Tree",() =>
         {
-            var distValue = _playerUnitDistanceSensor.GetScore();
+            var distValue = _distanceSensor.GetScore();
             return _meleeWeight * distValue;
         });
 
@@ -70,13 +70,13 @@ public class RogueAI: Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _distanceSensor.GetClosestTarget();
             engageAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _distanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance > _meleer.meleeRange)
@@ -92,13 +92,13 @@ public class RogueAI: Bot, IUtilityAI
 
         meleeAction.AddPreparationListener(() =>
         {
-            var target = _playerUnitDistanceSensor.GetClosestTarget();
+            var target = _distanceSensor.GetClosestTarget();
             meleeAction.SetTarget(target);
         });
 
         meleeTree.AddAction(() =>
         {
-            var closestTarget = _playerUnitDistanceSensor.GetClosestTarget();
+            var closestTarget = _distanceSensor.GetClosestTarget();
             int distance = _mover.DistanceToTarget(closestTarget.currentGroundTile);
 
             if (distance <= _meleer.meleeRange)
@@ -118,14 +118,14 @@ public class RogueAI: Bot, IUtilityAI
         #region FLEE
         FleeAction fleeAction = new FleeAction(_mover, _mover.pathProfile, "Flee",() =>
         {
-            var dangerScore = _playerUnitDistanceSensor.GetScore();
+            var dangerScore = _distanceSensor.GetScore();
             var healthScore = 1 - _healthSensor.GetScore();
 
             return (dangerScore * 0.2f + healthScore * 0.8f) * _fleeWeight;
         });
         fleeAction.AddPreparationListener(() =>
         {
-            fleeAction.SetTarget(_playerUnitDistanceSensor.GetClosestTarget());
+            fleeAction.SetTarget(_distanceSensor.GetClosestTarget());
         });
 
         _utilityUnit.AddAction(fleeAction);

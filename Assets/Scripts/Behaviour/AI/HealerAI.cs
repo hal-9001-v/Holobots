@@ -14,7 +14,6 @@ public class HealerAI : Bot, IUtilityAI
     Meleer _meleer;
 
     Target _target;
-    Target _selectedTarget;
 
     UtilityUnit _utilityUnit;
 
