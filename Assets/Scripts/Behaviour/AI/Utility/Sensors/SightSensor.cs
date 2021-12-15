@@ -8,10 +8,17 @@ public class SightSensor : Sensor
 
     LayerMask _obstacleLayers;
 
+    GameDirector _gameDirector;
+
+    List<TeamTag> _enemyMask;
+
     public SightSensor(Target owner, List<TeamTag> targetMask, LayerMask obstacleLayers, UtilityFunction function) : base(function, targetMask)
     {
         _owner = owner;
         _obstacleLayers = obstacleLayers;
+        _enemyMask = targetMask;
+
+        _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
     public override float GetScore()
@@ -22,14 +29,14 @@ public class SightSensor : Sensor
 
     Score GetTotalOnSight()
     {
-        var units = GameObject.FindObjectsOfType<PlayerUnit>();
+        var units = _gameDirector.GetTargetsOfTeams(_enemyMask);
 
-        var maxScore = units.Length;
+        var maxScore = units.Count;
         int score = 0;
 
         foreach (var unit in units)
         {
-            if (IsTargetOnSight(unit.target))
+            if (IsTargetOnSight(unit))
             {
                 score++;
             }
@@ -57,16 +64,14 @@ public class SightSensor : Sensor
 
     public List<Target> GetTargetsOnSight(List<TeamTag> teamMask)
     {
-        List<Target> targets = new List<Target>();
+        List<Target> targets = _gameDirector.GetTargetsOfTeams(teamMask);
 
-        foreach (var target in GameObject.FindObjectsOfType<Target>())
+        for (int i = 0; i < targets.Count; i++)
         {
-            if (teamMask.Contains(target.team))
+            if (IsTargetOnSight(targets[i]) == false)
             {
-                if (IsTargetOnSight(target))
-                {
-                    targets.Add(target);
-                }
+                targets.RemoveAt(i);
+                i--;
             }
         }
 

@@ -10,31 +10,30 @@ public class PlayerTeam : Team
 {
     InputMapContainer _inputContainer;
 
-    CameraMovement _cameraMovement;
-
     SkillSelector _skillSelector;
 
     private Transform _cameraTarget;
     private UIInfoManager _uiInfo;
-     
+
     int _unitIndex;
-    public PlayerTeam(Transform target) : base(TeamTag.Player)
+    public PlayerTeam(Transform target, List<TeamTag> enemyTags) : base(TeamTag.Player, enemyTags)
     {
         _inputContainer = GameObject.FindObjectOfType<InputMapContainer>();
-        _cameraMovement = GameObject.FindObjectOfType<CameraMovement>();
+
         _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
         _cameraTarget = target;
         _skillSelector = GameObject.FindObjectOfType<SkillSelector>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
-            _inputContainer.inputMap.Game.NextUnit.Enable();
-            _inputContainer.inputMap.Game.EndTurn.Enable();
-            _inputContainer.inputMap.Game.SelectAbility1.Enable();
-            _inputContainer.inputMap.Game.SelectAbility2.Enable();
-            _inputContainer.inputMap.Game.SelectAbility3.Enable();
-            _inputContainer.inputMap.Game.SelectAbility4.Enable();
+        _inputContainer.inputMap.Game.NextUnit.Enable();
+        _inputContainer.inputMap.Game.EndTurn.Enable();
+        _inputContainer.inputMap.Game.SelectAbility1.Enable();
+        _inputContainer.inputMap.Game.SelectAbility2.Enable();
+        _inputContainer.inputMap.Game.SelectAbility3.Enable();
+        _inputContainer.inputMap.Game.SelectAbility4.Enable();
+
         _inputContainer.inputMap.Game.NextUnit.performed += ctx =>
-        {   
+        {
             SelectNextUnit();
         };
 
@@ -42,20 +41,24 @@ public class PlayerTeam : Team
         {
             EndTurn();
         };
-        _inputContainer.inputMap.Game.SelectAbility1.performed += ctx => {
+        _inputContainer.inputMap.Game.SelectAbility1.performed += ctx =>
+        {
 
             _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[0]);
 
         };
-         _inputContainer.inputMap.Game.SelectAbility2.performed += ctx => {
+        _inputContainer.inputMap.Game.SelectAbility2.performed += ctx =>
+        {
 
             _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[1]);
 
-        }; _inputContainer.inputMap.Game.SelectAbility3.performed += ctx => {
+        }; _inputContainer.inputMap.Game.SelectAbility3.performed += ctx =>
+        {
 
             _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[2]);
 
-        }; _inputContainer.inputMap.Game.SelectAbility4.performed += ctx => {
+        }; _inputContainer.inputMap.Game.SelectAbility4.performed += ctx =>
+        {
 
             _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[3]);
 
@@ -64,11 +67,17 @@ public class PlayerTeam : Team
 
     public override bool StartTurn()
     {
-        _cameraMovement.FixLookAt(_cameraTarget);
-        base.StartTurn();
-        SelectUnit(0);
+        UpdateUnits();
 
-        return true;
+        if (base.StartTurn())
+        {
+            _cameraMovement.FixLookAt(_cameraTarget);
+            SelectUnit(0);
+
+            return true;
+        }
+
+        return false;
     }
 
     public override void EndTurn()
@@ -77,11 +86,42 @@ public class PlayerTeam : Team
         _skillSelector.Hide();
     }
 
+    void UpdateUnits()
+    {
+        for (int i = 0; i < actors.Count; i++)
+        {
+            if (actors[i].target.isAlive == false)
+            {
+                if (_actorsInTurn.Contains(actors[i]))
+                {
+                    _actorsInTurn.Remove(actors[i]);
+                }
+
+                actors.RemoveAt(i);
+
+            }
+        }
+    }
+
     public override void ActorFinishedTurn(TurnActor actor)
     {
-        _cameraMovement.FixLookAt(_cameraTarget);
-        base.ActorFinishedTurn(actor);
-        SelectUnit(0);
+        if (_actorsInTurn.Contains(actor))
+        {
+            _actorsInTurn.Remove(actor);
+
+            UpdateUnits();
+
+            if (_actorsInTurn.Count == 0)
+            {
+                EndTurn();
+            }
+            else
+            {
+                SelectUnit(0);
+                _cameraMovement.FixLookAt(_cameraTarget);
+            }
+        }
+
     }
 
     // Start is called before the first frame update
@@ -89,7 +129,6 @@ public class PlayerTeam : Team
     void SelectNextUnit()
     {
         SelectUnit(_unitIndex + 1);
-
     }
 
     void SelectUnit(int index)
@@ -108,8 +147,8 @@ public class PlayerTeam : Team
             _unitIndex = index;
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
             _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
-            _uiInfo.currentUnitTarget = _actorsInTurn[_unitIndex].GetTargetType();
-            GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
+            _uiInfo.currentUnitTarget = _actorsInTurn[_unitIndex].target;
+            GameObject.FindObjectOfType<SelectionArrow>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
 
         }
     }
@@ -117,17 +156,23 @@ public class PlayerTeam : Team
     public override void ActorFinishedStep(TurnActor actor)
     {
         _cameraMovement.FixLookAt(_cameraTarget);
-        SelectUnit(0);
-    
 
+        UpdateUnits();
+
+        SelectUnit(_unitIndex);
     }
 
     public override void ActorStartedStep(TurnActor actor)
     {
-        GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
+        GameObject.FindObjectOfType<SelectionArrow>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
 
         _cameraMovement.FixLookAtC(_actorsInTurn[_unitIndex].transform);
         _skillSelector.Hide();
 
+    }
+
+    protected override void ExecuteNextStep()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -15,6 +15,11 @@ public class SelfExplosion : MonoBehaviour
 
     Highlighter _highlighter;
 
+    GameDirector _gameDirector;
+
+    VFXManager _vfxManager;
+    CameraMovement _cameraMovement;
+
     public int range
     {
         get
@@ -33,16 +38,22 @@ public class SelfExplosion : MonoBehaviour
         _ground = FindObjectOfType<Ground>();
 
         _highlighter = new Highlighter();
+
+        _vfxManager = FindObjectOfType<VFXManager>();
+        _cameraMovement = FindObjectOfType<CameraMovement>();
+
+        _gameDirector = FindObjectOfType<GameDirector>();
     }
 
     public void Explode()
     {
+        Debug.Log(name + " selfdestructed");
         StartCoroutine(Explosion());
     }
 
     IEnumerator Explosion()
     {
-        _actor.StartStep(1);
+        _actor.StartStep(int.MaxValue);
         var tiles = GetTilesInRange(_target.currentGroundTile);
         foreach (var tile in tiles)
         {
@@ -56,22 +67,29 @@ public class SelfExplosion : MonoBehaviour
 
         }
 
-        VFXManager m = GameObject.FindObjectOfType<VFXManager>();
-        m.Play("Explosion", _target.currentGroundTile.transform);
-        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
-        c.FixLookAt(m.VFXObject.transform);
-        yield return new WaitForSeconds(m.GetDuration() + 1.2f);
+        _vfxManager.Play("Explosion", _target.currentGroundTile.transform);
+
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
+
+
+        yield return new WaitForSeconds(_vfxManager.GetDuration());
+
         _highlighter.Unhighlight();
 
         foreach (var tile in tiles)
         {
             if (tile.unit && tile.unit != _target)
             {
+                Debug.Log(tile.unit.name);
                 tile.unit.Hurt(_damage);
             }
         }
+        
+        yield return new WaitForSeconds(1);
 
         _target.Hurt(int.MaxValue);
+        
+        _actor.EndStep();
     }
 
     public List<GroundTile> GetTilesInRange(GroundTile centerTile)

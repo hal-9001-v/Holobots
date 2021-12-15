@@ -28,7 +28,7 @@ public class LowHealthSensor : Sensor
 
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (teamMask.Contains(target.team))
+            if (teamMask.Contains(target.teamTag))
             {
 
                 float currentHealth = target.currentHealth;

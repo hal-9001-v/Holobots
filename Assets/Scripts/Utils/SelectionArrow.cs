@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public  class SelectionArrowScript : MonoBehaviour
+public  class SelectionArrow : MonoBehaviour
 {
     
     [SerializeField] GameObject arrow;

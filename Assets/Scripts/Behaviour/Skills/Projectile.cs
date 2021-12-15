@@ -65,7 +65,7 @@ public class Projectile : MonoBehaviour
 
         var target = other.GetComponent<Target>();
 
-        if (target && target.team != _owner.team)
+        if (target && target.teamTag != _owner.teamTag)
         {
             damagedTarget = target;
 

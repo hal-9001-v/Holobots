@@ -7,24 +7,19 @@ public class AITeam : Team
     List<Bot> _bots;
     List<Bot> _botsInTurn;
 
-    private CameraMovement _cameraFollower;
     private Transform _cameraTarget;
     private UIInfoManager _uiInfo;
-    public AITeam(Transform target, TeamTag tag) : base(tag)
+    public AITeam(Transform target, TeamTag tag, List<TeamTag> enemyTags) : base(tag, enemyTags)
     {
-        _bots = new List<Bot>();
         _botsInTurn = new List<Bot>();
         _cameraTarget = target;
         _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
-        _cameraFollower = GameObject.FindObjectOfType<CameraMovement>();
-        UpdateTeam();
+
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
     public override bool StartTurn()
     {
-        UpdateTeam();
-
         _botsInTurn.Clear();
 
         foreach (var bot in _bots)
@@ -39,7 +34,7 @@ public class AITeam : Team
 
         if (_botsInTurn.Count != 0)
         {
-            ExecuteBotStep();
+            ExecuteNextStep();
 
             return true;
         }
@@ -50,36 +45,40 @@ public class AITeam : Team
         }
     }
 
-    void ExecuteBotStep()
+    protected override void ExecuteNextStep()
     {
         if (_botsInTurn.Count != 0)
         {
-            _uiInfo.currentUnitTarget = (_botsInTurn[0].target);
-            GameObject.FindObjectOfType<SelectionArrowScript>().SetPosition(_botsInTurn[0].target.gameObject);
-            _cameraFollower.LookAt(_botsInTurn[0].transform.position);
-            _cameraFollower.FixLookAt(_botsInTurn[0].transform);
-
+            SetTargetOfCamera(_botsInTurn[0].target);
             _botsInTurn[0].ExecuteStep();
         }
     }
 
-    void BotEndedStep(TurnActor actor)
-    {
-        ExecuteBotStep();
-    }
 
-    public override void UpdateTeam()
+    public override void SetActorsOfTeam()
     {
-        _bots.Clear();
+        _bots = new List<Bot>();
 
         foreach (var actorBot in GameObject.FindObjectsOfType<Bot>())
         {
-            if (actorBot.actor.teamTag == teamTag)
+            if (actorBot.actor.target.teamTag == teamTag)
             {
                 _bots.Add(actorBot);
                 actorBot.actor.SetTeam(this);
             }
         }
+    }
+
+    public override List<Target> GetTargetsOfTeam()
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var bot in _bots)
+        {
+            targets.Add(bot.target);
+        }
+
+        return targets;
     }
 
     public override void ActorFinishedTurn(TurnActor actor)
@@ -92,23 +91,41 @@ public class AITeam : Team
             {
                 _botsInTurn.Remove(bot);
 
+                UpdateBots();
+
                 if (_botsInTurn.Count == 0)
                 {
                     EndTurn();
                 }
                 else
                 {
-                    ExecuteBotStep();
+                    ExecuteNextStep();
                 }
             }
         }
+    }
 
+    private void UpdateBots()
+    {
+        for (int i = 0; i < _bots.Count; i++)
+        {
+            if (!_bots[i].target.isAlive)
+            {
+                if (_botsInTurn.Contains(_bots[i]))
+                {
+                    _botsInTurn.Remove(_bots[i]);
+                }
 
+                _bots.RemoveAt(i);
+
+                i--;
+            }
+        }
     }
 
     public override void ActorFinishedStep(TurnActor actor)
     {
-        ExecuteBotStep();
+        ExecuteNextStep();
     }
 
     public override void ActorStartedStep(TurnActor actor)

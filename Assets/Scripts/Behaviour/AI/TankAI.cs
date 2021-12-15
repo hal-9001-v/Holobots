@@ -20,8 +20,6 @@ public class TankAI : Bot, IUtilityAI
     UtilityUnit _utilityUnit;
 
     [Header("Settings")]
-
-    [SerializeField] List<TeamTag> _enemyTeamMask;
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _shieldWeight;
     [SerializeField] [Range(0, 5)] float _fleeWeight;
@@ -73,12 +71,12 @@ public class TankAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.team }, _mover.pathProfile, _shielder.maxShieldRange, new LinearMinUtilityFunction(0.2f));
-        _enemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.teamTag }, _mover.pathProfile, _shielder.maxShieldRange, new LinearMinUtilityFunction(0.2f));
+        _enemyDistanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
 
-        _shieldEnemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, 1, new ThresholdUtilityFunction(1f));
+        _shieldEnemyDistanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, 1, new ThresholdUtilityFunction(1f));
 
-        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.team }, _lowHealthThreshold, new LinearUtilityFunction());
+        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.teamTag }, _lowHealthThreshold, new LinearUtilityFunction());
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region FLEE

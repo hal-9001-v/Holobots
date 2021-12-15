@@ -70,7 +70,7 @@ public class MeleerPlayerAdapter : Adapter, ISelectorObserver
 
         if (unit)
         {
-            if (unit.team != _target.team)
+            if (unit.teamTag != _target.teamTag)
             {
                 if (_ground.GetTilesInRange(_target.currentGroundTile, _meleer.meleeRange).Contains(unit.currentGroundTile))
                 {

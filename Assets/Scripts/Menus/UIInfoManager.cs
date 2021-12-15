@@ -74,7 +74,7 @@ public class UIInfoManager : MonoBehaviour
         }
 
 
-        switch(currentUnitTarget.team) {
+        switch(currentUnitTarget.teamTag) {
 
             case TeamTag.Player :
                 _currentSpriteBackground.color = Color.blue;

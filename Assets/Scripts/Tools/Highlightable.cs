@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Highlightable : MonoBehaviour
@@ -8,13 +6,13 @@ public class Highlightable : MonoBehaviour
     [SerializeField] Material _dangerMaterial;
     [SerializeField] Material _healMaterial;
 
-    MeshRenderer[] _renderers;
+    Renderer[] _renderers;
 
     Material[] _originalMaterials;
 
     private void Awake()
     {
-        _renderers = GetComponentsInChildren<MeshRenderer>();
+        _renderers = GetComponentsInChildren<Renderer>();
 
         if (_renderers != null && _renderers.Length != 0)
         {
@@ -24,7 +22,7 @@ public class Highlightable : MonoBehaviour
             {
                 _originalMaterials[i] = _renderers[i].material;
             }
-           
+
         }
     }
 
@@ -39,17 +37,12 @@ public class Highlightable : MonoBehaviour
         SetMaterial(_healMaterial);
     }
 
-
-
-
     [ContextMenu("Unhightlight")]
     public void Unhighlight()
     {
-            Debug.Log("Unhiglight" );
         for (int i = 0; i < _renderers.Length; i++)
         {
-         if(_renderers[i].material != null) _renderers[i].material = _originalMaterials[i];
-            Debug.Log("Unhiglight" + _renderers[i].material);
+            if (_renderers[i].material != null) _renderers[i].material = _originalMaterials[i];
         }
     }
 
@@ -60,10 +53,6 @@ public class Highlightable : MonoBehaviour
             render.material = material;
         }
     }
-
-
-
-
 
 
 }

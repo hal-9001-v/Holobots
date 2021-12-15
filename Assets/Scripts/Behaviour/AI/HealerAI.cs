@@ -18,7 +18,6 @@ public class HealerAI : Bot, IUtilityAI
     UtilityUnit _utilityUnit;
 
     [Header("Settings")]
-    [SerializeField] List<TeamTag> _enemyTeamMask;
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
@@ -42,7 +41,7 @@ public class HealerAI : Bot, IUtilityAI
     private void Start()
     {
         _actor = GetComponent<TurnActor>();
-
+        
         _healer = GetComponent<Healer>();
 
         _target = GetComponent<Target>();
@@ -67,9 +66,9 @@ public class HealerAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.team }, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0f));
-        _enemyDistanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
-        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.team }, _lowHealthThreshold, new ThresholdUtilityFunction(0.3f));
+        _allyDistanceSensor = new DistanceSensor(_target, new List<TeamTag>() { _target.teamTag }, _mover.pathProfile, _healer.range, new LinearMinUtilityFunction(0f));
+        _enemyDistanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _lowHealthSensor = new LowHealthSensor(new List<TeamTag>() { _target.teamTag }, _lowHealthThreshold, new ThresholdUtilityFunction(0.3f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         _utilityUnit.AddAction(GetMeleeTree());

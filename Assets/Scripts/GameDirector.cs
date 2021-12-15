@@ -5,15 +5,16 @@ using UnityEngine;
 using TMPro;
 public class GameDirector : MonoBehaviour
 {
-    List<Team> _teams;
-
-    BehaviourTree _teamTurnTree;
-
-    Team _teamInTurn;
+    [Header("References")]
     [SerializeField] Transform cameraTarget;
-
     [SerializeField] TextMeshProUGUI winningtext;
-    
+
+    [SerializeField] TaggedTeam[] _taggedTeams;
+
+    List<Team> _teams;
+    BehaviourTree _teamTurnTree;
+    Team _teamInTurn;
+
     enum GameStates
     {
         Intro,
@@ -22,14 +23,24 @@ public class GameDirector : MonoBehaviour
         EndGame
     }
 
-    
-    private void Start()
+    private void Awake()
     {
         CreateTeams();
+    }
 
-        SetTeamTurnTree();
+    private void Start()
+    {
 
-        ChangeState(GameStates.Intro);
+        if (_teams.Count != 0)
+        {
+            SetTeamTurnTree();
+
+            ChangeState(GameStates.Intro);
+        }
+        else
+        {
+            Debug.LogWarning("No teams in Scene!");
+        }
     }
 
     void SetTeamTurnTree()
@@ -58,7 +69,7 @@ public class GameDirector : MonoBehaviour
 
             LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
             {
-//                Debug.Log("End turn of " + team.teamTag.ToString());
+                //                Debug.Log("End turn of " + team.teamTag.ToString());
                 TickTree();
                 return true;
             });
@@ -105,14 +116,27 @@ public class GameDirector : MonoBehaviour
         //Add low priority teams first
         _teams = new List<Team>();
 
-        _teams.Add(new MobTeam(cameraTarget));
-        _teams.Add(new AITeam(cameraTarget, TeamTag.AI));
-        _teams.Add(new AITeam(cameraTarget, TeamTag.AI2));
-        _teams.Add(new PlayerTeam(cameraTarget));
-
-        foreach (var team in _teams)
+        foreach (var taggedTeam in _taggedTeams)
         {
-            team.UpdateTeam();
+            switch (taggedTeam.teamTag)
+            {
+                case TeamTag.Player:
+                    _teams.Add(new PlayerTeam(cameraTarget, taggedTeam.enemyTeamTag));
+                    break;
+                case TeamTag.AI:
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI, taggedTeam.enemyTeamTag));
+                    break;
+                case TeamTag.AI2:
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI2, taggedTeam.enemyTeamTag));
+                    break;
+                case TeamTag.Mob:
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.Mob, taggedTeam.enemyTeamTag));
+                    break;
+                case TeamTag.None:
+                    break;
+                default:
+                    throw new Exception("That team is not handled!");
+            }
         }
     }
 
@@ -130,13 +154,71 @@ public class GameDirector : MonoBehaviour
             if (_teams.Count == 1)
             {
 
-                winningtext.text = "End Game, winner: " +  _teams[0].teamTag;
+                winningtext.text = "End Game, winner: " + _teams[0].teamTag;
                 FindObjectOfType<DeathMenuManager>().GetComponent<Animator>().SetTrigger("Start");
             }
         }
 
 
 
+    }
+
+    public List<Target> GetTargetsOfTeam(TeamTag teamTag)
+    {
+        foreach (var team in _teams)
+        {
+            if (team.teamTag == teamTag)
+            {
+                return team.GetTargetsOfTeam();
+            }
+        }
+
+        return new List<Target>();
+    }
+
+    public List<Target> GetTargetsOfTeams(List<TeamTag> teamTags)
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var teamTag in teamTags)
+        {
+            foreach (var target in GetTargetsOfTeam(teamTag))
+            {
+                targets.Add(target);
+            }
+        }
+
+        return targets;
+    }
+
+    public List<Target> GetTargetsOfTeamWithTag(TeamTag teamTag, TargetType targetType)
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var target in GetTargetsOfTeam(teamTag))
+        {
+            if (target.targetType == targetType)
+            {
+                targets.Add(target);
+            }
+        }
+
+        return targets;
+    }
+
+    public List<Target> GetTargetsOfTeamWithTag(List<TeamTag> teamTags, TargetType targetType)
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var target in GetTargetsOfTeams(teamTags))
+        {
+            if (target.targetType == targetType)
+            {
+                targets.Add(target);
+            }
+        }
+
+        return targets;
     }
 
     public void TeamEndedTurn(Team team)
@@ -151,5 +233,19 @@ public class GameDirector : MonoBehaviour
     void TickTree()
     {
         _teamTurnTree.Tick();
+    }
+
+    [Serializable]
+    class TaggedTeam
+    {
+        public TeamTag teamTag;
+        public List<TeamTag> enemyTeamTag;
+
+        public Team team { get; private set; }
+
+        public void SetTeam(Team team)
+        {
+            this.team = team;
+        }
     }
 }

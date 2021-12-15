@@ -9,7 +9,6 @@ public class Kamikaze : Bot
 {
     [Header("Settings")]
     [SerializeField] [Range(0, 100)] float _rotationSpeed;
-    [SerializeField] List<TeamTag> _enemyTeamMask;
     [SerializeField] [Range(2, 10)] int _detectionRange;
     [SerializeField] [Range(2, 10)] int _roamRange;
 
@@ -35,6 +34,10 @@ public class Kamikaze : Bot
 
         _ground = FindObjectOfType<Ground>();
 
+        _target.dieAction += () =>
+        {
+            enabled = false;
+        };
 
         InitializeTree();
     }
@@ -58,7 +61,7 @@ public class Kamikaze : Bot
 
     public void InitializeTree()
     {
-        _distanceSensor = new DistanceSensor(_target, _enemyTeamMask, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(1f));
+        _distanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(_detectionRange));
 
         SelfDestructionAction explosionAction = new SelfDestructionAction(_selfExplosion, "Explosion Kamikaze", () => { return -1; });
 
@@ -81,7 +84,9 @@ public class Kamikaze : Bot
 
         LeafNode checkEnemyNode = new LeafNode(attackSequence, () =>
         {
-            if (_distanceSensor.GetScore() == 1)
+            var distanceValue = 1 - _distanceSensor.GetScore();
+
+            if (distanceValue == 1)
             {
                 engageAction.Execute();
                 _found = true;

@@ -3,6 +3,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using System.Collections;
+
 [RequireComponent(typeof(Selectable))]
 [RequireComponent(typeof(Highlightable))]
 public class Target : MonoBehaviour
@@ -12,10 +13,10 @@ public class Target : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] TargetType _targetType;
-    [SerializeField] TeamTag _team;
+    [SerializeField] TeamTag _teamTag;
 
     private string _targetCode;
-    public String targetCode
+    public string targetCode
     {
         get
         {
@@ -31,11 +32,11 @@ public class Target : MonoBehaviour
         }
     }
 
-    public TeamTag team
+    public TeamTag teamTag
     {
         get
         {
-            return _team;
+            return _teamTag;
         }
     }
 
@@ -50,13 +51,15 @@ public class Target : MonoBehaviour
         }
     }
 
-    public bool isDead
+    public bool isAlive
     {
         get
         {
-            return currentHealth <= 0;
+            return currentHealth > 0;
         }
     }
+
+    Dissolver _dissolver;
 
     public Highlightable highlightable { get; private set; }
 
@@ -64,19 +67,29 @@ public class Target : MonoBehaviour
 
     public Action dieAction;
 
+    CameraMovement _cameraMovement;
+
     void Awake()
     {
         highlightable = GetComponent<Highlightable>();
+        _dissolver = GetComponent<Dissolver>();
 
-        currentHealth = _maxHealth;
-    }
-
-    void Start()
-    {
         var selectable = GetComponent<Selectable>();
 
         selectable.selectAction += DisplayStats;
         selectable.deselectAction += HideStats;
+
+        dieAction += selectable.DisableSelection;
+
+        currentHealth = _maxHealth;
+
+        _cameraMovement = FindObjectOfType<CameraMovement>();
+    }
+
+    void Start()
+    {
+
+
         GenerateTargetCode();
         HideStats();
     }
@@ -101,7 +114,7 @@ public class Target : MonoBehaviour
         currentGroundTile.SetUnit(this);
     }
 
-    public void Hurt(int damage)
+    public float Hurt(int damage)
     {
         bool hurtPlayer = false;
         int fixedDamage = 0;
@@ -128,37 +141,36 @@ public class Target : MonoBehaviour
             {
                 currentHealth = 0;
 
-                Die();
+                return Die();
             }
         }
+
+        return 0;
     }
 
-
-
-    void Die()
+    float Die()
     {
-       // Debug.Log(this.name + " is dead");
-        StartCoroutine(DieCoroutine());
-        DissolvingController d = GetComponent<DissolvingController>();
-        if (d != null) StartCoroutine(d.Dissolve());
-    }
-
-    public IEnumerator DieCoroutine()
-    {
-        CameraMovement c = FindObjectOfType<CameraMovement>();
-        c.FixLookAt(this.transform);
-        yield return new WaitForSeconds(2);
+        _cameraMovement.FixLookAt(this.transform);
 
         if (currentGroundTile != null)
             currentGroundTile.FreeUnit();
+
+        Debug.Log(name + " died");
 
         if (dieAction != null)
         {
             dieAction.Invoke();
         }
 
-        DestroyImmediate(gameObject);
+        if (_dissolver)
+        {
+            return _dissolver.Dissolve();
+        }
+
+        return 0;
+
     }
+
     void DisplayStats()
     {
         if (_healthMesh)

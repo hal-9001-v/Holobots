@@ -44,7 +44,7 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
         }
 
 
-        if (_shootTarget && _shootTarget.team != _target.team)
+        if (_shootTarget && _shootTarget.teamTag != _target.teamTag)
         {
             var points = new Vector3[2]
                 {_target.transform.position, _shootTarget.currentGroundTile.transform.position};

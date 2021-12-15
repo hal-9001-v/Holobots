@@ -12,6 +12,8 @@ public class DistanceSensor : Sensor
 
     PathProfile _pathProfile;
 
+    GameDirector _gameDirector;
+
     /// <summary>
     /// GetScore() will depend on this variable. Besides, methods will use this TeamTag for queries by default
     /// </summary>
@@ -27,6 +29,7 @@ public class DistanceSensor : Sensor
         typeForScoreCalculation = TargetType.Any;
 
         _ground = GameObject.FindObjectOfType<Ground>();
+        _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
     }
 
@@ -40,6 +43,7 @@ public class DistanceSensor : Sensor
 
 
         _ground = GameObject.FindObjectOfType<Ground>();
+        _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
     }
 
@@ -75,21 +79,9 @@ public class DistanceSensor : Sensor
     /// </summary>
     /// <param name="team"></param>
     /// <returns></returns>
-    public Target GetClosestTarget(List<TeamTag> team)
+    public Target GetClosestTarget(List<TeamTag> teams)
     {
-        var targets = GameObject.FindObjectsOfType<Target>();
-
-        List<Target> targetList = new List<Target>();
-
-        foreach (var target in targets)
-        {
-            if (team.Contains(target.team))
-            {
-                targetList.Add(target);
-            }
-        }
-
-        return GetClosestTargetFromList(targetList);
+        return GetClosestTargetFromList(_gameDirector.GetTargetsOfTeams(teams));
     }
 
     /// <summary>
@@ -109,17 +101,7 @@ public class DistanceSensor : Sensor
     /// <returns></returns>
     public List<Target> FindTargetsWithTag(List<TeamTag> team, TargetType targetType)
     {
-        List<Target> targets = FindTargetsOfTeam(team);
-
-        foreach (var target in GameObject.FindObjectsOfType<Target>())
-        {
-            if (target.targetType == targetType)
-            {
-                targets.Add(target);
-            }
-        }
-
-        return targets;
+        return _gameDirector.GetTargetsOfTeamWithTag(team, targetType);
     }
 
     /// <summary>
@@ -137,19 +119,9 @@ public class DistanceSensor : Sensor
     /// </summary>
     /// <param name="team"></param>
     /// <returns></returns>
-    public List<Target> FindTargetsOfTeam(List<TeamTag> team)
+    public List<Target> FindTargetsOfTeam(List<TeamTag> teams)
     {
-        List<Target> targets = new List<Target>();
-
-        foreach (var target in GameObject.FindObjectsOfType<Target>())
-        {
-            if (team.Contains(target.team))
-            {
-                targets.Add(target);
-            }
-        }
-
-        return targets;
+        return _gameDirector.GetTargetsOfTeams(teams);
     }
 
     /// <summary>
@@ -171,54 +143,28 @@ public class DistanceSensor : Sensor
         return function.GetValue(GetClosestUnitProximity(target, teamMask));
     }
 
-    Score GetTotalProximityScore(List<TeamTag> mask)
-    {
-        float value = 0;
-        float totalTargets = 0;
-
-        var targets = GameObject.FindObjectsOfType<Target>();
-
-
-        foreach (var unit in targets)
-        {
-            if (mask.Contains(unit.team))
-            {
-                totalTargets++;
-
-                if (_ground.GetDistance(_owner.currentGroundTile, unit.currentGroundTile, _pathProfile) < _threshold)
-                {
-                    value++;
-                }
-            }
-        }
-
-        return new Score(value, totalTargets);
-    }
-
     Score GetClosestUnitProximity(Target target, List<TeamTag> mask)
     {
-        var targets = GameObject.FindObjectsOfType<Target>();
+        var targets = _gameDirector.GetTargetsOfTeams(mask);
 
-        if (targets.Length == 0)
+        if (targets.Count == 0)
         {
-            return new Score(int.MaxValue, 0);
+            return new Score(int.MaxValue, _threshold);
         }
 
         float closestDistance = int.MaxValue;
 
-
         foreach (var unit in targets)
         {
-            if (mask.Contains(unit.team))
-            {
-                var newDistance = _ground.GetDistance(target.currentGroundTile, unit.currentGroundTile, _pathProfile);
+            var newDistance = _ground.GetDistance(target.currentGroundTile, unit.currentGroundTile, _pathProfile);
 
-                if (newDistance < closestDistance)
-                {
-                    closestDistance = newDistance;
-                }
+            if (newDistance < closestDistance)
+            {
+                closestDistance = newDistance;
             }
         }
+
+        if (closestDistance < 0) closestDistance = 0;
 
         return new Score(closestDistance, _threshold);
     }

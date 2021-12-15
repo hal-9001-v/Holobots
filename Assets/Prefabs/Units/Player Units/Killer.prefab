@@ -211,8 +211,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8168498386649872220}
-  - component: {fileID: 8168498386649872221}
-  - component: {fileID: 8168498386649872222}
   - component: {fileID: 8168498386649872208}
   - component: {fileID: 8168498386649872209}
   - component: {fileID: 8168498386649872210}
@@ -247,55 +245,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8168498386649872221
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8168498386649872216}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &8168498386649872222
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8168498386649872216}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d6614ac7df67e8c42a571008b0fa723a, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &8168498386649872208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 4880726302826176277}
   _targetType: 3
-  _team: 0
+  _teamTag: 0
   _maxHealth: 5
 --- !u!114 &8168498386649872210
 MonoBehaviour:
@@ -444,12 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77751d86af5b2224da86523317c915f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 553801620964131294}
-  skinnedMesh: {fileID: 2264097821381044578}
-  meshes: []
-  dissolveRate: 0.02
-  refreshRate: 0.05
-  s: {fileID: 6686806285795499780}
+  _dissolveTime: 0
 --- !u!114 &6686806285795499780
 MonoBehaviour:
   m_ObjectHideFlags: 0

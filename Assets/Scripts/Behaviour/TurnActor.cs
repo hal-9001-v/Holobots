@@ -9,24 +9,13 @@ public class TurnActor : MonoBehaviour
     [Header("Settings")]
     [SerializeField] [Range(1, 10)] int _maxTurnPoints = 2;
 
-
-
     //Used to indicate if actor should be called for Steps
     public bool isDead { get; private set; }
 
-    Target _target;
+    public Target target { get; private set;}
 
-    Team _team;
-
-    public TeamTag teamTag
-    {
-        get
-        {
-            return _target.team;
-        }
-    }
-
-
+    public Team team { get; private set; }
+    
     public int maxTurnPoints
     {
         get
@@ -42,34 +31,20 @@ public class TurnActor : MonoBehaviour
 
     private void Awake()
     {
-        _target = GetComponent<Target>();
-        _target.dieAction += () =>
-        {
-            _team.ActorFinishedTurn(this);
-        };
+        target = GetComponent<Target>();
+
         currentTurnPoints = maxTurnPoints;
-    }
-
-    private void Start()
-    {
-        _target.dieAction += Die;
-    }
-
-    void Die()
-    {
-        isDead = true;
-        
     }
 
     public void SetTeam(Team team)
     {
-        _team = team;
+        this.team = team;
     }
 
     public void StartTurn()
     {
         currentTurnPoints = maxTurnPoints;
-        
+
         if (_startTurnCallback != null)
         {
             _startTurnCallback.Invoke();
@@ -94,19 +69,19 @@ public class TurnActor : MonoBehaviour
             currentTurnPoints = 0;
         }
 
-//        Debug.Log(name + " starting step. Remaining turn points: " + currentTurnPoints);
-        _team.ActorStartedStep(this);
+        //        Debug.Log(name + " starting step. Remaining turn points: " + currentTurnPoints);
+        team.ActorStartedStep(this);
 
     }
     public void EndStep()
     {
         if (currentTurnPoints <= 0)
         {
-            _team.ActorFinishedTurn(this);
+            team.ActorFinishedTurn(this);
         }
         else
         {
-            _team.ActorFinishedStep(this);
+            team.ActorFinishedStep(this);
         }
 
 
@@ -120,12 +95,5 @@ public class TurnActor : MonoBehaviour
     public void AddEndTurnListener(Action callback)
     {
         _endTurnCallback += callback;
-    }
-
-
-    public Target  GetTargetType(){
-
-        return _target;
-
     }
 }

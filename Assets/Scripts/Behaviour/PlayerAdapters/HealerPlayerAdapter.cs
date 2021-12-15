@@ -74,7 +74,7 @@ public class HealerPlayerAdapter : Adapter, ISelectorObserver
         if (_selectedTarget)
         {
 
-            if (_selectedTarget.team == _target.team)
+            if (_selectedTarget.teamTag == _target.teamTag)
             {
                 if (_avaliableTiles.Contains(_selectedTarget.currentGroundTile))
                 {

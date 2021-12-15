@@ -11,26 +11,6 @@ public abstract class Bot : MonoBehaviour
 
     public TurnActor actor { get; private set; }
 
-    public bool isDead
-    {
-        get
-        {
-            if (target != null)
-            {
-
-                return target.isDead;
-            }
-            else
-            {
-                target = GetComponent<Target>();
-
-
-                return target.isDead;
-            }
-            
-        }
-    }
-
     private void Awake()
     {
         target = GetComponent<Target>();
@@ -38,5 +18,5 @@ public abstract class Bot : MonoBehaviour
         actor = GetComponent<TurnActor>();
     }
 
-    public abstract void ExecuteStep();    
+    public abstract void ExecuteStep();
 }

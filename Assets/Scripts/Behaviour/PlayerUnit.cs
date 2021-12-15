@@ -15,13 +15,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
 
     public bool isControlActive;
 
-    public bool isDead
-    {
-        get
-        {
-            return target.isDead;
-        }
-    }
     private void Awake()
     {
         target = GetComponent<Target>();

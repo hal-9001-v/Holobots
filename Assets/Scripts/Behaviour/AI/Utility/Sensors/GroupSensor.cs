@@ -35,11 +35,11 @@ public class GroupSensor : Sensor
 
         foreach (var target in targets)
         {
-            if (teamMask.Contains(target.team))
+            if (teamMask.Contains(target.teamTag))
             {
                 targetCount++;
             }
-            else if (_unwantedMask.Contains(target.team))
+            else if (_unwantedMask.Contains(target.teamTag))
             {
                 noTargetCount++;
             }
@@ -59,7 +59,7 @@ public class GroupSensor : Sensor
 
         foreach (var target in GameObject.FindObjectsOfType<Target>())
         {
-            if (teamMask.Contains(target.team))
+            if (teamMask.Contains(target.teamTag))
             {
                 targets.Add(target);
             }
@@ -99,7 +99,7 @@ public class GroupSensor : Sensor
 
         for (int i = 0; i < targets.Count; i++)
         {
-            if (!teamMask.Contains(targets[i].team))
+            if (!teamMask.Contains(targets[i].teamTag))
             {
                 targets.RemoveAt(i);
 

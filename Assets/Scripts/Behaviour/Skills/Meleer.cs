@@ -14,6 +14,8 @@ public class Meleer : MonoBehaviour
     [Header("Specific Damage")]
     [SerializeField] List<DamageForType> _specificDamages;
 
+    VFXManager _vfxManager;
+
     public int meleeRange
     {
         get
@@ -29,7 +31,11 @@ public class Meleer : MonoBehaviour
     {
         _actor = GetComponent<TurnActor>();
 
-        _executer = new MeleerExecuter(_actor, _meleerCost);
+        var vfxManager = FindObjectOfType<VFXManager>();
+        var cameraMovement = FindObjectOfType<CameraMovement>();
+        _executer = new MeleerExecuter(_actor, _meleerCost, vfxManager, cameraMovement);
+
+        _vfxManager = FindObjectOfType<VFXManager>();
     }
 
     public void Hit(Target target)
@@ -44,7 +50,7 @@ public class Meleer : MonoBehaviour
                 break;
             }
         }
-        if(damage == 0 ) Debug.LogWarning("Nodamage");
+        if (damage == 0) Debug.LogWarning("Nodamage");
         _executer.Execute(target, damage);
     }
 
@@ -71,14 +77,20 @@ public class Meleer : MonoBehaviour
 
 class MeleerExecuter
 {
+    VFXManager _vfxManager;
+    CameraMovement _cameraMovement;
+
     TurnActor _actor;
     Highlighter _highlighter;
     int _cost = 0;
 
-    public MeleerExecuter(TurnActor actor, int cost)
+    public MeleerExecuter(TurnActor actor, int cost, VFXManager vfxManager, CameraMovement cameraMovement)
     {
         _actor = actor;
         _cost = cost;
+
+        _vfxManager = vfxManager;
+        _cameraMovement = cameraMovement;
 
         _highlighter = new Highlighter();
     }
@@ -87,16 +99,10 @@ class MeleerExecuter
     {
         Debug.Log(_actor.name + " is attacking with melee " + target.name);
 
-      if(target.currentHealth > 0)  _actor.StartCoroutine(MakeHit(target, damage));
-      else {
-
-          _actor.StartStep(_cost);
-          _actor.EndStep();
-
-      }
+        _actor.StartCoroutine(MakeHit(target, damage));
     }
 
-    
+
 
     IEnumerator MakeHit(Target target, int damage)
     {
@@ -104,22 +110,15 @@ class MeleerExecuter
         _highlighter.AddDangerededHighlightable(target.highlightable);
         _highlighter.AddDangerededHighlightable(target.currentGroundTile.highlightable);
 
-
-        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
-        c.FixLookAt(target.transform);
+        _cameraMovement.FixLookAt(target.transform);
         yield return new WaitForSeconds(0.5f);
-        VFXManager v = GameObject.FindObjectOfType<VFXManager>();
-        v.Play("Hit", target.transform);
-        yield return new WaitForSeconds(v.GetDuration() - 1.5f);
+
+        _vfxManager.Play("Hit", target.transform);
+        yield return new WaitForSeconds(_vfxManager.GetDuration() - 1.5f);
 
         _highlighter.Unhighlight();
 
-        if (target.currentHealth - damage <= 0)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-
-        target.Hurt(damage);
+        yield return new WaitForSeconds(target.Hurt(damage));
 
         _actor.EndStep();
 

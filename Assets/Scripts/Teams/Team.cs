@@ -9,7 +9,9 @@ using System;
 [Serializable]
 public abstract class Team
 {
-    public TeamTag teamTag;
+    public TeamTag teamTag { get; private set; }
+
+    public List<TeamTag> enemyTags { get; private set; }
 
     public List<TurnActor> actors;
 
@@ -17,20 +19,31 @@ public abstract class Team
 
     protected GameDirector _gameDirector;
 
-    public Team(TeamTag tag)
+    protected CameraMovement _cameraMovement;
+    protected SelectionArrow _selectionArrow;
+    protected UIInfoManager _UIManager;
+
+    public Team(TeamTag tag, List<TeamTag> enemyTags)
     {
         this.teamTag = tag;
+        this.enemyTags = enemyTags;
 
         actors = new List<TurnActor>();
         _actorsInTurn = new List<TurnActor>();
 
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
+
+        _cameraMovement = GameObject.FindObjectOfType<CameraMovement>();
+        _selectionArrow = GameObject.FindObjectOfType<SelectionArrow>();
+        _UIManager = GameObject.FindObjectOfType<UIInfoManager>();
+
+        SetActorsOfTeam();
     }
 
     /// <summary>
-    /// Add to actos list every alive unit with this team's tag
+    /// Add to actors list every alive unit with this team's tag
     /// </summary>
-    public virtual void UpdateTeam()
+    public virtual void SetActorsOfTeam()
     {
         actors.Clear();
 
@@ -46,11 +59,8 @@ public abstract class Team
     /// </summary>
     public virtual bool StartTurn()
     {
-        UpdateTeam();
-
         if (actors.Count != 0)
         {
-
             foreach (var actor in actors)
             {
                 _actorsInTurn.Add(actor);
@@ -99,25 +109,45 @@ public abstract class Team
         }
     }
 
+    protected abstract void ExecuteNextStep();
+
     public abstract void ActorFinishedStep(TurnActor actor);
 
     public abstract void ActorStartedStep(TurnActor actor);
 
+    protected void SetTargetOfCamera(Target target)
+    {
+        _UIManager.currentUnitTarget = target;
+        _selectionArrow.SetPosition(target.gameObject);
+        _cameraMovement.LookAt(target.transform.position);
+        _cameraMovement.FixLookAt(target.transform);
+    }
 
     public static List<TurnActor> GetActorsWithTeamTag(TeamTag tag)
     {
-
         var allActors = GameObject.FindObjectsOfType<TurnActor>();
         List<TurnActor> actorList = new List<TurnActor>();
 
         foreach (var actor in allActors)
         {
-            if (actor.teamTag == tag)
+            if (actor.target.teamTag == tag)
             {
                 actorList.Add(actor);
             }
         }
 
         return actorList;
+    }
+
+    public virtual List<Target> GetTargetsOfTeam()
+    {
+        List<Target> targets = new List<Target>();
+
+        foreach (var actor in actors)
+        {
+            targets.Add(actor.target);
+        }
+
+        return targets;
     }
 }

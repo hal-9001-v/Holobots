@@ -16,7 +16,6 @@ public class FighterAI : Bot, IUtilityAI
     UtilityUnit _utilityUnit;
 
     [Header("Settings")]
-    [SerializeField] List<TeamTag> _enemyMask;
 
     [Header("Utility")]
     [SerializeField] [Range(0, 5)] float _meleeWeight;
@@ -28,7 +27,7 @@ public class FighterAI : Bot, IUtilityAI
     //Sensors
     DistanceSensor _enemyDistanceSensor;
     HealthSensor _healthSensor;
-
+    
     private void Start()
     {
         _actor = GetComponent<TurnActor>();
@@ -55,7 +54,7 @@ public class FighterAI : Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _enemyDistanceSensor = new DistanceSensor(_target, _enemyMask, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _enemyDistanceSensor = new DistanceSensor(_target, actor.team.enemyTags, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region FLEE
