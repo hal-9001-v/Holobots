@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4018795664791943179}
   - component: {fileID: 1422867966}
   - component: {fileID: 256364974}
+  - component: {fileID: 3456951972425841059}
   m_Layer: 7
   m_Name: Building 1-2
   m_TagString: Untagged
@@ -143,6 +144,26 @@ MonoBehaviour:
   _circleSize: 1
   _circleSmoothness: 0.5
   _circleOpacity: 0.274
+  _mask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &3456951972425841059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4018795664791944183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6696ff7437bd2047bafe9c9d13a1528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _raycastRange: 2000
+  _lerpDuration: 0.5
+  _circleSize: 0
+  _circleSmoothness: 0
+  _circleOpacity: 0
   _mask:
     serializedVersion: 2
     m_Bits: 0
