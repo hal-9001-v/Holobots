@@ -6,7 +6,7 @@ using System.Linq;
 public class CircleSync : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] [Range(0, 5000)] float _raycastRange;
+    [SerializeField] [Range(0, 5000)] float _raycastRange = 2000;
 
     [Space(5)]
 
@@ -29,13 +29,13 @@ public class CircleSync : MonoBehaviour
     UIInfoManager ui;
 
     float timeElapsed;
+
     const float startValue = 0;
     const float endValue = 2;
 
     private void Start()
     {
         ui = FindObjectOfType<UIInfoManager>();
-        _mask = LayerMask.GetMask("Obstacle");
         _camera = FindObjectOfType<Camera>();
 
         _renderers = GetComponentsInChildren<Renderer>();
