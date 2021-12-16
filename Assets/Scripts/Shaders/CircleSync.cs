@@ -67,7 +67,7 @@ public class CircleSync : MonoBehaviour
     private void Update()
     {
         currentUnit = ui.currentTarget;
-        //Right now, it doesnt stack up objects. It is not ned for now.
+        //Right now, it doesnt stack up objects
         if (currentUnit != null)
         {
             Vector3 targetPosition = currentUnit.transform.position - new Vector3(0, 1.5f, 0);
