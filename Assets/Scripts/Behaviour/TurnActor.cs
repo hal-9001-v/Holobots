@@ -12,10 +12,10 @@ public class TurnActor : MonoBehaviour
     //Used to indicate if actor should be called for Steps
     public bool isDead { get; private set; }
 
-    public Target target { get; private set;}
+    public Target target { get; private set; }
 
     public Team team { get; private set; }
-    
+
     public int maxTurnPoints
     {
         get

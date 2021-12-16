@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Highlightable : MonoBehaviour
@@ -10,9 +12,20 @@ public class Highlightable : MonoBehaviour
 
     Material[] _originalMaterials;
 
-    private void Awake()
+    private void Start()
     {
-        _renderers = GetComponentsInChildren<Renderer>();
+        List<Renderer> rendererList = new List<Renderer>();
+
+        foreach (var renderer in GetComponentsInChildren<Renderer>())
+        {
+            //Filter renderers so no text mesh is included. Cant compare with GetType because TextMeshPro is no renderer
+            if (renderer.GetComponent<TextMeshPro>() == false)
+            {
+                rendererList.Add(renderer);
+            }
+        }
+
+        _renderers = rendererList.ToArray();
 
         if (_renderers != null && _renderers.Length != 0)
         {

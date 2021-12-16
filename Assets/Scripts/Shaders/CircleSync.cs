@@ -10,7 +10,7 @@ public class CircleSync : MonoBehaviour
 
     [Space(5)]
 
-    [SerializeField] float _lerpDuration = 0.5f;
+    [SerializeField] [Range(0.1f, 2f)] float _lerpDuration = 0.5f;
     [SerializeField] [Range(0, 20)] float _circleSize;
     [SerializeField] [Range(0, 1)] float _circleSmoothness;
     [SerializeField] [Range(0, 1)] float _circleOpacity;

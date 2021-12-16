@@ -27,6 +27,8 @@ public class ExplosionerPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnLeftClickNotify(Selectable selectable)
     {
+        if (!_inputIsActive) return;
+
         if (_selectedTile)
         {
             _highlighter.Unhighlight();
@@ -36,6 +38,8 @@ public class ExplosionerPlayerAdapter : Adapter, ISelectorObserver
 
     public void OnNothingSelectNotify()
     {
+        if (!_inputIsActive) return;
+
         _selectedTile = null;
         _highlighter.Unhighlight();
     }

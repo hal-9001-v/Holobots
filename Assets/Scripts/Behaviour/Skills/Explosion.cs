@@ -8,6 +8,11 @@ public class Explosion : MonoBehaviour
     [SerializeField] [Range(1, 10)] int _damage = 2;
     [SerializeField] [Range(1, 10)] int _range = 2;
 
+    Highlighter _highlighter;
+
+    VFXManager _vfxManager;
+    CameraMovement _cameraMovement;
+
     public int range
     {
         get
@@ -20,24 +25,55 @@ public class Explosion : MonoBehaviour
 
     private void Awake()
     {
+        _highlighter = new Highlighter();
+
         _ground = FindObjectOfType<Ground>();
+
+        _vfxManager = FindObjectOfType<VFXManager>();
+        _cameraMovement = FindObjectOfType<CameraMovement>();
     }
 
-    public void Explode(GroundTile centerTile)
+    public void Explode(GroundTile centerTile, CountBarrier barrier)
     {
-//        Debug.Log("Explosion in " + centerTile.name + " with a range of " + _range);
+        StartCoroutine(ExplodeCoroutine(centerTile, barrier));
+    }
 
+    IEnumerator ExplodeCoroutine(GroundTile centerTile, CountBarrier barrier)
+    {
+        barrier.AddCounter();
         var tiles = _ground.GetTilesInRange(centerTile, _range);
 
         foreach (var tile in tiles)
         {
-            if (tile.unit && tile.unit.targetType != TargetType.Ranger)
+            _highlighter.AddDangerededHighlightable(tile.highlightable);
+
+            if (tile.unit)
             {
-                
-                if(tile.unit.currentHealth <=0) tile.unit.dieAction(); 
-                else tile.unit.Hurt(_damage);
+                _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
             }
         }
+
+        
+        _vfxManager.Play("Explosion", centerTile.transform);
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
+
+        yield return new WaitForSeconds(_vfxManager.GetDuration());
+        //Add to barrier so it doesnt get to 0 in loop.
+        barrier.AddCounter();
+        foreach (var tile in tiles)
+        {
+            if (tile.unit && tile.unit.targetType != TargetType.Ranger)
+            {
+                barrier.AddCounter();
+                tile.unit.Hurt(_damage, barrier);
+            }
+        }
+        barrier.RemoveCounter();
+
+        _highlighter.Unhighlight();
+        yield return new WaitForSeconds(1.2f);
+
+        barrier.RemoveCounter();
     }
 
     public List<GroundTile> GetTilesInRange(GroundTile centerTile)

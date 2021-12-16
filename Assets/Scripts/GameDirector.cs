@@ -163,6 +163,14 @@ public class GameDirector : MonoBehaviour
 
     }
 
+    public void UpdateTeams()
+    {
+        foreach (var team in _teams)
+        {
+            team.UpdateTeam();
+        }
+    }
+
     public List<Target> GetTargetsOfTeam(TeamTag teamTag)
     {
         foreach (var team in _teams)

@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Target))]
 public class Obstacle : MonoBehaviour
 {
-
     [Header("References")]
     [SerializeField] MeshRenderer _buildingRenderer;
     [SerializeField] MeshRenderer _debrisPrototype;
@@ -13,33 +12,36 @@ public class Obstacle : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] [Range(0, 3)] int _debrisDamage;
-    [SerializeField] [Range(0, 3)] int _debrisWeight;
-
+    [SerializeField] [Range(1, 3)] int _debrisWeight = 1;
 
     Ground _ground;
     GroundTile _tile;
 
-
+    ChildGiver _childGiver;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+    {
+
+        if (_debrisPrototype)
+        {
+            _childGiver = new ChildGiver(gameObject);
+            _childGiver.AddChildToContainer(_debrisPrototype.gameObject);
+            _debrisPrototype.enabled = false;
+        }
+    }
+
+    private void Start()
     {
         _ground = FindObjectOfType<Ground>();
 
         _target = GetComponent<Target>();
-
         _target.dieAction += Vacate;
 
+
         OccupyTile();
-
-        if (_debrisPrototype)
-        {
-            _debrisPrototype.enabled = false;
-        }
-
     }
 
-   
     void OccupyTile()
     {
         GroundTile tile;
@@ -78,7 +80,6 @@ public class Obstacle : MonoBehaviour
 
     void CreateDebris()
     {
-
         if (_debrisPrototype)
         {
             _debrisPrototype.enabled = true;
@@ -98,17 +99,12 @@ public class Obstacle : MonoBehaviour
                     {
                         if (tile.unit != null)
                         {
-                            if (tile.unit.GetComponent<Obstacle>())
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                tile.unit.Hurt(_debrisDamage);
-                            }
+
+                            tile.unit.Hurt(_debrisDamage, null);
                         }
 
-                        var debrisClone = Instantiate(_debrisPrototype, transform);
+                        var debrisClone = Instantiate(_debrisPrototype);
+                        _childGiver.AddChildToContainer(debrisClone.gameObject);
                         debrisClone.transform.position = _debrisPrototype.transform.position;
 
                         debrisClone.transform.position += new Vector3(offset.x * _ground.cellSize, 0, offset.y * _ground.cellSize);

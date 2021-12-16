@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class Dissolver : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] [Range(0, 5)]float _dissolveTime = 1;
+    [SerializeField] [Range(0, 5)] float _dissolveTime = 1;
 
     private Renderer[] _renderers;
 
@@ -14,17 +15,15 @@ public class Dissolver : MonoBehaviour
     private void Awake()
     {
         _renderers = GetComponentsInChildren<Renderer>();
-        
+
     }
 
-    public float Dissolve()
+    public void Dissolve(CountBarrier barrier)
     {
-        StartCoroutine(DissolveOverTime());
-
-        return _dissolveTime;
+        StartCoroutine(DissolveOverTime(barrier));
     }
 
-    public IEnumerator DissolveOverTime()
+    public IEnumerator DissolveOverTime(CountBarrier barrier)
     {
         float counter = 0;
 
@@ -32,7 +31,6 @@ public class Dissolver : MonoBehaviour
         {
             while (counter < _dissolveTime)
             {
-
                 foreach (var renderer in _renderers)
                 {
                     renderer.material.SetFloat(DissolveKey, counter / _dissolveTime);
@@ -42,12 +40,16 @@ public class Dissolver : MonoBehaviour
 
                 yield return null;
             }
-
         }
 
         foreach (var renderer in _renderers)
         {
             renderer.material.SetFloat(DissolveKey, 1);
+        }
+
+        if (barrier != null)
+        {
+            barrier.RemoveCounter();
         }
     }
 

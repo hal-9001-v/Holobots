@@ -106,6 +106,12 @@ class MeleerExecuter
 
     IEnumerator MakeHit(Target target, int damage)
     {
+        CountBarrier barrier = new CountBarrier(() =>
+        {
+            _actor.EndStep();
+        });
+        barrier.AddCounter();
+
         _actor.StartStep(_cost);
         _highlighter.AddDangerededHighlightable(target.highlightable);
         _highlighter.AddDangerededHighlightable(target.currentGroundTile.highlightable);
@@ -118,9 +124,8 @@ class MeleerExecuter
 
         _highlighter.Unhighlight();
 
-        yield return new WaitForSeconds(target.Hurt(damage));
-
-        _actor.EndStep();
-
+        barrier.AddCounter();
+        target.Hurt(damage, barrier);
+        barrier.RemoveCounter();
     }
 }

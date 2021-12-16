@@ -46,7 +46,7 @@ public class Shooter : MonoBehaviour
         _projectile.SetOwner(_target);
         _projectile.SetDamage(_damage);
 
-        _executer = new ShooterExecuter(_projectile,_damage, this, _turnActor, _speed);
+        _executer = new ShooterExecuter(_projectile, _damage, this, _turnActor, _speed);
     }
 
     public void AddShoot(Target target)
@@ -104,8 +104,14 @@ public class ShooterExecuter
 
     IEnumerator MoveProjectileToTarget(float speed, Vector3 origin, Target target)
     {
+        CountBarrier barrier = new CountBarrier(() =>
+        {
+            _turnActor.EndStep();
+        });
+        barrier.AddCounter();
+
         _turnActor.StartStep(_owner.shootCost);
-        
+
         _highligher.AddDangerededHighlightable(target.highlightable);
         _highligher.AddDangerededHighlightable(target.currentGroundTile.highlightable);
 
@@ -130,11 +136,15 @@ public class ShooterExecuter
 
         _projectile.transform.position = target.transform.position;
 
-        if (_projectile.damagedTarget) _projectile.damagedTarget.Hurt(_damage);
+        if (_projectile.damagedTarget)
+        {
+            barrier.AddCounter();
+            _projectile.damagedTarget.Hurt(_damage, barrier);
+        }
 
         _projectile.DisableProjectile();
 
-        _turnActor.EndStep();
+        barrier.RemoveCounter();
     }
 
 }

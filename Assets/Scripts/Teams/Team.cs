@@ -23,6 +23,8 @@ public abstract class Team
     protected SelectionArrow _selectionArrow;
     protected UIInfoManager _UIManager;
 
+    public abstract void UpdateTeam();
+
     public Team(TeamTag tag, List<TeamTag> enemyTags)
     {
         this.teamTag = tag;

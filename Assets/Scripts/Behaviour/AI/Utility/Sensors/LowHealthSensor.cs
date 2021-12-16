@@ -6,11 +6,13 @@ public class LowHealthSensor : Sensor
 {
     float _threshold;
 
-    Target _owner;
+    GameDirector _gameDirector;
 
     public LowHealthSensor(List<TeamTag> teamMask, float threshold, UtilityFunction function) : base(function, teamMask)
     {
         SetThreshold(threshold);
+        _gameDirector = GameObject.FindObjectOfType<GameDirector>();
+
     }
 
 
@@ -22,35 +24,25 @@ public class LowHealthSensor : Sensor
 
     public List<Target> GetLowHealthBots()
     {
-        List<Target> bots = new List<Target>();
+        List<Target> targets = new List<Target>();
 
-
-
-        foreach (var target in GameObject.FindObjectsOfType<Target>())
+        foreach (var target in _gameDirector.GetTargetsOfTeams(teamMask))
         {
-            if (teamMask.Contains(target.teamTag))
+            float currentHealth = target.currentHealth;
+            float maxHealth = target.maxHealth;
+            if (currentHealth / maxHealth < _threshold)
             {
-
-                float currentHealth = target.currentHealth;
-                float maxHealth = target.maxHealth;
-                if (currentHealth / maxHealth < _threshold)
-                {
-                    bots.Add(target);
-                }
+                targets.Add(target);
             }
         }
-
-        return bots;
+        return targets;
     }
 
     Score TotalHealthScore()
     {
-
-        var bots = GameObject.FindObjectsOfType<Bot>();
-
         var lowHealthBots = GetLowHealthBots();
 
-        return new Score(lowHealthBots.Count, bots.Length);
+        return new Score(lowHealthBots.Count, _gameDirector.GetTargetsOfTeams(teamMask).Count);
     }
 
 

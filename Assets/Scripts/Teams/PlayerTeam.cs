@@ -62,7 +62,7 @@ public class PlayerTeam : Team
 
     public override bool StartTurn()
     {
-        UpdateUnits();
+        _gameDirector.UpdateTeams();
 
         if (base.StartTurn())
         {
@@ -80,7 +80,7 @@ public class PlayerTeam : Team
         _skillSelector.Hide();
     }
 
-    void UpdateUnits()
+    public override void UpdateTeam()
     {
         for (int i = 0; i < actors.Count; i++)
         {
@@ -103,7 +103,7 @@ public class PlayerTeam : Team
         {
             _actorsInTurn.Remove(actor);
 
-            UpdateUnits();
+            _gameDirector.UpdateTeams();
 
             if (_actorsInTurn.Count == 0)
             {
@@ -148,7 +148,7 @@ public class PlayerTeam : Team
 
     public override void ActorFinishedStep(TurnActor actor)
     {
-        UpdateUnits();
+        _gameDirector.UpdateTeams();
 
         SelectUnit(_unitIndex);
     }

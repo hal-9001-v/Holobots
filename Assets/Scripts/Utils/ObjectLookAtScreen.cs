@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Transform))] 
+[RequireComponent(typeof(Transform))]
 public class ObjectLookAtScreen : MonoBehaviour
 {
-    
-    Transform thisTransform;
-    Camera gameCamera;
-    private void Awake() {
-      
+    Camera _gameCamera;
+    private void Awake()
+    {
+        _gameCamera = FindObjectOfType<Camera>();
     }
-private void Start() {
-    
-}
-    private void Update() {
-        thisTransform = GetComponent<Transform>();
-        gameCamera = FindObjectOfType<Camera>();
-        thisTransform.LookAt(gameCamera.transform);
-        thisTransform.Rotate(0,180,0);
+
+    private void Update()
+    {
+        transform.LookAt(_gameCamera.transform);
+        transform.Rotate(0, 180, 0);
     }
 
 }

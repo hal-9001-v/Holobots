@@ -53,6 +53,11 @@ public class SelfExplosion : MonoBehaviour
 
     IEnumerator Explosion()
     {
+        CountBarrier barrier = new CountBarrier(() =>
+        {
+            _actor.EndStep();
+        });
+
         _actor.StartStep(int.MaxValue);
         var tiles = GetTilesInRange(_target.currentGroundTile);
         foreach (var tile in tiles)
@@ -76,20 +81,25 @@ public class SelfExplosion : MonoBehaviour
 
         _highlighter.Unhighlight();
 
+        //Add to counter so no hurt gives instant remove
+        barrier.AddCounter();
         foreach (var tile in tiles)
         {
             if (tile.unit && tile.unit != _target)
             {
                 Debug.Log(tile.unit.name);
-                tile.unit.Hurt(_damage);
+                barrier.AddCounter();
+                tile.unit.Hurt(_damage, barrier);
+
             }
         }
-        
+        barrier.RemoveCounter();
+
         yield return new WaitForSeconds(1);
 
-        _target.Hurt(int.MaxValue);
-        
-        _actor.EndStep();
+        barrier.AddCounter();
+        _target.Hurt(int.MaxValue, barrier);
+
     }
 
     public List<GroundTile> GetTilesInRange(GroundTile centerTile)

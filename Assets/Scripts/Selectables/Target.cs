@@ -74,22 +74,19 @@ public class Target : MonoBehaviour
         highlightable = GetComponent<Highlightable>();
         _dissolver = GetComponent<Dissolver>();
 
-        var selectable = GetComponent<Selectable>();
+        currentHealth = _maxHealth;
+        _cameraMovement = FindObjectOfType<CameraMovement>();
 
+
+        var selectable = GetComponent<Selectable>();
         selectable.selectAction += DisplayStats;
         selectable.deselectAction += HideStats;
 
         dieAction += selectable.DisableSelection;
-
-        currentHealth = _maxHealth;
-
-        _cameraMovement = FindObjectOfType<CameraMovement>();
     }
 
     void Start()
     {
-
-
         GenerateTargetCode();
         HideStats();
     }
@@ -114,41 +111,37 @@ public class Target : MonoBehaviour
         currentGroundTile.SetUnit(this);
     }
 
-    public float Hurt(int damage)
+    public void Hurt(int damage, CountBarrier barrier)
     {
-        bool hurtPlayer = false;
-        int fixedDamage = 0;
+        int fixedDamage;
 
         if (currentGroundTile.shield)
         {
-            if (currentGroundTile.shield.HurtShield(damage, out fixedDamage))
-            {
-                hurtPlayer = true;
-            }
-
+            currentGroundTile.shield.HurtShield(damage, out fixedDamage);
         }
         else
         {
             fixedDamage = damage;
-            hurtPlayer = true;
         }
 
-        if (hurtPlayer)
+        currentHealth -= fixedDamage;
+        UpdateText();
+
+        if (currentHealth <= 0)
         {
-            currentHealth -= fixedDamage;
+            currentHealth = 0;
 
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
+            Die(barrier);
 
-                return Die();
-            }
         }
-
-        return 0;
+        else if (barrier != null)
+        {
+            //Here goes cinematic hit when getting damage. It should go on a coroutine.
+            barrier.RemoveCounter();
+        }
     }
 
-    float Die()
+    void Die(CountBarrier barrier)
     {
         _cameraMovement.FixLookAt(this.transform);
 
@@ -164,10 +157,12 @@ public class Target : MonoBehaviour
 
         if (_dissolver)
         {
-            return _dissolver.Dissolve();
+            _dissolver.Dissolve(barrier);
         }
-
-        return 0;
+        else if(barrier != null)
+        {
+            barrier.RemoveCounter();
+        }
 
     }
 
@@ -176,6 +171,14 @@ public class Target : MonoBehaviour
         if (_healthMesh)
         {
             _healthMesh.enabled = true;
+            UpdateText();
+        }
+    }
+
+    void UpdateText()
+    {
+        if (_healthMesh)
+        {
             _healthMesh.text = currentHealth.ToString() + "/" + _maxHealth.ToString();
         }
     }
@@ -197,14 +200,6 @@ public class Target : MonoBehaviour
         {
             currentHealth = _maxHealth;
         }
-    }
-
-    [ContextMenu("Die")]
-    void DieC()
-    {
-
-        Die();
-
     }
 
 }

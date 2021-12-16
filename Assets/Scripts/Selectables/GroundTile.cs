@@ -13,12 +13,9 @@ public class GroundTile : MonoBehaviour
 
     public Shield shield { get; private set;}
 
-
     public Target unit { get; private set; }
     public Vector2Int cellCoord { get; private set; }
     public Highlightable highlightable { get; private set; }
-
-
 
     [HideInInspector]
     public bool isClosed;

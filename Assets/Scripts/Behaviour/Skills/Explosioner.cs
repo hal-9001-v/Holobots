@@ -11,7 +11,6 @@ public class Explosioner : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Explosion _explosion;
-    Highlighter _highlighter;
 
     public int explosionRange
     {
@@ -20,7 +19,7 @@ public class Explosioner : MonoBehaviour
             return _explosion.range;
         }
     }
-    
+
     public int exploderRange
     {
         get
@@ -33,9 +32,9 @@ public class Explosioner : MonoBehaviour
 
     private void Awake()
     {
-        TurnActor _actor = GetComponent<TurnActor>();
+        TurnActor actor = GetComponent<TurnActor>();
 
-        _executer = new ExplosionerExecuter(_actor, _explosion, _exploderCost);
+        _executer = new ExplosionerExecuter(actor, _explosion, _exploderCost);
     }
 
     public void Explode(GroundTile tile)
@@ -53,53 +52,24 @@ class ExplosionerExecuter
 
     int _cost;
 
-    Highlighter _highlighter;
-
     public ExplosionerExecuter(TurnActor actor, Explosion explosion, int cost)
     {
         _actor = actor;
         _explosion = explosion;
 
         _cost = cost;
-
-        _highlighter = new Highlighter();
     }
 
     public void Execute(GroundTile tile)
     {
-        _explosion.StartCoroutine(Explode(tile));
-    }
-
-    IEnumerator Explode(GroundTile centerTile)
-    {
-        
-        foreach (var tile in _explosion.GetTilesInRange(centerTile))
-        {
-
-            //_highlighter.AddDangerededHighlightable(tile.highlightable);
-
-            if (tile.unit)
-            {
-               // _highlighter.AddDangerededHighlightable(tile.unit.highlightable);
-            }
-
-        }
-
         _actor.StartStep(_cost);
-        VFXManager m = GameObject.FindObjectOfType<VFXManager>();
-        m.Play("Explosion", centerTile.transform);
-        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
-        c.FixLookAt(m.VFXObject.transform);
-        yield return new WaitForSeconds(m.GetDuration());
-        //_highlighter.Unhighlight();
-        yield return new WaitForSeconds(1.2f);
 
-        _actor.EndStep();
+        var barrier = new CountBarrier(() =>
+        {
+            _actor.EndStep();
+        });
 
-
-        _explosion.Explode(centerTile);
-
+        _explosion.Explode(tile, barrier);
     }
-
 
 }

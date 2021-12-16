@@ -17,6 +17,7 @@ public class AITeam : Team
     public override bool StartTurn()
     {
         _botsInTurn.Clear();
+        _gameDirector.UpdateTeams();
 
         foreach (var bot in _bots)
         {
@@ -87,7 +88,7 @@ public class AITeam : Team
             {
                 _botsInTurn.Remove(bot);
 
-                UpdateBots();
+                UpdateTeam();
 
                 if (_botsInTurn.Count == 0)
                 {
@@ -101,7 +102,7 @@ public class AITeam : Team
         }
     }
 
-    private void UpdateBots()
+    public override void UpdateTeam()
     {
         for (int i = 0; i < _bots.Count; i++)
         {
@@ -121,6 +122,8 @@ public class AITeam : Team
 
     public override void ActorFinishedStep(TurnActor actor)
     {
+        _gameDirector.UpdateTeams();
+
         ExecuteNextStep();
     }
 
