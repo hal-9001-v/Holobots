@@ -12,16 +12,11 @@ public class PlayerTeam : Team
 
     SkillSelector _skillSelector;
 
-    private Transform _cameraTarget;
-    private UIInfoManager _uiInfo;
-
     int _unitIndex;
     public PlayerTeam(Transform target, List<TeamTag> enemyTags) : base(TeamTag.Player, enemyTags)
     {
         _inputContainer = GameObject.FindObjectOfType<InputMapContainer>();
 
-        _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
-        _cameraTarget = target;
         _skillSelector = GameObject.FindObjectOfType<SkillSelector>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
@@ -71,7 +66,6 @@ public class PlayerTeam : Team
 
         if (base.StartTurn())
         {
-            _cameraMovement.FixLookAt(_cameraTarget);
             SelectUnit(0);
 
             return true;
@@ -118,7 +112,8 @@ public class PlayerTeam : Team
             else
             {
                 SelectUnit(0);
-                _cameraMovement.FixLookAt(_cameraTarget);
+
+                SetTargetOfCamera(_actorsInTurn[0].target, false);
             }
         }
 
@@ -146,17 +141,13 @@ public class PlayerTeam : Team
 
             _unitIndex = index;
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
-            _cameraMovement.LookAt(_actorsInTurn[_unitIndex].transform.position);
-            _uiInfo.currentUnitTarget = _actorsInTurn[_unitIndex].target;
-            GameObject.FindObjectOfType<SelectionArrow>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
 
+            SetTargetOfCamera(_actorsInTurn[_unitIndex].target, false);
         }
     }
 
     public override void ActorFinishedStep(TurnActor actor)
     {
-        _cameraMovement.FixLookAt(_cameraTarget);
-
         UpdateUnits();
 
         SelectUnit(_unitIndex);

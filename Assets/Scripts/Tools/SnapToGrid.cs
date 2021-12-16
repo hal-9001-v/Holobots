@@ -47,6 +47,8 @@ public class SnapToGrid : MonoBehaviour
             transform.localPosition = position;
         else
             transform.position = position;
+
+
     }
 
 #endif

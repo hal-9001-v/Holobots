@@ -7,14 +7,10 @@ public class AITeam : Team
     List<Bot> _bots;
     List<Bot> _botsInTurn;
 
-    private Transform _cameraTarget;
-    private UIInfoManager _uiInfo;
     public AITeam(Transform target, TeamTag tag, List<TeamTag> enemyTags) : base(tag, enemyTags)
     {
         _botsInTurn = new List<Bot>();
-        _cameraTarget = target;
-        _uiInfo = GameObject.FindObjectOfType<UIInfoManager>();
-
+        
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
@@ -49,7 +45,7 @@ public class AITeam : Team
     {
         if (_botsInTurn.Count != 0)
         {
-            SetTargetOfCamera(_botsInTurn[0].target);
+            SetTargetOfCamera(_botsInTurn[0].target, true);
             _botsInTurn[0].ExecuteStep();
         }
     }

@@ -115,12 +115,21 @@ public abstract class Team
 
     public abstract void ActorStartedStep(TurnActor actor);
 
-    protected void SetTargetOfCamera(Target target)
+    protected void SetTargetOfCamera(Target target, bool fixCamera)
     {
-        _UIManager.currentUnitTarget = target;
+        _UIManager.SetTargetUnit(target);
         _selectionArrow.SetPosition(target.gameObject);
         _cameraMovement.LookAt(target.transform.position);
-        _cameraMovement.FixLookAt(target.transform);
+
+        if (fixCamera)
+        {
+            _cameraMovement.FixLookAt(target.transform);
+        }
+        else
+        {
+            _cameraMovement.FreeCamera();
+        }
+
     }
 
     public static List<TurnActor> GetActorsWithTeamTag(TeamTag tag)

@@ -8,14 +8,10 @@ public class CameraMovement : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] Transform _cameraFollow;
+    [SerializeField] Transform _cameraTarget;
     [SerializeField] Transform _cameraAxis;
     [SerializeField] Camera _camera;
     [SerializeField] CinemachineVirtualCamera _virtualCamera;
-
-
-
-
-    [SerializeField] Transform[] _cameraLimiters;
 
     public Rigidbody _followRigidbody;
 
@@ -89,7 +85,8 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_cameraFollow)  _followRigidbody = _cameraFollow.GetComponent<Rigidbody>();
+        if (_cameraFollow) _followRigidbody = _cameraFollow.GetComponent<Rigidbody>();
+
         if (_isRotating)
         {
             RotateCamera(_rotationInput);
@@ -109,20 +106,22 @@ public class CameraMovement : MonoBehaviour
         _cameraFollow.position = position;
     }
 
-    public void FixLookAt(Transform t){
-     
-       _virtualCamera.LookAt = t;
-        _virtualCamera.Follow = t;  
-
+    public void FixLookAt(Transform target)
+    {
+        _virtualCamera.LookAt = target;
+        _virtualCamera.Follow = target;
     }
 
-    public IEnumerator FixLookAtC(Transform t){
+    public void FreeCamera()
+    {
+        FixLookAt(_cameraTarget);
+    }
 
-
+    public IEnumerator FixLookAtC(Transform t)
+    {
         yield return new WaitForSeconds(0.4f);
 
-        _virtualCamera.LookAt = t;
-        _virtualCamera.Follow = t;  
+        FixLookAt(t);
     }
 
     void RotateCamera(float input)
