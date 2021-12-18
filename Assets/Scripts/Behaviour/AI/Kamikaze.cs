@@ -34,7 +34,7 @@ public class Kamikaze : Bot
 
         _ground = FindObjectOfType<Ground>();
 
-        _target.dieAction += () =>
+        _target.dieAction += (barrier) =>
         {
             enabled = false;
         };
@@ -49,91 +49,101 @@ public class Kamikaze : Bot
 
     public override void ExecuteStep()
     {
-        if (_found)
+        if (_tree != null)
         {
-            _tree.Tick();
+            if (_found)
+            {
+                _tree.Tick();
+            }
+            else
+            {
+                _tree.StartTree();
+            }
         }
         else
         {
-            _tree.StartTree();
+            _actor.EndTurn();
         }
     }
 
     public void InitializeTree()
     {
-        _distanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(_detectionRange));
-
-        SelfDestructionAction explosionAction = new SelfDestructionAction(_selfExplosion, "Explosion Kamikaze", () => { return -1; });
-
-        EngageAction engageAction = new EngageAction(_mover, "Kamikaze Engage", () => { return -1; });
-        engageAction.AddPreparationListener(() =>
+        if (_actor.team != null)
         {
-            var closestTarget = _distanceSensor.GetClosestTarget();
+            _distanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _detectionRange, new ThresholdUtilityFunction(_detectionRange));
 
-            engageAction.SetTarget(closestTarget);
-        });
+            SelfDestructionAction explosionAction = new SelfDestructionAction(_selfExplosion, "Explosion Kamikaze", () => { return -1; });
 
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () => { return -1; });
-
-        _tree = new BehaviourTree();
-        SelectorNode rootNode = new SelectorNode();
-        _tree.root = rootNode;
-
-        #region ATTACK SEQUENCE
-        SequenceNode attackSequence = new SequenceNode(rootNode);
-
-        LeafNode checkEnemyNode = new LeafNode(attackSequence, () =>
-        {
-            var distanceValue = 1 - _distanceSensor.GetScore();
-
-            if (distanceValue == 1)
+            EngageAction engageAction = new EngageAction(_mover, "Kamikaze Engage", () => { return -1; });
+            engageAction.AddPreparationListener(() =>
             {
-                engageAction.Execute();
-                _found = true;
-                return true;
-            }
+                var closestTarget = _distanceSensor.GetClosestTarget();
 
-            return false;
-        });
+                engageAction.SetTarget(closestTarget);
+            });
 
-        WaitForTickNode getCloserNode = new WaitForTickNode(attackSequence);
+            IdleAction idleAction = new IdleAction(_actor, "Idle", () => { return -1; });
 
-        LeafNode explodeNode = new LeafNode(getCloserNode, () =>
-        {
-            explosionAction.Execute();
-            return true;
-        });
-        #endregion
+            _tree = new BehaviourTree();
+            SelectorNode rootNode = new SelectorNode();
+            _tree.root = rootNode;
 
-        #region ROAM
-        EngageAction roamAction = new EngageAction(_mover, "Roam Engage", () => { return -1; });
-        roamAction.AddPreparationListener(() =>
-        {
-            var tiles = _ground.GetTilesInRange(_target.currentGroundTile, _roamRange);
+            #region ATTACK SEQUENCE
+            SequenceNode attackSequence = new SequenceNode(rootNode);
 
-            for (int i = 0; i < tiles.Count; i++)
+            LeafNode checkEnemyNode = new LeafNode(attackSequence, () =>
             {
-                if (tiles[i].tileType == TileType.Untraversable || tiles[i].unit != null)
+                var distanceValue = 1 - _distanceSensor.GetScore();
+
+                if (distanceValue == 1)
                 {
-                    tiles.RemoveAt(i);
-
-                    i--;
+                    engageAction.Execute();
+                    _found = true;
+                    return true;
                 }
-            }
-            if (tiles.Count != 0)
-                roamAction.SetTarget(tiles[Random.Range(0, tiles.Count - 1)]);
-            else
-                roamAction.SetTarget(target.currentGroundTile);
 
-        });
+                return false;
+            });
 
-        LeafNode roamNode = new LeafNode(rootNode, () =>
-        {
-            roamAction.Execute();
+            WaitForTickNode getCloserNode = new WaitForTickNode(attackSequence);
 
-            return true;
-        });
-        #endregion
+            LeafNode explodeNode = new LeafNode(getCloserNode, () =>
+            {
+                explosionAction.Execute();
+                return true;
+            });
+            #endregion
+
+            #region ROAM
+            EngageAction roamAction = new EngageAction(_mover, "Roam Engage", () => { return -1; });
+            roamAction.AddPreparationListener(() =>
+            {
+                var tiles = _ground.GetTilesInRange(_target.currentGroundTile, _roamRange);
+
+                for (int i = 0; i < tiles.Count; i++)
+                {
+                    if (tiles[i].tileType == TileType.Untraversable || tiles[i].unit != null)
+                    {
+                        tiles.RemoveAt(i);
+
+                        i--;
+                    }
+                }
+                if (tiles.Count != 0)
+                    roamAction.SetTarget(tiles[Random.Range(0, tiles.Count - 1)]);
+                else
+                    roamAction.SetTarget(target.currentGroundTile);
+
+            });
+
+            LeafNode roamNode = new LeafNode(rootNode, () =>
+            {
+                roamAction.Execute();
+
+                return true;
+            });
+            #endregion
+        }
     }
 
 }

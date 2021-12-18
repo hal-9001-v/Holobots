@@ -74,7 +74,7 @@ public class UIInfoManager : MonoBehaviour
         switch (currentTarget.teamTag)
         {
 
-            case TeamTag.Player:
+            case TeamTag.Player1:
                 _currentSpriteBackground.color = Color.blue;
                 break;
             case TeamTag.AI:

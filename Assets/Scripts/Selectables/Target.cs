@@ -65,7 +65,7 @@ public class Target : MonoBehaviour
 
     public GroundTile currentGroundTile { get; private set; }
 
-    public Action dieAction;
+    public Action<CountBarrier> dieAction;
 
     CameraMovement _cameraMovement;
 
@@ -82,7 +82,10 @@ public class Target : MonoBehaviour
         selectable.selectAction += DisplayStats;
         selectable.deselectAction += HideStats;
 
-        dieAction += selectable.DisableSelection;
+        dieAction += (barrier) =>
+        {
+            selectable.DisableSelection();
+        }; 
     }
 
     void Start()
@@ -152,7 +155,7 @@ public class Target : MonoBehaviour
 
         if (dieAction != null)
         {
-            dieAction.Invoke();
+            dieAction.Invoke(barrier);
         }
 
         if (_dissolver)

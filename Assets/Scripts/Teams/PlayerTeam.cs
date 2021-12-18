@@ -13,7 +13,10 @@ public class PlayerTeam : Team
     SkillSelector _skillSelector;
 
     int _unitIndex;
-    public PlayerTeam(Transform target, List<TeamTag> enemyTags) : base(TeamTag.Player, enemyTags)
+
+    bool _turnIsActive;
+
+    public PlayerTeam(Transform target, TeamTag teamTag, List<TeamTag> enemyTags) : base(teamTag, enemyTags)
     {
         _inputContainer = GameObject.FindObjectOfType<InputMapContainer>();
 
@@ -29,39 +32,53 @@ public class PlayerTeam : Team
 
         _inputContainer.inputMap.Game.NextUnit.performed += ctx =>
         {
-            SelectNextUnit();
+            if (_turnIsActive)
+            {
+                SelectNextUnit();
+            }
         };
 
         _inputContainer.inputMap.Game.EndTurn.performed += ctx =>
         {
-            EndTurn();
+            if (_turnIsActive)
+            {
+                EndTurn();
+            }
         };
         _inputContainer.inputMap.Game.SelectAbility1.performed += ctx =>
         {
-
-            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[0]);
+            if (_turnIsActive)
+            {
+                _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[0]);
+            }
 
         };
         _inputContainer.inputMap.Game.SelectAbility2.performed += ctx =>
         {
-
-            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[1]);
+            if (_turnIsActive)
+            {
+                _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[1]);
+            }
 
         }; _inputContainer.inputMap.Game.SelectAbility3.performed += ctx =>
         {
-
-            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[2]);
+            if (_turnIsActive)
+            {
+                _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[2]);
+            }
 
         }; _inputContainer.inputMap.Game.SelectAbility4.performed += ctx =>
         {
-
-            _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[3]);
-
+            if (_turnIsActive)
+            {
+                _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[3]);
+            }
         };
     }
 
     public override bool StartTurn()
     {
+        _turnIsActive = true;
         _gameDirector.UpdateTeams();
 
         if (base.StartTurn())
@@ -76,6 +93,8 @@ public class PlayerTeam : Team
 
     public override void EndTurn()
     {
+        _turnIsActive = false;
+
         base.EndTurn();
         _skillSelector.Hide();
     }

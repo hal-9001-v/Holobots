@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     private LevelLoader _levelLoader;
-    [SerializeField] private Button _playButton;
+    [SerializeField] private Button _playLevelOneButton;
+    [SerializeField] private Button _playLevelTwoButton;
+    [SerializeField] private Button _playPVPButton;
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _quitButton;
 
@@ -21,10 +23,22 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start() {
         
-        _playButton.onClick.AddListener(() =>
+        _playLevelOneButton.onClick.AddListener(() =>
         {
-            Play();
+            Play(1);
         });
+
+        _playLevelTwoButton.onClick.AddListener(() =>
+        {
+            Play(2);
+        });
+
+
+        _playPVPButton.onClick.AddListener(() =>
+        {
+            Play(3);
+        });
+
         _settingsButton.onClick.AddListener(() =>
         {
           
@@ -37,9 +51,9 @@ public class MainMenuManager : MonoBehaviour
         });
     }
     
-    private void Play(){
+    private void Play(int level){
 
-        _levelLoader.LoadLevel(1);
+        _levelLoader.LoadLevel(level);
 
     }
 

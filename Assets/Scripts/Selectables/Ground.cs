@@ -121,10 +121,19 @@ public class Ground : MonoBehaviour
         }
 
         Stack<GroundTile> path = new Stack<GroundTile>();
-        currentNode = destination;
+
+        if (CanTraspassTile(destination, profile))
+        {
+            currentNode = destination;
+        }
+        else
+        {
+            currentNode = destination.parent;
+        }
+
         origin.parent = null;
 
-        while (currentNode.parent != null)
+        while (currentNode != null && currentNode.parent != null)
         {
             path.Push(currentNode);
 
@@ -173,12 +182,7 @@ public class Ground : MonoBehaviour
 
     void CheckNeighbour(GroundTile currentNode, GroundTile neighbour, bool isDestination, List<GroundTile> openNodes, PathProfile profile)
     {
-        if (!isDestination)
-        {
-            if (neighbour.unit) return;
-            if (!profile.canTraspass && neighbour.tileType == TileType.Untraversable) return;
-        }
-
+        if (!isDestination && !CanTraspassTile(neighbour, profile)) return;
 
         if (neighbour.isClosed) return;
 
@@ -235,6 +239,17 @@ public class Ground : MonoBehaviour
         v /= _cellSize;
 
         return new Vector2Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.z));
+    }
+
+    bool CanTraspassTile(GroundTile tile, PathProfile profile)
+    {
+        if (tile.unit) return false;
+
+        if (!profile.canTraspass && tile.tileType == TileType.Untraversable) return false;
+
+        if (!profile.canFly && tile.tileType == TileType.Void) return false;
+
+        return true;
     }
 
     private void OnDrawGizmos()

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum TeamTag
 {
-    Player,
+    Player1,
+    Player2,
     AI,
     AI2,
     Mob,

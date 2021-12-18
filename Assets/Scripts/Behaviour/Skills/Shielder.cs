@@ -52,7 +52,10 @@ public class Shielder : MonoBehaviour
 
         _childGiver.AddChildToContainer(_planningShield.gameObject);
 
-        _target.dieAction += _childGiver.GiveChildrenBack;
+        _target.dieAction += (barrier) =>
+        {
+            _childGiver.GiveChildrenBack();
+        };
 
         _actor.AddStartTurnListener(ResetUndeployedShields);
     }

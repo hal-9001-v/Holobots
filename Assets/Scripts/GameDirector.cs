@@ -13,7 +13,8 @@ public class GameDirector : MonoBehaviour
 
     List<Team> _teams;
     BehaviourTree _teamTurnTree;
-    Team _teamInTurn;
+
+    int _currentTeam = -1;
 
     enum GameStates
     {
@@ -33,47 +34,11 @@ public class GameDirector : MonoBehaviour
 
         if (_teams.Count != 0)
         {
-            SetTeamTurnTree();
-
             ChangeState(GameStates.Intro);
         }
         else
         {
             Debug.LogWarning("No teams in Scene!");
-        }
-    }
-
-    void SetTeamTurnTree()
-    {
-        _teamTurnTree = new BehaviourTree();
-
-        FullSequenceNode rootNode = new FullSequenceNode();
-        rootNode.name = "Root";
-        _teamTurnTree.root = rootNode;
-
-
-        foreach (var team in _teams)
-        {
-            SequenceNode sequenceNode = new SequenceNode(rootNode);
-            sequenceNode.name = "Turn of: " + team.teamTag.ToString();
-
-            LeafNode startTurnNode = new LeafNode(sequenceNode, () =>
-            {
-                StartTeamTurn(team);
-                return true;
-            });
-            startTurnNode.name = "Start turn of";
-
-            WaitForTickNode waitforTickNode = new WaitForTickNode(sequenceNode);
-            waitforTickNode.name = "Wait of " + team.teamTag.ToString();
-
-            LeafNode endTurnNode = new LeafNode(waitforTickNode, () =>
-            {
-                //                Debug.Log("End turn of " + team.teamTag.ToString());
-                TickTree();
-                return true;
-            });
-            endTurnNode.name = "End of " + team.teamTag.ToString();
         }
     }
 
@@ -87,10 +52,7 @@ public class GameDirector : MonoBehaviour
 
             case GameStates.StartTurn:
 
-                _teamTurnTree.StartTree(() =>
-                {
-                    ChangeState(GameStates.EndTurn);
-                });
+                StartTeamTurn();
 
                 break;
 
@@ -120,8 +82,11 @@ public class GameDirector : MonoBehaviour
         {
             switch (taggedTeam.teamTag)
             {
-                case TeamTag.Player:
-                    _teams.Add(new PlayerTeam(cameraTarget, taggedTeam.enemyTeamTag));
+                case TeamTag.Player1:
+                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player1, taggedTeam.enemyTeamTag));
+                    break;
+                case TeamTag.Player2:
+                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player2, taggedTeam.enemyTeamTag));
                     break;
                 case TeamTag.AI:
                     _teams.Add(new AITeam(cameraTarget, TeamTag.AI, taggedTeam.enemyTeamTag));
@@ -140,25 +105,33 @@ public class GameDirector : MonoBehaviour
         }
     }
 
-    void StartTeamTurn(Team team)
+    void StartTeamTurn()
     {
-        _teamInTurn = team;
-        if (team.StartTurn())
+        _currentTeam++;
+
+        if (_currentTeam >= _teams.Count)
         {
-            Debug.Log("Start Turn of " + team.teamTag);
+            _currentTeam = 0;
+        }
+
+        if (_teams[_currentTeam].StartTurn())
+        {
+            Debug.Log("Start Turn of " + _teams[_currentTeam].teamTag);
         }
         else
         {
-            _teams.Remove(team);
+            _teams.RemoveAt(_currentTeam);
 
             if (_teams.Count == 1)
             {
-
                 winningtext.text = "End Game, winner: " + _teams[0].teamTag;
                 FindObjectOfType<DeathMenuManager>().GetComponent<Animator>().SetTrigger("Start");
             }
+            else
+            {
+                StartTeamTurn();
+            }
         }
-
 
 
     }
@@ -231,10 +204,17 @@ public class GameDirector : MonoBehaviour
 
     public void TeamEndedTurn(Team team)
     {
-        if (team == _teamInTurn)
+        if (team == _teams[_currentTeam])
         {
-            _teamTurnTree.Tick();
+            StartCoroutine(EndTurnCountdown());
         }
+    }
+
+    IEnumerator EndTurnCountdown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        ChangeState(GameStates.EndTurn);
+
     }
 
     [ContextMenu("Tick")]

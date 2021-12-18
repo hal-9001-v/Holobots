@@ -12,6 +12,7 @@ public class ScreenSelector : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] [Range(1, 100)] float _range;
+    [SerializeField] LayerMask _selectableLayers;
 
     Selectable _selectedObject;
 
@@ -48,7 +49,7 @@ public class ScreenSelector : MonoBehaviour
             t = Input.GetTouch(0);
             selectionRay = _camera.ScreenPointToRay(t.position);
 
-            if (Physics.Raycast(selectionRay, out hit, _range) && t.phase == UnityEngine.TouchPhase.Began)
+            if (Physics.Raycast(selectionRay, out hit, _range, _selectableLayers) && t.phase == UnityEngine.TouchPhase.Began)
             {
                 if (!EventSystem.current.IsPointerOverGameObject(t.fingerId))
                 {

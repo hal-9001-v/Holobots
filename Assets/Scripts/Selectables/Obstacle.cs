@@ -36,7 +36,10 @@ public class Obstacle : MonoBehaviour
         _ground = FindObjectOfType<Ground>();
 
         _target = GetComponent<Target>();
-        _target.dieAction += Vacate;
+        _target.dieAction += (barrier) =>
+        {
+            Vacate(barrier);
+        };
 
 
         OccupyTile();
@@ -55,7 +58,7 @@ public class Obstacle : MonoBehaviour
 
     }
 
-    void Vacate()
+    void Vacate(CountBarrier barrier)
     {
         if (_tile)
         {
@@ -72,13 +75,13 @@ public class Obstacle : MonoBehaviour
 
             _tile.weight = 2;
 
-            CreateDebris();
+            CreateDebris(barrier);
         }
 
 
     }
 
-    void CreateDebris()
+    void CreateDebris(CountBarrier barrier)
     {
         if (_debrisPrototype)
         {
@@ -86,6 +89,7 @@ public class Obstacle : MonoBehaviour
 
             var cellCoords = _ground.ToCellCoords(transform.position);
 
+            barrier.AddCounter();
             for (int i = -1; i < 2; i++)
             {
                 for (int j = -1; j < 2; j++)
@@ -99,8 +103,8 @@ public class Obstacle : MonoBehaviour
                     {
                         if (tile.unit != null)
                         {
-
-                            tile.unit.Hurt(_debrisDamage, null);
+                            barrier.AddCounter();
+                            tile.unit.Hurt(_debrisDamage, barrier);
                         }
 
                         var debrisClone = Instantiate(_debrisPrototype);
@@ -117,6 +121,7 @@ public class Obstacle : MonoBehaviour
 
                 }
             }
+            barrier.RemoveCounter();
         }
 
 
