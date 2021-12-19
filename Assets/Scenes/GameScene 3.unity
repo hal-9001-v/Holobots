@@ -12769,6 +12769,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 7.9831133
       objectReference: {fileID: 0}
+    - target: {fileID: 8559885194954274828, guid: 9cc2b9594c56aa94296fd74d2641ab0f, type: 3}
+      propertyPath: _rotationTime
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 8775844608582294196, guid: 9cc2b9594c56aa94296fd74d2641ab0f, type: 3}
       propertyPath: _dissolveTime
       value: 1

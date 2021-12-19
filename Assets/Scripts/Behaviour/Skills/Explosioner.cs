@@ -34,7 +34,8 @@ public class Explosioner : MonoBehaviour
     {
         TurnActor actor = GetComponent<TurnActor>();
 
-        _executer = new ExplosionerExecuter(actor, _explosion, _exploderCost);
+        var rotator = GetComponentInChildren<CharacterRotator>();
+        _executer = new ExplosionerExecuter(actor, rotator, _explosion, _exploderCost);
     }
 
     public void Explode(GroundTile tile)
@@ -50,12 +51,16 @@ class ExplosionerExecuter
     TurnActor _actor;
     Explosion _explosion;
 
+    CharacterRotator _rotator;
+
     int _cost;
 
-    public ExplosionerExecuter(TurnActor actor, Explosion explosion, int cost)
+    public ExplosionerExecuter(TurnActor actor, CharacterRotator rotator, Explosion explosion, int cost)
     {
         _actor = actor;
         _explosion = explosion;
+
+        _rotator = rotator;
 
         _cost = cost;
     }
@@ -63,6 +68,14 @@ class ExplosionerExecuter
     public void Execute(GroundTile tile)
     {
         _actor.StartStep(_cost);
+
+        if (_rotator)
+        {
+            var direction = tile.transform.position - _actor.transform.position;
+            direction.Normalize();
+
+            _rotator.SetForward(direction, 0.35f);
+        }
 
         var barrier = new CountBarrier(() =>
         {

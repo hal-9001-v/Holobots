@@ -37,7 +37,6 @@ public class Shooter : MonoBehaviour
     Target _target;
     ShooterExecuter _executer;
 
-
     private void Awake()
     {
         _turnActor = GetComponent<TurnActor>();
@@ -46,7 +45,8 @@ public class Shooter : MonoBehaviour
         _projectile.SetOwner(_target);
         _projectile.SetDamage(_damage);
 
-        _executer = new ShooterExecuter(_projectile, _damage, this, _turnActor, _speed);
+        var rotator = GetComponentInChildren<CharacterRotator>();
+        _executer = new ShooterExecuter(_projectile, rotator, _damage, this, _turnActor, _speed);
     }
 
     public void AddShoot(Target target)
@@ -83,7 +83,9 @@ public class ShooterExecuter
 
     int _damage;
 
-    public ShooterExecuter(Projectile projectile, int damage, Shooter owner, TurnActor turnActor, float speed)
+    CharacterRotator _rotator;
+
+    public ShooterExecuter(Projectile projectile, CharacterRotator characterRotator, int damage, Shooter owner, TurnActor turnActor, float speed)
     {
         _projectile = projectile;
         _owner = owner;
@@ -93,6 +95,8 @@ public class ShooterExecuter
         _turnActor = turnActor;
 
         _speed = speed;
+
+        _rotator = characterRotator;
 
         _highligher = new Highlighter();
     }
@@ -114,6 +118,15 @@ public class ShooterExecuter
 
         _highligher.AddDangerededHighlightable(target.highlightable);
         _highligher.AddDangerededHighlightable(target.currentGroundTile.highlightable);
+
+        if (_rotator)
+        {
+            var direction = target.transform.position - origin;
+            direction.Normalize();
+
+            _rotator.SetForward(direction, 0.3f);
+
+        }
 
         yield return new WaitForSeconds(0.5f);
 

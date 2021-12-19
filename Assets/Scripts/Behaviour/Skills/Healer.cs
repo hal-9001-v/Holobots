@@ -5,16 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Target))]
 public class Healer : MonoBehaviour
 {
-    TurnActor _turnActor;
-
-    HealerExecuter _executer;
-
-
     [Header("Settings")]
 
     [SerializeField] [Range(1, 10)] int _heal;
     [SerializeField] [Range(1, 10)] int _healRange;
     [SerializeField] [Range(1, 5)] int _healCost;
+
+    TurnActor _turnActor;
+
+    HealerExecuter _executer;
+
 
 
     public int range
@@ -29,8 +29,12 @@ public class Healer : MonoBehaviour
     {
         _turnActor = GetComponent<TurnActor>();
 
-        _executer = new HealerExecuter(_turnActor, _healCost);
 
+        var rotator = GetComponentInChildren<CharacterRotator>();
+        var cameraMovement = FindObjectOfType<CameraMovement>();
+        var vfxManager = FindObjectOfType<VFXManager>();
+
+        _executer = new HealerExecuter(_turnActor, rotator, vfxManager, cameraMovement, _healCost);
     }
 
     public void Heal(Target target)
@@ -48,11 +52,20 @@ class HealerExecuter
 
     Highlighter _highlighter;
 
+    CharacterRotator _rotator;
 
-    public HealerExecuter(TurnActor actor, int cost)
+    VFXManager _vfxManager;
+    CameraMovement _cameraMovement;
+
+    public HealerExecuter(TurnActor actor, CharacterRotator rotator, VFXManager vfxManager, CameraMovement cameraMovement, int cost)
     {
         _actor = actor;
         _cost = cost;
+
+        _rotator = rotator;
+
+        _vfxManager = vfxManager;
+        _cameraMovement = cameraMovement;
 
         _highlighter = new Highlighter();
     }
@@ -69,11 +82,18 @@ class HealerExecuter
         _highlighter.AddHealedHighlightable(target.highlightable);
         _highlighter.AddHealedHighlightable(target.currentGroundTile.highlightable);
 
-        VFXManager m = GameObject.FindObjectOfType<VFXManager>();
-        m.Play("Heal", target.transform);
-        CameraMovement c = GameObject.FindObjectOfType<CameraMovement>();
-        c.FixLookAt(target.transform);
-        yield return new WaitForSeconds(m.GetDuration());
+        if (_rotator)
+        {
+            var direction = target.transform.position - _actor.transform.position;
+            direction.Normalize();
+
+            _rotator.SetForward(direction, 0.35f);
+        }
+
+        _vfxManager.Play("Heal", target.transform);
+        _cameraMovement.FixLookAt(target.transform);
+
+        yield return new WaitForSeconds(_vfxManager.GetDuration());
 
         target.Heal(points);
 

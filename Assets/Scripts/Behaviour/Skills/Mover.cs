@@ -13,6 +13,16 @@ public class Mover : MonoBehaviour
     [SerializeField] PathProfile _pathProfile;
     [SerializeField] float _movingSpeed;
 
+    [SerializeField] [Range(0.1f, 1)] float _rotationTime;
+
+    public float rotationTime
+    {
+        get
+        {
+            return _rotationTime;
+        }
+    }
+
     MoverExecuter _executer;
     public PathProfile pathProfile
     {
@@ -53,7 +63,8 @@ public class Mover : MonoBehaviour
 
         _ground = FindObjectOfType<Ground>();
 
-        _executer = new MoverExecuter(_target, this, _turnActor, _movingSpeed);
+        var characterRotator = GetComponentInChildren<CharacterRotator>();
+        _executer = new MoverExecuter(_target, this, characterRotator, _turnActor, _movingSpeed);
     }
 
     public List<GroundTile> GetFilteredPath(GroundTile startingTile, GroundTile destinationTile)
@@ -121,22 +132,25 @@ public class MoverExecuter
     TurnActor _actor;
     Target _target;
     Mover _mover;
+    CharacterRotator _rotator;
 
     float _speed;
 
-    public MoverExecuter(Target target, Mover mover, TurnActor actor, float speed)
+    public MoverExecuter(Target target, Mover mover,  CharacterRotator rotator, TurnActor actor, float speed)
     {
         _speed = speed;
 
         _target = target;
         _mover = mover;
+        _rotator = rotator;
         _actor = actor;
+
     }
 
     public void Execute(List<GroundTile> tileList)
     {
         //if (tileList.Count > 1)
-          //  Debug.Log(_target.name + " is moving from " + _target.currentGroundTile.name + " to " + tileList[tileList.Count - 1].name);
+        //  Debug.Log(_target.name + " is moving from " + _target.currentGroundTile.name + " to " + tileList[tileList.Count - 1].name);
 
         _actor.StartCoroutine(MoveToTarget(tileList.ToArray()));
     }
@@ -161,6 +175,14 @@ public class MoverExecuter
 
             float elapsedTime = 0;
             float duration = Vector3.Distance(startingPosition, fixedDestination) / _speed;
+
+            if (_rotator)
+            {
+                var direction = fixedDestination - _rotator.transform.position;
+                direction.Normalize();
+
+                _rotator.SetForward(direction, _mover.rotationTime);
+            }
 
             while (elapsedTime < duration)
             {

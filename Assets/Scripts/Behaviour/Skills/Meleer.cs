@@ -27,9 +27,12 @@ public class Meleer : MonoBehaviour
     MeleerExecuter _executer;
     TurnActor _actor;
 
+    CharacterRotator _rotator;
+
     private void Awake()
     {
         _actor = GetComponent<TurnActor>();
+        _rotator = GetComponentInChildren<CharacterRotator>();
 
         var vfxManager = FindObjectOfType<VFXManager>();
         var cameraMovement = FindObjectOfType<CameraMovement>();
@@ -50,7 +53,15 @@ public class Meleer : MonoBehaviour
                 break;
             }
         }
-        if (damage == 0) Debug.LogWarning("Nodamage");
+
+        if (_rotator)
+        {
+            var direction = target.transform.position - transform.position;
+            direction.Normalize();
+
+            _rotator.SetForward(direction, 0.6f);
+        }
+
         _executer.Execute(target, damage);
     }
 

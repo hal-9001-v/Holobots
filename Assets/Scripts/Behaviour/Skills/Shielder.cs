@@ -33,10 +33,14 @@ public class Shielder : MonoBehaviour
 
     public List<GroundTile> avaliableTiles;
 
+    CharacterRotator _rotator;
+
     private void Awake()
     {
         _target = GetComponent<Target>();
         _actor = GetComponent<TurnActor>();
+
+        _rotator = GetComponentInChildren<CharacterRotator>();
 
         _ground = FindObjectOfType<Ground>();
         avaliableTiles = new List<GroundTile>();
@@ -84,6 +88,14 @@ public class Shielder : MonoBehaviour
                 _undeployedShields.RemoveAt(0);
 
                 _actor.StartStep(_shieldCost);
+
+                if (_rotator)
+                {
+                    var direction =  tile.transform.position - _target.transform.position;
+                    direction.Normalize();
+
+                    _rotator.SetForward(direction, 0.35f);
+                }
                 _actor.EndStep();
             }
         }
@@ -130,10 +142,5 @@ public class Shielder : MonoBehaviour
     {
         _planningShield.TurnOn();
     }
-
-}
-
-class ShielderExecuter
-{
 
 }
