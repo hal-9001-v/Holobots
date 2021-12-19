@@ -7,6 +7,12 @@ public class GridLineProvider : MonoBehaviour
     [SerializeField] GridLine _movementGridLinePrototype;
     [SerializeField] GridLine _attackGridLinePrototype;
 
+    private void Awake()
+    {
+        _movementGridLinePrototype.HideLine();
+        _attackGridLinePrototype.HideLine();
+    }
+
     public GridLine CloneMovementGridLine(string ownerName)
     {
         var gridLine = CloneGridLine(_movementGridLinePrototype);
