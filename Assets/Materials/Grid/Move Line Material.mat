@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Move Line Material
-  m_Shader: {fileID: -6465566751694194690, guid: 95c1295c239dc1a40a6a5a28202ee662, type: 3}
+  m_Shader: {fileID: 4800000, guid: d708fe26bebd62541b772c6724d16f9f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -117,7 +117,7 @@ Material:
     - Color_2: {r: 0.120120525, g: 1, b: 0, a: 0}
     - Color_32218e8c38954aa6be5adaa63d39cf2d: {r: 0.15972686, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.048704147, g: 1, b: 0, a: 1}
     - _DissolveColor: {r: 0, g: 3.07451, b: 4, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _PlayerPos: {r: 0.5, g: 0.5, b: 0, a: 0}
