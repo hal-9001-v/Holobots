@@ -43,10 +43,10 @@ public class Shooter : MonoBehaviour
         _target = GetComponent<Target>();
 
         _projectile.SetOwner(_target);
-        _projectile.SetDamage(_damage);
 
         var rotator = GetComponentInChildren<CharacterRotator>();
-        _executer = new ShooterExecuter(_projectile, rotator, _damage, this, _turnActor, _speed);
+        var cameraMovement = FindObjectOfType<CameraMovement>();
+        _executer = new ShooterExecuter(_projectile, rotator,cameraMovement, _damage, this, _turnActor, _speed);
     }
 
     public void AddShoot(Target target)
@@ -85,7 +85,9 @@ public class ShooterExecuter
 
     CharacterRotator _rotator;
 
-    public ShooterExecuter(Projectile projectile, CharacterRotator characterRotator, int damage, Shooter owner, TurnActor turnActor, float speed)
+    CameraMovement _cameraMovement;
+
+    public ShooterExecuter(Projectile projectile, CharacterRotator characterRotator, CameraMovement cameraMovement, int damage, Shooter owner, TurnActor turnActor, float speed)
     {
         _projectile = projectile;
         _owner = owner;
@@ -97,6 +99,8 @@ public class ShooterExecuter
         _speed = speed;
 
         _rotator = characterRotator;
+
+        _cameraMovement = cameraMovement;
 
         _highligher = new Highlighter();
     }
@@ -135,6 +139,8 @@ public class ShooterExecuter
         _projectile.transform.position = origin;
 
         _projectile.EnableProjectile();
+        _cameraMovement.FixLookAt(_projectile.transform);
+
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;

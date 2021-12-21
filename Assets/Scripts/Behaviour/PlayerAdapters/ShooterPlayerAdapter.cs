@@ -29,6 +29,8 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
     {
         if (!_inputIsActive) return;
 
+
+
         _shootTarget = selectable.GetComponent<Target>();
 
         _highlighter.Unhighlight();
@@ -54,6 +56,11 @@ public class ShooterPlayerAdapter : Adapter, ISelectorObserver
             _highlighter.AddDangerededHighlightable(_shootTarget.highlightable);
             _highlighter.AddDangerededHighlightable(_shootTarget.currentGroundTile.highlightable);
 
+        }
+        else
+        {
+
+            _gridLine.HideLine();
         }
     }
 

@@ -1,16 +1,20 @@
-Shader "Unlit/LineTool"
+Shader "Unlit/LineToolTop"
 {
     Properties
     {
-        _MainColor("MainColor", Color) = (1,1,1,0)
+        _TopColor("TopColor", Color) = (1,1,1,0)
     }
     SubShader
     {
         Tags { "Queue"="Transparent" }
         LOD 100
 
-          Pass
+        Pass
         {
+            ZWrite Off
+
+            ZTest Always
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -27,22 +31,25 @@ Shader "Unlit/LineTool"
                 float4 vertex : SV_POSITION;
             };
 
-            float4 _MainColor;
+            float4 _TopColor;
 
-            v2f vert(appdata v)
+            v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
 
-            fixed4 frag(v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = _MainColor;
+                // sample the texture
+                fixed4 col = _TopColor;
 
                 return col;
             }
             ENDCG
         }
+
+
     }
 }

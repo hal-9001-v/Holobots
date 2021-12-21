@@ -15,9 +15,7 @@ public class Projectile : MonoBehaviour
 
     MeshRenderer _meshRenderer;
 
-    Coroutine _launchCoroutine;
-
-    int _damage;
+    VFXManager _vfxManager;
 
     public Target damagedTarget { get; private set; }
 
@@ -26,6 +24,8 @@ public class Projectile : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
         _meshRenderer = GetComponent<MeshRenderer>();
+
+        _vfxManager = FindObjectOfType<VFXManager>();
 
         DisableProjectile();
     }
@@ -55,10 +55,6 @@ public class Projectile : MonoBehaviour
         _owner = owner;
     }
 
-    public void SetDamage(int damage) {
-        _damage = damage;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (damagedTarget) return;
@@ -69,7 +65,11 @@ public class Projectile : MonoBehaviour
         {
             damagedTarget = target;
 
+            _vfxManager.Play("HIT", transform);
+
             DisableProjectile();
+
+
         }
 
 
