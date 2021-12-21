@@ -7,11 +7,11 @@ using UnityEngine.VFX;
 public class VFX
 {
     public string vfxName;
-   public VisualEffect vfxObject;
+    public VisualEffect vfxObject;
     public Vector3 positionOffset;
     public Vector3 scale;
     public VisualEffectAsset vfx;
     public float rate;
 
-    
+
 }

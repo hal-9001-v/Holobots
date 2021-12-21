@@ -55,7 +55,7 @@ public class Explosion : MonoBehaviour
 
         
         _vfxManager.Play("Explosion", centerTile.transform);
-        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
+        _cameraMovement.FixLookAt(_vfxManager._VFXObject.transform);
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());
         //Add to barrier so it doesnt get to 0 in loop.

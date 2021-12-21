@@ -74,7 +74,7 @@ public class SelfExplosion : MonoBehaviour
 
         _vfxManager.Play("Explosion", _target.currentGroundTile.transform);
 
-        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
+        _cameraMovement.FixLookAt(_vfxManager._VFXObject.transform);
 
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());
