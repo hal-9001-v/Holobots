@@ -33,7 +33,7 @@ public class DeathMenuManager : MonoBehaviour
 
         _quit.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         });
 
     }

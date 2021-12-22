@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerTeam : Team
 {
-    InputMapContainer _inputContainer;
+    GameInput inputContainer;
 
     SkillSelector _skillSelector;
 
@@ -18,19 +18,19 @@ public class PlayerTeam : Team
 
     public PlayerTeam(Transform target, TeamTag teamTag, List<TeamTag> enemyTags) : base(teamTag, enemyTags)
     {
-        _inputContainer = GameObject.FindObjectOfType<InputMapContainer>();
+        inputContainer = new GameInput();
 
         _skillSelector = GameObject.FindObjectOfType<SkillSelector>();
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
-        _inputContainer.inputMap.Game.NextUnit.Enable();
-        _inputContainer.inputMap.Game.EndTurn.Enable();
-        _inputContainer.inputMap.Game.SelectAbility1.Enable();
-        _inputContainer.inputMap.Game.SelectAbility2.Enable();
-        _inputContainer.inputMap.Game.SelectAbility3.Enable();
-        _inputContainer.inputMap.Game.SelectAbility4.Enable();
+        inputContainer.Game.NextUnit.Enable();
+        inputContainer.Game.EndTurn.Enable();
+        inputContainer.Game.SelectAbility1.Enable();
+        inputContainer.Game.SelectAbility2.Enable();
+        inputContainer.Game.SelectAbility3.Enable();
+        inputContainer.Game.SelectAbility4.Enable();
 
-        _inputContainer.inputMap.Game.NextUnit.performed += ctx =>
+        inputContainer.Game.NextUnit.performed += ctx =>
         {
             if (_turnIsActive)
             {
@@ -38,14 +38,18 @@ public class PlayerTeam : Team
             }
         };
 
-        _inputContainer.inputMap.Game.EndTurn.performed += ctx =>
+        inputContainer.Game.EndTurn.performed += ctx =>
         {
             if (_turnIsActive)
             {
-                EndTurn();
+                if (_gameDirector)
+                {
+                    EndTurn();
+                }
             }
         };
-        _inputContainer.inputMap.Game.SelectAbility1.performed += ctx =>
+
+        inputContainer.Game.SelectAbility1.performed += ctx =>
         {
             if (_turnIsActive)
             {
@@ -53,21 +57,21 @@ public class PlayerTeam : Team
             }
 
         };
-        _inputContainer.inputMap.Game.SelectAbility2.performed += ctx =>
+        inputContainer.Game.SelectAbility2.performed += ctx =>
         {
             if (_turnIsActive)
             {
                 _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[1]);
             }
 
-        }; _inputContainer.inputMap.Game.SelectAbility3.performed += ctx =>
+        }; inputContainer.Game.SelectAbility3.performed += ctx =>
         {
             if (_turnIsActive)
             {
                 _skillSelector.SetSelectedSkill(_skillSelector.skillHolders[2]);
             }
 
-        }; _inputContainer.inputMap.Game.SelectAbility4.performed += ctx =>
+        }; inputContainer.Game.SelectAbility4.performed += ctx =>
         {
             if (_turnIsActive)
             {

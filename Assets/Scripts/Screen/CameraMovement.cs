@@ -28,59 +28,59 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
-        var inputMapContainer = FindObjectOfType<InputMapContainer>();
+        var inputMap = new GameInput();
 
-        if (inputMapContainer)
-        {
-
-            inputMapContainer.inputMap.Camera.RotateCamera.Enable();
-            inputMapContainer.inputMap.Camera.MoveCamera.Enable();
-            inputMapContainer.inputMap.Camera.Scroll.Enable();
-            inputMapContainer.inputMap.Camera.RotateCamera.performed += ctx =>
-            {
-                _rotationInput = ctx.ReadValue<float>();
-                _isRotating = true;
-            };
-
-            inputMapContainer.inputMap.Camera.RotateCamera.canceled += ctx =>
-            {
-                _isRotating = false;
-            };
-
-            inputMapContainer.inputMap.Camera.MoveCamera.performed += ctx =>
-            {
-                _movementInput = ctx.ReadValue<Vector2>();
-                _isMoving = true;
-
-            };
-
-            inputMapContainer.inputMap.Camera.MoveCamera.canceled += ctx =>
-            {
-                _isMoving = false;
-
-                _followRigidbody.velocity = Vector3.zero;
-            };
-
-            inputMapContainer.inputMap.Camera.Scroll.performed += ctx =>
-            {
-                if (ctx.ReadValue<float>() < 0)
-                {
-                    _virtualCamera.m_Lens.FieldOfView += _fovChange;
-                }
-                else
-                if (ctx.ReadValue<float>() > 0)
-                {
-                    _virtualCamera.m_Lens.FieldOfView -= _fovChange;
-                }
-            };
-
-        }
+        inputMap.Camera.RotateCamera.Enable();
+        inputMap.Camera.MoveCamera.Enable();
+        inputMap.Camera.Scroll.Enable();
 
 
         if (_cameraFollow)
         {
             _followRigidbody = _cameraFollow.GetComponent<Rigidbody>();
         }
+
+        inputMap.Camera.RotateCamera.performed += ctx =>
+        {
+            _rotationInput = ctx.ReadValue<float>();
+            _isRotating = true;
+        };
+
+        inputMap.Camera.RotateCamera.canceled += ctx =>
+        {
+            _isRotating = false;
+        };
+
+        inputMap.Camera.MoveCamera.performed += ctx =>
+        {
+            _movementInput = ctx.ReadValue<Vector2>();
+            _isMoving = true;
+
+        };
+
+        inputMap.Camera.MoveCamera.canceled += ctx =>
+        {
+            //Dont make questions
+            if (this && _followRigidbody)
+            {
+                _isMoving = false;
+
+                _followRigidbody.velocity = Vector3.zero;
+            }
+        };
+
+        inputMap.Camera.Scroll.performed += ctx =>
+        {
+            if (ctx.ReadValue<float>() < 0)
+            {
+                _virtualCamera.m_Lens.FieldOfView += _fovChange;
+            }
+            else
+            if (ctx.ReadValue<float>() > 0)
+            {
+                _virtualCamera.m_Lens.FieldOfView -= _fovChange;
+            }
+        };
     }
 
     private void Update()

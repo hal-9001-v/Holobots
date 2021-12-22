@@ -11,18 +11,13 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _quitButton;
 
-   [SerializeField] private Animator _menuAnimator;
-   [SerializeField] private Animator _settingsAnimator;
-    
-    private void Awake() {
-        
+    [SerializeField] private Animator _menuAnimator;
+    [SerializeField] private Animator _settingsAnimator;
+
+    private void Start()
+    {
         _levelLoader = FindObjectOfType<LevelLoader>();
 
-    }
-
-
-    private void Start() {
-        
         _playLevelOneButton.onClick.AddListener(() =>
         {
             Play(1);
@@ -41,31 +36,34 @@ public class MainMenuManager : MonoBehaviour
 
         _settingsButton.onClick.AddListener(() =>
         {
-          
+
             DisplaySettings();
-          
+
         });
         _quitButton.onClick.AddListener(() =>
         {
             Application.Quit();
         });
     }
-    
-    private void Play(int level){
+
+    private void Play(int level)
+    {
 
         _levelLoader.LoadLevel(level);
 
     }
 
 
-    private void DisplaySettings(){
+    private void DisplaySettings()
+    {
 
-        
+
         StartCoroutine(DisplaySettingsC());
 
     }
 
-    private IEnumerator DisplaySettingsC(){
+    private IEnumerator DisplaySettingsC()
+    {
 
         _menuAnimator.SetTrigger("End");
         _settingsAnimator.SetTrigger("Start");

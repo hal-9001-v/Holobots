@@ -12,7 +12,20 @@ public class TurnActor : MonoBehaviour
     //Used to indicate if actor should be called for Steps
     public bool isDead { get; private set; }
 
-    public Target target { get; private set; }
+    Target _target;
+    public Target target
+    {
+        get
+        {
+            if (_target) return _target;
+
+            _target = GetComponent<Target>();
+
+            return _target;
+        }
+    }
+
+
 
     public Team team { get; private set; }
 
@@ -31,7 +44,7 @@ public class TurnActor : MonoBehaviour
 
     private void Awake()
     {
-        target = GetComponent<Target>();
+        _target = GetComponent<Target>();
 
         currentTurnPoints = maxTurnPoints;
     }

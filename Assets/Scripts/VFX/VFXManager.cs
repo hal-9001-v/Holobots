@@ -7,23 +7,7 @@ public class VFXManager : MonoBehaviour
 {
     [SerializeField] public VisualEffect _VFXObject;
     public VFX[] VFXs;
-    public static VFXManager instance;
-    // Start is called before the first frame update
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
+    
     public void Play(string searchName, Transform target)
     {
         VFX v = Array.Find(VFXs, vfx => vfx.vfxName == searchName);
