@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,64 +5,42 @@ using UnityEngine.SceneManagement;
 public class DeathMenuManager : MonoBehaviour
 {
 
-    private LevelLoader _levelLoader;
-    [SerializeField] private Button _continue;
+    [Header("References")]
     [SerializeField] private Button _quit;
+
+    TextMeshProUGUI pointText;
+    TextMeshProUGUI turnText;
 
     Sprite[] starSprites = new Sprite[4];
     SpriteRenderer pointRenderer;
-    TextMeshProUGUI pointText;
-    TextMeshProUGUI turnText;
+    
+    private LevelLoader _levelLoader;
+    
     private int _points;
-    private int _turns;
-    public int turns{
-         get{
-             return _turns;
-         }
-         set{
-            _turns =turns;  
-         }
-     }
 
-    private void Awake() {
-        
+    private int _turns;
+    public int turns
+    {
+        get
+        {
+            return _turns;
+        }
+    }
+
+    private void Awake()
+    {
         _levelLoader = FindObjectOfType<LevelLoader>();
 
-            _continue.onClick.AddListener(() =>
-        {
-            Continue();
-        });
-    
         _quit.onClick.AddListener(() =>
         {
-            Application.Quit();
+            SceneManager.LoadScene(0);
         });
-     
-    }
-    
-private void Start() {
-  
-}
-    private void Continue(){
-
-       
-              Resources.UnloadUnusedAssets();
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
 
     }
-    private void NextLevel(){}
-
-    private void RestartLevel(){
-
-  
-    }
-
-    
-
-    public void UpdatePointsGUI(){
-
-
-        switch(_points){
+    public void UpdatePointsGUI()
+    {
+        switch (_points)
+        {
 
             case 0:
                 pointRenderer.sprite = starSprites[0];
