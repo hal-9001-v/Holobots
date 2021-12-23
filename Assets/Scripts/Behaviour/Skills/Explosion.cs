@@ -23,6 +23,8 @@ public class Explosion : MonoBehaviour
 
     Ground _ground;
 
+    Target _target;
+
     private void Awake()
     {
         _highlighter = new Highlighter();
@@ -33,12 +35,12 @@ public class Explosion : MonoBehaviour
         _cameraMovement = FindObjectOfType<CameraMovement>();
     }
 
-    public void Explode(GroundTile centerTile, CountBarrier barrier)
+    public void Explode(GroundTile centerTile, CountBarrier barrier, Target hurter)
     {
-        StartCoroutine(ExplodeCoroutine(centerTile, barrier));
+        StartCoroutine(ExplodeCoroutine(centerTile, barrier, hurter));
     }
 
-    IEnumerator ExplodeCoroutine(GroundTile centerTile, CountBarrier barrier)
+    IEnumerator ExplodeCoroutine(GroundTile centerTile, CountBarrier barrier, Target hurter)
     {
         barrier.AddCounter();
         var tiles = _ground.GetTilesInRange(centerTile, _range);
@@ -53,9 +55,8 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        
-        _vfxManager.Play("Explosion", centerTile.transform);
-        _cameraMovement.FixLookAt(_vfxManager._VFXObject.transform);
+        _vfxManager.PlayExplosion(centerTile.transform);
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());
         //Add to barrier so it doesnt get to 0 in loop.
@@ -65,7 +66,7 @@ public class Explosion : MonoBehaviour
             if (tile.unit && tile.unit.targetType != TargetType.Ranger)
             {
                 barrier.AddCounter();
-                tile.unit.Hurt(_damage, barrier);
+                tile.unit.Hurt(hurter, _damage, barrier);
             }
         }
         barrier.RemoveCounter();

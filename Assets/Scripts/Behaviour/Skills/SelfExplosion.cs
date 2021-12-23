@@ -72,9 +72,9 @@ public class SelfExplosion : MonoBehaviour
 
         }
 
-        _vfxManager.Play("Explosion", _target.currentGroundTile.transform);
+        _vfxManager.PlayExplosion(_target.currentGroundTile.transform);
 
-        _cameraMovement.FixLookAt(_vfxManager._VFXObject.transform);
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());
@@ -89,7 +89,7 @@ public class SelfExplosion : MonoBehaviour
             {
                 Debug.Log(tile.unit.name);
                 barrier.AddCounter();
-                tile.unit.Hurt(_damage, barrier);
+                tile.unit.Hurt(_target, _damage, barrier);
 
             }
         }
@@ -98,7 +98,7 @@ public class SelfExplosion : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         barrier.AddCounter();
-        _target.Hurt(int.MaxValue, barrier);
+        _target.Hurt(_target, int.MaxValue, barrier);
 
     }
 

@@ -158,7 +158,7 @@ public class ShooterExecuter
         if (_projectile.damagedTarget)
         {
             barrier.AddCounter();
-            _projectile.damagedTarget.Hurt(_damage, barrier);
+            _projectile.damagedTarget.Hurt(target,_damage, barrier);
         }
 
         _projectile.DisableProjectile();

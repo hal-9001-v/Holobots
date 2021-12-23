@@ -8,28 +8,23 @@ public class SkinnedMeshToMesh : MonoBehaviour
     public VisualEffect VFXGraph;
     public float refreshRate;
 
-    private void Awake() {
+    private void Awake()
+    {
         refreshRate = 0.02f;
     }
 
-    private void Update() {
-    }
-
-    public IEnumerator UpdateVFXGraph(){
-
-        while(gameObject.activeSelf){
-            
+    public IEnumerator UpdateVFXGraph()
+    {
+        while (gameObject.activeSelf)
+        {
             Mesh m = new Mesh();
             skinnedMesh.BakeMesh(m);
-            Vector3[] vertices  = m.vertices;
+            Vector3[] vertices = m.vertices;
             Mesh m2 = new Mesh();
             m2.vertices = m.vertices;
             VFXGraph.SetMesh("Mesh", m2);
-            
-            yield return new WaitForSeconds(refreshRate);
-            
-        
 
+            yield return new WaitForSeconds(refreshRate);
         }
     }
 }

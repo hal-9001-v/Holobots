@@ -82,7 +82,7 @@ class ExplosionerExecuter
             _actor.EndStep();
         });
 
-        _explosion.Explode(tile, barrier);
+        _explosion.Explode(tile, barrier, _actor.target);
     }
 
 }

@@ -104,7 +104,7 @@ public class Obstacle : MonoBehaviour
                         if (tile.unit != null)
                         {
                             barrier.AddCounter();
-                            tile.unit.Hurt(_debrisDamage, barrier);
+                            tile.unit.Hurt(_target, _debrisDamage, barrier);
                         }
 
                         var debrisClone = Instantiate(_debrisPrototype);

@@ -14,6 +14,8 @@ public class GameDirector : MonoBehaviour
     List<Team> _teams;
     BehaviourTree _teamTurnTree;
 
+    DeathMenuManager _deathMenuManager;
+
     int _currentTeam = -1;
 
     enum GameStates
@@ -26,6 +28,8 @@ public class GameDirector : MonoBehaviour
 
     private void Awake()
     {
+        _deathMenuManager = FindObjectOfType<DeathMenuManager>();
+
         CreateTeams();
     }
 
@@ -63,7 +67,8 @@ public class GameDirector : MonoBehaviour
                 break;
 
             case GameStates.EndGame:
-
+                winningtext.text = "End Game, winner: " + _teams[0].teamTag;
+                _deathMenuManager.DisplayEndgameScreen(_teams[0].teamTag);
 
                 return;
 
@@ -124,8 +129,7 @@ public class GameDirector : MonoBehaviour
 
             if (_teams.Count == 1)
             {
-                winningtext.text = "End Game, winner: " + _teams[0].teamTag;
-                FindObjectOfType<DeathMenuManager>().GetComponent<Animator>().SetTrigger("Start");
+                ChangeState(GameStates.EndGame);
             }
             else
             {

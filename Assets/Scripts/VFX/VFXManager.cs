@@ -5,39 +5,60 @@ using UnityEngine.VFX;
 using System;
 public class VFXManager : MonoBehaviour
 {
-    [SerializeField] public VisualEffect _VFXObject;
-    public VFX[] VFXs;
-    
-    public void Play(string searchName, Transform target)
-    {
-        VFX v = Array.Find(VFXs, vfx => vfx.vfxName == searchName);
-        if (v == null)
-        {
+    [SerializeField] VisualEffect _VFXObject;
 
-            Debug.LogWarning("VFX: " + searchName + " not found!");
-            return;
+    const string DurationPropertyKey = "Duration";
+
+    public VisualEffect VFXObject
+    {
+        get
+        {
+            return _VFXObject;
         }
-        RealPlay(v, target);
+    }
+
+    [SerializeField] VFX _explosionVFX;
+    [SerializeField] VFX _healVFX;
+    [SerializeField] VFX _sparkVFX;
+    [SerializeField] VFX _smokeVFX;
+    [SerializeField] VFX _lightingVFX;
+
+    private void Awake()
+    {
+        Debug.LogWarning(name);
+    }
+
+    public void PlayExplosion(Transform target)
+    {
+        RealPlay(_explosionVFX, target);
+    }
+
+    public void PlayHeal(Transform target)
+    {
+        RealPlay(_healVFX, target);
+    }
+
+    public void PlaySpark(Transform target)
+    {
+        RealPlay(_sparkVFX, target);
     }
 
     private void RealPlay(VFX v, Transform target)
     {
 
-        v.vfxObject = _VFXObject;
-        v.vfxObject.transform.position = v.positionOffset + target.position;
-        v.vfxObject.playRate = v.rate;
-        v.vfxObject.transform.localScale = v.scale;
-        v.vfxObject.visualEffectAsset = v.vfx;
-        v.vfxObject.Play();
+        _VFXObject.transform.position = v.positionOffset + target.position;
+
+        _VFXObject.playRate = v.rate;
+
+        _VFXObject.transform.localScale = v.scale;
+        _VFXObject.visualEffectAsset = v.vfx;
+
+        _VFXObject.Play();
     }
 
     public float GetDuration()
     {
-
-        //        Debug.Log(VFXObject.GetFloat("Duration"));
-
-        return _VFXObject.GetFloat("Duration") + 1f;
-
+        return _VFXObject.GetFloat(DurationPropertyKey) + 1f;
     }
 
 

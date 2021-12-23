@@ -130,13 +130,13 @@ class MeleerExecuter
         _cameraMovement.FixLookAt(target.transform);
         yield return new WaitForSeconds(0.5f);
 
-        _vfxManager.Play("Hit", target.transform);
+        _vfxManager.PlaySpark(target.transform);
         yield return new WaitForSeconds(_vfxManager.GetDuration() - 1.5f);
 
         _highlighter.Unhighlight();
 
         barrier.AddCounter();
-        target.Hurt(damage, barrier);
+        target.Hurt(target, damage, barrier);
         barrier.RemoveCounter();
     }
 }

@@ -69,10 +69,13 @@ public class Target : MonoBehaviour
 
     CameraMovement _cameraMovement;
 
+    DeathMenuManager _deathMamenu;
+
     void Awake()
     {
         highlightable = GetComponent<Highlightable>();
         _dissolver = GetComponent<Dissolver>();
+        _deathMamenu = FindObjectOfType<DeathMenuManager>();
 
         currentHealth = _maxHealth;
         _cameraMovement = FindObjectOfType<CameraMovement>();
@@ -85,7 +88,7 @@ public class Target : MonoBehaviour
         dieAction += (barrier) =>
         {
             selectable.DisableSelection();
-        }; 
+        };
     }
 
     void Start()
@@ -114,7 +117,7 @@ public class Target : MonoBehaviour
         currentGroundTile.SetUnit(this);
     }
 
-    public void Hurt(int damage, CountBarrier barrier)
+    public bool Hurt(Target hurter, int damage, CountBarrier barrier)
     {
         int fixedDamage;
 
@@ -136,12 +139,18 @@ public class Target : MonoBehaviour
 
             Die(barrier);
 
+            _deathMamenu.AddKill(hurter.teamTag);
+            _deathMamenu.AddDeath(teamTag);
+
+            return true;
         }
         else if (barrier != null)
         {
             //Here goes cinematic hit when getting damage. It should go on a coroutine.
             barrier.RemoveCounter();
         }
+
+        return false;
     }
 
     void Die(CountBarrier barrier)
@@ -162,7 +171,7 @@ public class Target : MonoBehaviour
         {
             _dissolver.Dissolve(barrier);
         }
-        else if(barrier != null)
+        else if (barrier != null)
         {
             barrier.RemoveCounter();
         }
