@@ -133,6 +133,9 @@ MonoBehaviour:
   isClosed: 0
   gCost: 0
   parent: {fileID: 0}
+  _cordsOffset: {x: 0.5, y: 0.5}
+  _introDepth: -10
+  _introSpeed: 20
 --- !u!65 &3573953753055354287
 BoxCollider:
   m_ObjectHideFlags: 0
