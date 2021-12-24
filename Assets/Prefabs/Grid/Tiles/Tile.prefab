@@ -101,7 +101,7 @@ MonoBehaviour:
   XcellSize: 2
   ZcellSize: 2
   height: 0
-  _snapToHeight: 0
+  _snapToHeight: 1
   _localPosition: 0
 --- !u!114 &7300552498177159576
 MonoBehaviour:

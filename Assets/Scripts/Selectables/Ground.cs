@@ -1,21 +1,27 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ground : MonoBehaviour
 {
-
     [Header("References")]
+    [SerializeField] Generation _generation;
     [SerializeField] GroundTile[] _tiles;
+
+    [Header("Generation")]
+    [SerializeField] [Range(0.01f, 2)] float _variation;
+    [SerializeField] float _maxX;
+    [SerializeField] float _maxY;
+
+    [SerializeField] WeightedTile[] _tilePrefabs;
+    float _totalWeight;
 
     public Dictionary<Vector2Int, GroundTile> groundMap;
 
-    public byte[][] byteMap;
-
     [Header("Settings")]
     [SerializeField] [Range(0.1f, 5f)] float _cellSize;
-
-    GroundTile _zeroTile;
+    [SerializeField] Color _gizmosColor;
 
     public float cellSize
     {
@@ -25,14 +31,32 @@ public class Ground : MonoBehaviour
         }
     }
 
-    [SerializeField] [Range(0.1f, 1)] float _gizmosSize;
-
     const float RootOf2 = 1.41421356f;
     const float MinimumFloatValue = 0.01f;
 
+
+    enum Generation
+    {
+        GetFromScene,
+        Random
+    }
+
     private void Awake()
     {
-        SetGroundGrid();
+        switch (_generation)
+        {
+            case Generation.GetFromScene:
+                break;
+
+            case Generation.Random:
+                GenerateMap();
+                break;
+
+            default:
+                break;
+        }
+
+        SetGroundGridFromScene();
 
         foreach (var target in FindObjectsOfType<Target>())
         {
@@ -45,41 +69,80 @@ public class Ground : MonoBehaviour
         }
     }
 
-    [ContextMenu("Set Ground Grid")]
-    void SetGroundGrid()
+    void GenerateMap()
     {
+        SetGroundGridFromScene();
 
-        _tiles = GetComponentsInChildren<GroundTile>();
+        float baseX = UnityEngine.Random.Range(-_maxX, _maxX);
+        float basey = UnityEngine.Random.Range(-_maxY, _maxY);
 
-        _zeroTile = _tiles[0];
-
-        foreach (var tile in _tiles)
+        foreach (var prefab in _tilePrefabs)
         {
-            if (tile.transform.position.x - _zeroTile.transform.position.x < 0.01f)
+            _totalWeight += prefab.weight;
+        }
+
+        for (int i = 0; i < _maxX; i++)
+        {
+            for (int j = 0; j < _maxY; j++)
             {
-                if (tile.transform.position.z - _zeroTile.transform.position.z < 0.01f)
+                GroundTile outTile;
+                if (groundMap.TryGetValue(new Vector2Int(i, j), out outTile) == false)
                 {
-                    _zeroTile = tile;
+                    float noiseValue = Mathf.PerlinNoise(baseX + i * _variation, basey + j * _variation);
+
+                    var tile = GetTilePrefab(noiseValue);
+
+                    var newTile = Instantiate(tile, new Vector3(i * _cellSize, 0, j * _cellSize), Quaternion.identity);
+
+                    newTile.transform.parent = transform;
                 }
             }
+
         }
 
-        _zeroTile = _tiles[0];
+    }
+
+    GameObject GetTilePrefab(float value)
+    {
+        float accumulatedWeight = 0;
+
+        for (int i = 0; i < _tilePrefabs.Length; i++)
+        {
+            accumulatedWeight += _tilePrefabs[i].weight / _totalWeight;
+
+            if (value < accumulatedWeight)
+            {
+                Debug.Log(i);
+                return _tilePrefabs[i].tilePrefab;
+            }
+
+        }
+
+        return _tilePrefabs[_tilePrefabs.Length - 1].tilePrefab;
+    }
+
+    [ContextMenu("Set Ground Grid")]
+    void SetGroundGridFromScene()
+    {
+        _tiles = GetComponentsInChildren<GroundTile>();
         groundMap = new Dictionary<Vector2Int, GroundTile>();
 
-        for (int i = 0; i < _tiles.Length; i++)
+        if (_tiles != null && _tiles.Length != 0)
         {
-            var cellCoord = ToCellCoords(_tiles[i].transform.position);
-            _tiles[i].SetCellCoord(cellCoord);
+            for (int i = 0; i < _tiles.Length; i++)
+            {
+                var cellCoord = ToCellCoords(_tiles[i].transform.position);
+                _tiles[i].SetCellCoord(cellCoord);
 
-            _tiles[i].name = "Cell (" + cellCoord.x + ", " + cellCoord.y + ")";
-            groundMap.Add(_tiles[i].cellCoord, _tiles[i]);
+                _tiles[i].name = "Cell (" + cellCoord.x + ", " + cellCoord.y + ")";
+                groundMap.Add(_tiles[i].cellCoord, _tiles[i]);
 
-        }
+            }
 
-        for (int i = 0; i < _tiles.Length; i++)
-        {
-            _tiles[i].GetNeighBours(groundMap);
+            for (int i = 0; i < _tiles.Length; i++)
+            {
+                _tiles[i].GetNeighBours(groundMap);
+            }
         }
 
     }
@@ -234,7 +297,7 @@ public class Ground : MonoBehaviour
 
     public Vector2Int ToCellCoords(Vector3 worldPosition)
     {
-        Vector3 v = worldPosition - _zeroTile.transform.position;
+        Vector3 v = worldPosition;
 
         v /= _cellSize;
 
@@ -254,15 +317,23 @@ public class Ground : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_zeroTile)
+        Gizmos.color = _gizmosColor;
+        for (int i = 0; i < _maxX; i++)
         {
-            Gizmos.DrawSphere(_zeroTile.transform.position, _gizmosSize * 0.5f);
-            Gizmos.DrawWireCube(_zeroTile.transform.position, new Vector3(_gizmosSize, _gizmosSize, _gizmosSize));
+            for (int j = 0; j < _maxY; j++)
+            {
+                Gizmos.DrawWireCube(new Vector3(_cellSize * i, 0, _cellSize * j), new Vector3(_cellSize, _cellSize, _cellSize));
+            }
 
         }
     }
 
 
-
+    [Serializable]
+    struct WeightedTile
+    {
+        public GameObject tilePrefab;
+        public int weight;
+    }
 }
 

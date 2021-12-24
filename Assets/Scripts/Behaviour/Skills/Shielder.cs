@@ -64,11 +64,6 @@ public class Shielder : MonoBehaviour
         _actor.AddStartTurnListener(ResetUndeployedShields);
     }
 
-    private void Start()
-    {
-        CalculateAvaliableTiles();
-    }
-
     public void CalculateAvaliableTiles()
     {
         if (_currentTile != _target.currentGroundTile || _currentTile == null)

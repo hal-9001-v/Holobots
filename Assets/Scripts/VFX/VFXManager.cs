@@ -23,11 +23,6 @@ public class VFXManager : MonoBehaviour
     [SerializeField] VFX _smokeVFX;
     [SerializeField] VFX _lightingVFX;
 
-    private void Awake()
-    {
-        Debug.LogWarning(name);
-    }
-
     public void PlayExplosion(Transform target)
     {
         RealPlay(_explosionVFX, target);

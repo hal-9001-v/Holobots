@@ -280,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 951207682951555959}
   _targetType: 8
-  _teamTag: 0
+  _teamTag: 4
   _maxHealth: 1
 --- !u!114 &1815672251607148783
 MonoBehaviour:
@@ -313,6 +313,7 @@ MonoBehaviour:
     canTraspass: 0
     canFly: 0
   _movingSpeed: 5
+  _rotationTime: 0
 --- !u!114 &1815672251607148780
 MonoBehaviour:
   m_ObjectHideFlags: 0

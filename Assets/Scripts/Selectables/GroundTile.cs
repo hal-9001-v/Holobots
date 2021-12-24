@@ -36,7 +36,6 @@ public class GroundTile : MonoBehaviour
     private void Awake()
     {
         highlightable = GetComponent<Highlightable>();
-
     }
 
     void Start()

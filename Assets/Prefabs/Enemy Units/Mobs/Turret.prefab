@@ -245,7 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthMesh: {fileID: 2781590564320983733}
   _targetType: 7
-  _team: 3
+  _teamTag: 4
   _maxHealth: 2
 --- !u!114 &6663451073602726683
 MonoBehaviour:
@@ -278,6 +278,7 @@ MonoBehaviour:
     canTraspass: 0
     canFly: 0
   _movingSpeed: 0
+  _rotationTime: 0
 --- !u!114 &6663451073602726677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,16 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77751d86af5b2224da86523317c915f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 6037604462128736262}
-  skinnedMesh: {fileID: 0}
-  meshes:
-  - {fileID: 6663451073801727817}
-  - {fileID: 6663451073602726686}
-  - {fileID: 6663451072526282469}
-  - {fileID: 7580144893589693645}
-  dissolveRate: 0.02
-  refreshRate: 0.05
-  s: {fileID: 0}
+  _dissolveTime: 1
 --- !u!95 &6037604462128736262
 Animator:
   serializedVersion: 3
@@ -724,11 +716,6 @@ PrefabInstance:
 --- !u!4 &7580144893589693647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3840234493311203327, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
-  m_PrefabInstance: {fileID: 6663451073067586352}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &7580144893589693645 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3840234493311203325, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
   m_PrefabInstance: {fileID: 6663451073067586352}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7580144893589693646 stripped
