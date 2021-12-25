@@ -28,7 +28,6 @@ public class UIInfoManager : MonoBehaviour
     public void SetTargetUnit(Target target)
     {
         currentTarget = target;
-
         switch (currentTarget.targetType)
         {
             case TargetType.Fighter:

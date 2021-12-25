@@ -14,6 +14,9 @@ public class GameDirector : MonoBehaviour
     List<Team> _teams;
     BehaviourTree _teamTurnTree;
 
+    UIInfoManager uiInfo;
+    public UIInfoManager handUiInfo;
+    public UIInfoManager deskUiInfo;
     DeathMenuManager _deathMenuManager;
 
     int _currentTeam = -1;
@@ -30,6 +33,9 @@ public class GameDirector : MonoBehaviour
     {
         _deathMenuManager = FindObjectOfType<DeathMenuManager>();
 
+        if(SystemInfo.deviceType == DeviceType.Handheld) uiInfo = handUiInfo;
+        else uiInfo = deskUiInfo;
+        
         CreateTeams();
     }
 
@@ -44,6 +50,7 @@ public class GameDirector : MonoBehaviour
         {
             Debug.LogWarning("No teams in Scene!");
         }
+
     }
 
     void ChangeState(GameStates nextState)
@@ -88,19 +95,19 @@ public class GameDirector : MonoBehaviour
             switch (taggedTeam.teamTag)
             {
                 case TeamTag.Player1:
-                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player1, taggedTeam.enemyTeamTag));
+                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player1, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.Player2:
-                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player2, taggedTeam.enemyTeamTag));
+                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player2, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.AI:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI, taggedTeam.enemyTeamTag));
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.AI2:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI2, taggedTeam.enemyTeamTag));
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI2, taggedTeam.enemyTeamTag,uiInfo));
                     break;
                 case TeamTag.Mob:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.Mob, taggedTeam.enemyTeamTag));
+                    _teams.Add(new AITeam(cameraTarget, TeamTag.Mob, taggedTeam.enemyTeamTag,uiInfo));
                     break;
                 case TeamTag.None:
                     break;

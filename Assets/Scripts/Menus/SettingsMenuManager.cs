@@ -10,6 +10,7 @@ public class SettingsMenuManager : MonoBehaviour
     private SettingsMenuManager[] _settingsMenu;
     [SerializeField] private Button _menu;
     [SerializeField] private Slider _SFX;
+    [SerializeField] private Slider _Master;
     [SerializeField] private Slider _music;
 
     private Animator _settingsAnimator;

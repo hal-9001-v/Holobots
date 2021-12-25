@@ -25,19 +25,18 @@ public abstract class Team
 
     public abstract void UpdateTeam();
 
-    public Team(TeamTag tag, List<TeamTag> enemyTags)
+    public Team(TeamTag tag, List<TeamTag> enemyTags, UIInfoManager thisDeviceManager)
     {
         this.teamTag = tag;
         this.enemyTags = enemyTags;
 
         actors = new List<TurnActor>();
         _actorsInTurn = new List<TurnActor>();
-
+        _UIManager = thisDeviceManager;
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
         _cameraMovement = GameObject.FindObjectOfType<CameraMovement>();
         _selectionArrow = GameObject.FindObjectOfType<SelectionArrow>();
-        _UIManager = GameObject.FindObjectOfType<UIInfoManager>();
 
         SetActorsOfTeam();
     }
