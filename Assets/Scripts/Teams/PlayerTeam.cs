@@ -120,23 +120,38 @@ public class PlayerTeam : Team
         }
     }
 
+    public override bool IsTeamAlive()
+    {
+        if (actors.Count != 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public override void ActorFinishedTurn(TurnActor actor)
     {
         if (_actorsInTurn.Contains(actor))
         {
             _actorsInTurn.Remove(actor);
 
-            _gameDirector.UpdateTeams();
-
-            if (_actorsInTurn.Count == 0)
+            if (_gameDirector.UpdateTeams())
             {
-                EndTurn();
+                if (_actorsInTurn.Count == 0)
+                {
+                    EndTurn();
+                }
+                else
+                {
+                    SelectUnit(0);
+
+                    SetTargetOfCamera(_actorsInTurn[0].target, false);
+                }
             }
             else
             {
-                SelectUnit(0);
-
-                SetTargetOfCamera(_actorsInTurn[0].target, false);
+                EndTurn();
             }
         }
 
@@ -171,9 +186,15 @@ public class PlayerTeam : Team
 
     public override void ActorFinishedStep(TurnActor actor)
     {
-        _gameDirector.UpdateTeams();
+        if (_gameDirector.UpdateTeams())
+        {
+            SelectUnit(_unitIndex);
+        }
+        else
+        {
+            EndTurn();
+        }
 
-        SelectUnit(_unitIndex);
     }
 
     public override void ActorStartedStep(TurnActor actor)
@@ -189,4 +210,6 @@ public class PlayerTeam : Team
     {
         throw new NotImplementedException();
     }
+
+
 }

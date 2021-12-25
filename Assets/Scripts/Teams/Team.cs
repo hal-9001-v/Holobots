@@ -59,7 +59,7 @@ public abstract class Team
     /// </summary>
     public virtual bool StartTurn()
     {
-        if (actors.Count != 0)
+        if (IsTeamAlive())
         {
             foreach (var actor in actors)
             {
@@ -76,6 +76,8 @@ public abstract class Team
         }
 
     }
+
+    public abstract bool IsTeamAlive();
 
     /// <summary>
     /// Clear _actorsInTurn and EndTurn() for every unit. Besides, call GameDirector.TeamEndedTurn();

@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Meleer))]
 public class RogueAI: Bot, IUtilityAI
 {
-    TurnActor _actor;
-
     Mover _mover;
     Meleer _meleer;
 
@@ -28,9 +26,7 @@ public class RogueAI: Bot, IUtilityAI
     HealthSensor _healthSensor;
 
     private void Start()
-    {
-        _actor = GetComponent<TurnActor>();
-        
+    {        
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
         _meleer = GetComponent<Meleer>();
@@ -53,7 +49,7 @@ public class RogueAI: Bot, IUtilityAI
     {
         _utilityUnit = new UtilityUnit();
 
-        _distanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
+        _distanceSensor = new DistanceSensor(_target, actor.team.enemyTags, _mover.pathProfile, _meleeThreshold, new LinearMinUtilityFunction(0.2f));
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
 
         #region MELEE TREE
@@ -130,7 +126,7 @@ public class RogueAI: Bot, IUtilityAI
         #endregion
 
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+        IdleAction idleAction = new IdleAction(actor, "Idle", () =>
          {
              return _idleWeight;
          });

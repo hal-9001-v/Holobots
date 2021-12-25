@@ -57,6 +57,7 @@ public class SelfExplosion : MonoBehaviour
         {
             _actor.EndStep();
         });
+        barrier.AddCounter();
 
         _actor.StartStep(int.MaxValue);
         var tiles = GetTilesInRange(_target.currentGroundTile);
@@ -96,9 +97,12 @@ public class SelfExplosion : MonoBehaviour
         barrier.RemoveCounter();
 
         yield return new WaitForSeconds(1);
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 
         barrier.AddCounter();
         _target.Hurt(_target, int.MaxValue, barrier);
+
+        barrier.RemoveCounter();
 
     }
 

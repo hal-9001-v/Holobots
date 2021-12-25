@@ -17,7 +17,7 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] [Range(50f, 250f)] float _rotationSpeed = 1;
-    [SerializeField] [Range(0f, 10f)] float _movementSpeed = 1;
+    [SerializeField] [Range(0f, 20f)] float _movementSpeed = 1;
     [SerializeField] [Range(0f, 10f)] float _fovChange = 1;
 
     float _rotationInput;
@@ -145,7 +145,7 @@ public class CameraMovement : MonoBehaviour
         fixedRight.Normalize();
 
         var targetVelocity = input.x * fixedRight + input.y * fixedForward;
-        targetVelocity *= _movementSpeed * Time.fixedDeltaTime;
+        targetVelocity *= _movementSpeed * Time.deltaTime;
 
         //_followRigidbody.AddForce(targetVelocity - _followRigidbody.velocity, ForceMode.VelocityChange);
 

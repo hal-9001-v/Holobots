@@ -205,9 +205,27 @@ public class Ground : MonoBehaviour
 
         path.Push(currentNode);
 
-        //If path's count is 1, then no path has been found. That node in path is the just destination node
+
+        //If path's count is 1, then no path has been found unless origin is neighbour of destination. That node in path is the just destination node
         if (path.Count == 1)
-            path.Clear();
+        {
+            bool found = false;
+
+            foreach (var neightbour in origin.neighbours)
+            {
+                if (neightbour == destination)
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                path.Clear();
+
+            }
+        }
 
         return path.ToArray();
     }
