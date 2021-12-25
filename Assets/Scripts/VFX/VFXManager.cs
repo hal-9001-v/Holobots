@@ -19,7 +19,7 @@ public class VFXManager : MonoBehaviour
 
     [SerializeField] VFX _explosionVFX;
     [SerializeField] VFX _healVFX;
-    [SerializeField] VFX _sparkVFX;
+    [SerializeField] VFX _hitVFX;
     [SerializeField] VFX _smokeVFX;
     [SerializeField] VFX _lightingVFX;
 
@@ -33,9 +33,9 @@ public class VFXManager : MonoBehaviour
         RealPlay(_healVFX, target);
     }
 
-    public void PlaySpark(Transform target)
+    public void PlayHit(Transform target)
     {
-        RealPlay(_sparkVFX, target);
+        RealPlay(_hitVFX, target);
     }
 
     private void RealPlay(VFX v, Transform target)

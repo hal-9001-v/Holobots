@@ -46,19 +46,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _VFXObject: {fileID: 7333810040814427109}
   _explosionVFX:
-    positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0.75, z: 0}
+    scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: 85fde10a7c451834480b8d1130702fc5, type: 3}
     rate: 1
   _healVFX:
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: e051b50052eee044ab2970d7133d1139, type: 3}
     rate: 1
-  _sparkVFX:
+  _hitVFX:
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
-    vfx: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
+    scale: {x: 3, y: 2, z: 3}
+    vfx: {fileID: 8926484042661614526, guid: 594f17ff9592cd8429606b788f83c325, type: 3}
     rate: 1
   _smokeVFX:
     positionOffset: {x: 0, y: 0, z: 0}

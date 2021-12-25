@@ -13,7 +13,6 @@ public class RangerAI : Bot, IUtilityAI
     Explosioner _explosioner;
 
     Target _target;
-    TurnActor _actor;
 
     UtilityUnit _utilityUnit;
 
@@ -38,7 +37,6 @@ public class RangerAI : Bot, IUtilityAI
     private void Start()
     {
         _target = GetComponent<Target>();
-        _actor = GetComponent<TurnActor>();
 
         _mover = GetComponent<Mover>();
         _shooter = GetComponent<Shooter>();
@@ -63,10 +61,10 @@ public class RangerAI : Bot, IUtilityAI
         _utilityUnit = new UtilityUnit();
 
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _groupSensor = new GroupSensor(_actor.team.enemyTags, new List<TeamTag>() { _target.teamTag }, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
-        _distanceSensor = new DistanceSensor(_target, _actor.team.enemyTags, _mover.pathProfile, 6, new LinearUtilityFunction());
-        _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
-        _sightSensor = new SightSensor(_target, _actor.team.enemyTags, _obstacleMask, new ThresholdUtilityFunction(0.9f));
+        _groupSensor = new GroupSensor(actor.team.enemyTags, new List<TeamTag>() { _target.teamTag }, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
+        _distanceSensor = new DistanceSensor(_target, actor.team.enemyTags, _mover.pathProfile, 6, new LinearUtilityFunction());
+      dw_healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
+        _sightSensor = new SightSensor(_target, actor.team.enemyTags, _obstacleMask, new ThresholdUtilityFunction(0.9f));
 
         _distanceToTankSensor = new DistanceSensor(_target, TargetType.Tank, new List<TeamTag>() { _target.teamTag }, _mover.pathProfile, 4, new ThresholdUtilityFunction(1));
 
@@ -76,7 +74,7 @@ public class RangerAI : Bot, IUtilityAI
 
 
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+        IdleAction idleAction = new IdleAction(actor, "Idle", () =>
          {
              return _idleWeight;
          });
@@ -108,7 +106,7 @@ public class RangerAI : Bot, IUtilityAI
         BehaviourTreeAction shootTree = new BehaviourTreeAction("Shoot Tree", () =>
          {
              var shootValue = _sightSensor.GetScore();
-             if (_actor.currentTurnPoints == 1 && shootValue == 0)
+             if (actor.currentTurnPoints == 1 && shootValue == 0)
              {
                  return _shootWeight * 0.05f;
              }
@@ -125,7 +123,7 @@ public class RangerAI : Bot, IUtilityAI
                  dangerValue = Mathf.Sign(dangerValue) * Mathf.Pow(dangerValue, 2);
              }
 
-             
+
 
              return shootValue * _shootWeight + _shootWeight * 0.2f + dangerValue;
          });
@@ -156,7 +154,7 @@ public class RangerAI : Bot, IUtilityAI
 
         shootAction.AddPreparationListener(() =>
         {
-            var targets = _sightSensor.GetTargetsOnSight(_actor.team.enemyTags);
+            var targets = _sightSensor.GetTargetsOnSight(actor.team.enemyTags);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -202,7 +200,7 @@ public class RangerAI : Bot, IUtilityAI
 
         engageAction.AddPreparationListener(() =>
         {
-            var targets = _groupSensor.GetGroupedTargetsOfTeam(_actor.team.enemyTags);
+            var targets = _groupSensor.GetGroupedTargetsOfTeam(actor.team.enemyTags);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -211,7 +209,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(() =>
         {
-            var targets = _groupSensor.GetGroupedTargetsOfTeam(_actor.team.enemyTags);
+            var targets = _groupSensor.GetGroupedTargetsOfTeam(actor.team.enemyTags);
 
             var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 
@@ -240,7 +238,7 @@ public class RangerAI : Bot, IUtilityAI
 
         explosionerTree.AddAction(() =>
        {
-           var targets = _groupSensor.GetGroupedTargetsOfTeam(_actor.team.enemyTags);
+           var targets = _groupSensor.GetGroupedTargetsOfTeam(actor.team.enemyTags);
 
            var closestTarget = _distanceSensor.GetClosestTargetFromList(targets);
 

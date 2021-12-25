@@ -119,6 +119,11 @@ public class GameDirector : MonoBehaviour
             _currentTeam = 0;
         }
 
+        if (_teams.Count == 1)
+        {
+            ChangeState(GameStates.EndGame);
+        }
+
         if (_teams[_currentTeam].StartTurn())
         {
             Debug.Log("Start Turn of " + _teams[_currentTeam].teamTag);
@@ -127,25 +132,32 @@ public class GameDirector : MonoBehaviour
         {
             _teams.RemoveAt(_currentTeam);
 
-            if (_teams.Count == 1)
-            {
-                ChangeState(GameStates.EndGame);
-            }
-            else
-            {
-                StartTeamTurn();
-            }
+            StartTeamTurn();
+
         }
-
-
     }
 
-    public void UpdateTeams()
+    public bool UpdateTeams()
     {
-        foreach (var team in _teams)
+        for (int i = 0; i < _teams.Count; i++)
         {
-            team.UpdateTeam();
+            _teams[i].UpdateTeam();
+
+            if (!_teams[i].IsTeamAlive())
+            {
+                _teams.RemoveAt(i);
+            }
         }
+
+        if (_teams.Count > 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     public List<Target> GetTargetsOfTeam(TeamTag teamTag)

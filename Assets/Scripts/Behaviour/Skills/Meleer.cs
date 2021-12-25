@@ -7,7 +7,7 @@ using UnityEngine;
 public class Meleer : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] [Range(2, 5)] int _meleeRange = 2;
+    [SerializeField] [Range(1, 5)] int _meleeRange = 2;
     [SerializeField] [Range(1, 5)] int _defaultMeleerDamage = 1;
     [SerializeField] [Range(1, 5)] int _meleerCost = 1;
 
@@ -130,7 +130,7 @@ class MeleerExecuter
         _cameraMovement.FixLookAt(target.transform);
         yield return new WaitForSeconds(0.5f);
 
-        _vfxManager.PlaySpark(target.transform);
+        _vfxManager.PlayHit(target.transform);
         yield return new WaitForSeconds(_vfxManager.GetDuration() - 1.5f);
 
         _highlighter.Unhighlight();

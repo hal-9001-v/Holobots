@@ -132,7 +132,7 @@ public class Kamikaze : Bot
                 if (tiles.Count != 0)
                     roamAction.SetTarget(tiles[Random.Range(0, tiles.Count - 1)]);
                 else
-                    roamAction.SetTarget(target.currentGroundTile);
+                    roamAction.SetTarget(base._target.currentGroundTile);
 
             });
 

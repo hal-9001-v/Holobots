@@ -10,7 +10,7 @@ public class AITeam : Team
     public AITeam(Transform target, TeamTag tag, List<TeamTag> enemyTags) : base(tag, enemyTags)
     {
         _botsInTurn = new List<Bot>();
-        
+
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
     }
 
@@ -88,16 +88,23 @@ public class AITeam : Team
             {
                 _botsInTurn.Remove(bot);
 
-                UpdateTeam();
-
-                if (_botsInTurn.Count == 0)
+                if (_gameDirector.UpdateTeams())
                 {
-                    EndTurn();
+                    if (_botsInTurn.Count == 0)
+                    {
+                        EndTurn();
+                    }
+                    else
+                    {
+                        ExecuteNextStep();
+                    }
                 }
                 else
                 {
-                    ExecuteNextStep();
+                    EndTurn();
                 }
+
+
             }
         }
     }
@@ -122,12 +129,29 @@ public class AITeam : Team
 
     public override void ActorFinishedStep(TurnActor actor)
     {
-        _gameDirector.UpdateTeams();
+        if (_gameDirector.UpdateTeams())
+        {
+            ExecuteNextStep();
+        }
+        else
+        {
+            EndTurn();
+        }
 
-        ExecuteNextStep();
     }
 
     public override void ActorStartedStep(TurnActor actor)
     {
+    }
+
+    public override bool IsTeamAlive()
+    {
+        if (_bots.Count != 0)
+        {
+            return true;
+        }
+
+        return false;
+
     }
 }

@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Meleer))]
 public class FighterAI : Bot, IUtilityAI
 {
-    TurnActor _actor;
-
     Mover _mover;
     Meleer _meleer;
 
@@ -27,11 +25,9 @@ public class FighterAI : Bot, IUtilityAI
     //Sensors
     DistanceSensor _enemyDistanceSensor;
     HealthSensor _healthSensor;
-    
+
     private void Start()
     {
-        _actor = GetComponent<TurnActor>();
-
         _target = GetComponent<Target>();
         _mover = GetComponent<Mover>();
         _meleer = GetComponent<Meleer>();
@@ -75,9 +71,9 @@ public class FighterAI : Bot, IUtilityAI
         #endregion
 
         #region IDLE
-        IdleAction idleAction = new IdleAction(_actor, "Idle", () =>
+        IdleAction idleAction = new IdleAction(actor, "Idle", () =>
          {
-             if (_actor.currentTurnPoints == 1) return _idleWeight * 2;
+             if (actor.currentTurnPoints == 1) return _idleWeight * 2;
 
              return _idleWeight;
          });
