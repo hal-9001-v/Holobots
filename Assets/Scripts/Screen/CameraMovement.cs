@@ -74,11 +74,13 @@ public class CameraMovement : MonoBehaviour
             if (ctx.ReadValue<float>() < 0)
             {
                 _virtualCamera.m_Lens.FieldOfView += _fovChange;
+               if(_movementSpeed < 5) _movementSpeed+=0.1f;
             }
             else
             if (ctx.ReadValue<float>() > 0)
             {
                 _virtualCamera.m_Lens.FieldOfView -= _fovChange;
+                if(_movementSpeed > 1) _movementSpeed-=0.1f;
             }
         };
     }
