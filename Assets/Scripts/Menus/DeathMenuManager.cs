@@ -75,35 +75,67 @@ public class DeathMenuManager : MonoBehaviour
 
     void UpdatePointsGUI(TeamTag winner)
     {
-        switch (winner)
+        
+        if(FindObjectOfType<LanguageContext>().currentLanguage == Language.English){
+            switch (winner)
+            {
+                case TeamTag.Player1:
+                    _titleMesh.text = "Player One Won!";
+                    break;
+
+                case TeamTag.Player2:
+                    _titleMesh.text = "Player Two Won!";
+                    break;
+
+                case TeamTag.AI:
+                    _titleMesh.text = "Team AI 1 Won!";
+                    break;
+
+                case TeamTag.AI2:
+                    _titleMesh.text = "Team AI 2 Won!";
+                    break;
+
+                case TeamTag.Mob:
+                    _titleMesh.text = "Mobs Won!";
+                    break;
+
+                default:
+                    _titleMesh.text = "Defeat!";
+                    break;
+            }
+        } else 
         {
-            case TeamTag.Player1:
-                _titleMesh.text = "Player One Won!";
-                break;
+            switch (winner)
+                {
+                    case TeamTag.Player1:
+                        _titleMesh.text = "¡Ha Ganado el Jugador Uno!";
+                        break;
 
-            case TeamTag.Player2:
-                _titleMesh.text = "Player Two Won!";
-                break;
+                    case TeamTag.Player2:
+                        _titleMesh.text = "¡Ha Ganado el Jugador Dos!";
+                        break;
 
-            case TeamTag.AI:
-                _titleMesh.text = "Team AI 1 Won!";
-                break;
+                    case TeamTag.AI:
+                        _titleMesh.text = "¡Ha Ganado el Equipo IA 1!";
+                        break;
 
-            case TeamTag.AI2:
-                _titleMesh.text = "Team AI 2 Won!";
-                break;
+                    case TeamTag.AI2:
+                        _titleMesh.text = "¡Ha Ganado el Equipo IA 2!";
+                        break;
 
-            case TeamTag.Mob:
-                _titleMesh.text = "Mobs Won!";
-                break;
+                    case TeamTag.Mob:
+                        _titleMesh.text = "¡Han Ganado los Monstruos!";
+                        break;
 
-            default:
-                _titleMesh.text = "Defeat!";
-                break;
+                    default:
+                        _titleMesh.text = "¡Derrota!";
+                        break;
+                }
+
+
         }
-
         _killsPlayerOneMesh.text =  _killsOne.ToString();
-        _killsPlayerTwoMesh.text = "Kills: " + _killsTwo.ToString();
+        _killsPlayerTwoMesh.text =  _killsTwo.ToString();
 
         _deathPlayerOneMesh.text =  _deathsOne.ToString();
         _deathPlayerTwoMesh.text = _deathsTwo.ToString();

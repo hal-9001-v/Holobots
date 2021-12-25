@@ -185,7 +185,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.890381, y: -757.4784}
+  m_AnchoredPosition: {x: -37.808636, y: -739}
   m_SizeDelta: {x: 191, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3441227208457777061
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -635,7 +635,7 @@ MonoBehaviour:
   _master: {fileID: 3562382986651310425}
   _music: {fileID: 3532652938206612421}
   _menu: {fileID: 3532652936813065537}
-  _englishButton: {fileID: 6242252575332488978}
+  _englishButton: {fileID: 3272585900003747016}
   _spanishButton: {fileID: 6242252575332488978}
 --- !u!1 &3532652936813065543
 GameObject:
@@ -933,7 +933,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1295,6 +1295,7 @@ GameObject:
   - component: {fileID: 3532652937987183953}
   - component: {fileID: 3532652937987183955}
   - component: {fileID: 3532652937987183954}
+  - component: {fileID: 489580109422669173}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -1412,12 +1413,29 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 81.38745, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &489580109422669173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3532652937987183952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Music
+  _englishSize: 10
+  _spanishText: "M\xFAsica"
+  _spanishSize: 10
 --- !u!1 &3532652938073238424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1577,7 +1595,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1936,7 +1954,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -218.30103, y: -757.4784}
+  m_AnchoredPosition: {x: -264, y: -739}
   m_SizeDelta: {x: 191, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2938502004627365867
@@ -2108,6 +2126,7 @@ GameObject:
   - component: {fileID: 7897311849730989662}
   - component: {fileID: 3574742013672323787}
   - component: {fileID: 6499342125228832780}
+  - component: {fileID: 8913553272152236894}
   m_Layer: 5
   m_Name: Settings
   m_TagString: Untagged
@@ -2231,6 +2250,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8913553272152236894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5191596016358044576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Settings
+  _englishSize: 10
+  _spanishText: Ajustes
+  _spanishSize: 10
 --- !u!1 &5620601285546358422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,6 +2314,7 @@ GameObject:
   - component: {fileID: 6048103377283810569}
   - component: {fileID: 1436165131324170365}
   - component: {fileID: 4740953497225095915}
+  - component: {fileID: 6473403859501497704}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -2359,15 +2396,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 36.55
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2395,12 +2432,29 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 88.18296, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6473403859501497704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433304117434084750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Master
+  _englishSize: 10
+  _spanishText: General
+  _spanishSize: 10
 --- !u!1 &8731279420229548485
 GameObject:
   m_ObjectHideFlags: 0

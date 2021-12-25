@@ -44,9 +44,17 @@ public class SettingsMenuManager : MonoBehaviour
     private Animator _mainMenuAnimator;
 
     private SettingsMenuManager[] _settingsMenu;
-
+    public static SettingsMenuManager instance;
     private void Awake() {
-            
+            if(instance == null) {
+
+                instance =this;
+                DontDestroyOnLoad(this.gameObject);
+
+            } else Destroy(this.gameObject);
+
+
+
             _languageContext = FindObjectOfType<LanguageContext>();
 
             _menu.onClick.AddListener(() =>
@@ -89,7 +97,7 @@ public class SettingsMenuManager : MonoBehaviour
         slider.maxValue = MaxAudioValue;
         float value;
         _audioMixer.GetFloat(groupKey, out value);
-        value = Mathf.Pow(10,value/20);
+         value = Mathf.Pow(10,value/20);
         slider.value = value;
     }
       public void SetMasterVolume(float newVolume)

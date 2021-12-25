@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 700097317267935458}
   - component: {fileID: 7867921546892247888}
   - component: {fileID: 5428671152387483822}
+  - component: {fileID: 3845298799130199706}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -971,6 +972,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3845298799130199706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842368938831169508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Return to Menu
+  _englishSize: 10
+  _spanishText: "Volver al Men\xFA"
+  _spanishSize: 10
 --- !u!1 &2069923032432937403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,6 +1760,7 @@ GameObject:
   - component: {fileID: 503362051709915638}
   - component: {fileID: 5664278198180546145}
   - component: {fileID: 6051352680305707483}
+  - component: {fileID: 7871681143631256492}
   m_Layer: 5
   m_Name: DeathText
   m_TagString: Untagged
@@ -1865,6 +1884,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7871681143631256492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472555651145283784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Alied Units Destroyed
+  _englishSize: 10
+  _spanishText: Unidades Aliadas Destruidas
+  _spanishSize: 10
 --- !u!1 &5113841462473128444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,6 +1949,7 @@ GameObject:
   - component: {fileID: 3522055580711582202}
   - component: {fileID: 145784819668960227}
   - component: {fileID: 5765374992629049553}
+  - component: {fileID: 5062760425325591431}
   m_Layer: 5
   m_Name: KillsText
   m_TagString: Untagged
@@ -2036,6 +2073,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5062760425325591431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256751568222001017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Enemy Units Destroyed
+  _englishSize: 10
+  _spanishText: Unidades Enemigas Destruidas
+  _spanishSize: 10
 --- !u!1 &5490266201190142994
 GameObject:
   m_ObjectHideFlags: 0
@@ -2327,12 +2381,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 177
+  m_fontSize: 122.72
   m_fontSizeBase: 198.2
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 177
+  m_fontSizeMax: 122.72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2624,6 +2678,7 @@ GameObject:
   - component: {fileID: 6002664724230138995}
   - component: {fileID: 7449172503407265208}
   - component: {fileID: 1603146066297327770}
+  - component: {fileID: 1684379065530479073}
   m_Layer: 5
   m_Name: TurnText
   m_TagString: Untagged
@@ -2747,6 +2802,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1684379065530479073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7200324990725165818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Total Turns
+  _englishSize: 10
+  _spanishText: Turnos Totales
+  _spanishSize: 10
 --- !u!1 &7538025681392887278
 GameObject:
   m_ObjectHideFlags: 0
