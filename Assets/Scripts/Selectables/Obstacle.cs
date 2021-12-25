@@ -65,9 +65,9 @@ public class Obstacle : MonoBehaviour
             _tile.FreeUnit();
             _tile.tileType = TileType.Traversable;
 
-            if (_buildingRenderer)
-                _buildingRenderer.enabled = false;
-
+            if (_buildingRenderer){
+                StartCoroutine(BuildingDestroy());
+            }
             foreach (var collider in GetComponentsInChildren<Collider>())
             {
                 collider.enabled = false;
@@ -78,6 +78,15 @@ public class Obstacle : MonoBehaviour
             CreateDebris(barrier);
         }
 
+
+    }
+
+    private IEnumerator BuildingDestroy(){
+
+        Dissolver d = GetComponentInParent<Dissolver>();
+        d.Dissolve(null);
+        yield return new WaitForSeconds(d._dissolveTime);
+        _buildingRenderer.enabled = false;
 
     }
 

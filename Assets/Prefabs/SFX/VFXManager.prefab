@@ -45,30 +45,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _VFXObject: {fileID: 7333810040814427109}
-  _explosionVFX:
+  vfxes:
+  - name: Explosion
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: 85fde10a7c451834480b8d1130702fc5, type: 3}
     rate: 1
-  _healVFX:
+  - name: Heal
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: e051b50052eee044ab2970d7133d1139, type: 3}
     rate: 1
-  _sparkVFX:
+  - name: Muzzle
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
     rate: 1
-  _smokeVFX:
+  - name: Hit
     positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
-    vfx: {fileID: 8926484042661614526, guid: 80b43ce65143a8240bcdc7cc368e7261, type: 3}
-    rate: 1
-  _lightingVFX:
-    positionOffset: {x: 0, y: 0, z: 0}
-    scale: {x: 0, y: 0, z: 0}
-    vfx: {fileID: 8926484042661614526, guid: ec44b98d7fa7d6240ae46abe9bee0f92, type: 3}
+    scale: {x: 2, y: 2, z: 2}
+    vfx: {fileID: 8926484042661614526, guid: 594f17ff9592cd8429606b788f83c325, type: 3}
     rate: 1
 --- !u!1 &7333810040814427106
 GameObject:

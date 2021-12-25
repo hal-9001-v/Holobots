@@ -6,7 +6,7 @@ using UnityEngine;
 public class Dissolver : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] [Range(0, 5)] float _dissolveTime = 1;
+    [SerializeField] [Range(0, 5)] public float _dissolveTime = 1;
 
     private Renderer[] _renderers;
 

@@ -90,7 +90,7 @@ class HealerExecuter
             _rotator.SetForward(direction, 0.35f);
         }
 
-        _vfxManager.PlayHeal(target.transform);
+        _vfxManager.Play("Heal", target.transform);
         _cameraMovement.FixLookAt(target.transform);
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());

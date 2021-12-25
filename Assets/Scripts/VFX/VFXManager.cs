@@ -17,30 +17,16 @@ public class VFXManager : MonoBehaviour
         }
     }
 
-    [SerializeField] VFX _explosionVFX;
-    [SerializeField] VFX _healVFX;
-    [SerializeField] VFX _sparkVFX;
-    [SerializeField] VFX _smokeVFX;
-    [SerializeField] VFX _lightingVFX;
+    [SerializeField] VFX[] vfxes;
 
-    public void PlayExplosion(Transform target)
+    public void Play(String vfxs, Transform target)
     {
-        RealPlay(_explosionVFX, target);
-    }
-
-    public void PlayHeal(Transform target)
-    {
-        RealPlay(_healVFX, target);
-    }
-
-    public void PlaySpark(Transform target)
-    {
-        RealPlay(_sparkVFX, target);
-    }
-
-    private void RealPlay(VFX v, Transform target)
-    {
-
+        VFX v =  Array.Find(vfxes, vfx => vfx.name == vfxs);
+        if (v.name == "")
+        {
+            Debug.LogWarning("VFX: " + v.name + " not found!");
+            return;
+        }
         _VFXObject.transform.position = v.positionOffset + target.position;
 
         _VFXObject.playRate = v.rate;
