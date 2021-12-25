@@ -22,7 +22,7 @@ public class CircleSync : MonoBehaviour
     static int SmoothID = Shader.PropertyToID("_Smoothness");
     static int OpID = Shader.PropertyToID("_Opacity");
 
-    Renderer[] _renderers;
+  public Renderer[] _renderers;
     Camera _camera;
 
     Target currentUnit;
@@ -42,9 +42,11 @@ public class CircleSync : MonoBehaviour
 
         foreach (var renderer in _renderers)
         {
-            renderer.material.SetFloat(SizeID, 0);
-            renderer.material.SetFloat(SmoothID, _circleSmoothness);
-            renderer.material.SetFloat(OpID, _circleOpacity);
+            foreach(Material m in renderer.materials) {
+             m.SetFloat(SizeID, 0);
+             m.SetFloat(SmoothID, _circleSmoothness);
+             m.SetFloat(OpID, _circleOpacity);
+            }
         }
     }
 
@@ -52,7 +54,7 @@ public class CircleSync : MonoBehaviour
     {
         foreach (var renderer in _renderers)
         {
-            renderer.material.SetFloat(SizeID, value);
+            foreach(Material m in renderer.materials) m.SetFloat(SizeID, value);
         }
     }
 
@@ -60,7 +62,7 @@ public class CircleSync : MonoBehaviour
     {
         foreach (var renderer in _renderers)
         {
-            renderer.material.SetVector(PosID, position);
+            foreach(Material m in renderer.materials) m.SetVector(PosID, position);
         }
     }
 
@@ -93,14 +95,14 @@ public class CircleSync : MonoBehaviour
 
                         SetSize(_circleSize);
 
-                        /* Uncomment to change properties on real time
-                        foreach (var renderer in _renderers)
+                        // Uncomment to change properties on real time
+                        /*foreach (var renderer in _renderers)
                         {
                             renderer.material.SetFloat(SizeID, _circleSize);
                             renderer.material.SetFloat(SmoothID, _circleSmoothness);
                             renderer.material.SetFloat(OpID, _circleOpacity);
-                        }
-                        */
+                        }*/
+                        
 
                     }
 

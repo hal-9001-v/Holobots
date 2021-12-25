@@ -65,7 +65,7 @@ public class Projectile : MonoBehaviour
         {
             damagedTarget = target;
 
-            _vfxManager.Play("Muzzle", transform);
+            _vfxManager.Play("Hit", transform);
 
             DisableProjectile();
 
