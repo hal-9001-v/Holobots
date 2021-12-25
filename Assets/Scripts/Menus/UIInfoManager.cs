@@ -70,23 +70,29 @@ public class UIInfoManager : MonoBehaviour
         }
 
 
+        Color color;
         switch (currentTarget.teamTag)
         {
-
             case TeamTag.Player1:
-                _currentSpriteBackground.color = Color.blue;
+                  ColorUtility.TryParseHtmlString("#14f7ff", out color );
                 break;
             case TeamTag.AI:
-                _currentSpriteBackground.color = Color.red;
-                break;
+                ColorUtility.TryParseHtmlString("#ff1c14", out color );
+                   break;
             case TeamTag.Mob:
-                _currentSpriteBackground.color = Color.green;
-                break;
+                ColorUtility.TryParseHtmlString("#18ff14", out color );
+                  break;
             case TeamTag.AI2:
-                _currentSpriteBackground.color = Color.gray;
-                break;
+                ColorUtility.TryParseHtmlString("#c114ff", out color );
+                   break;
+
+            default:
+                ColorUtility.TryParseHtmlString("#14f7ff", out color );
+            break;
 
         }
+        _currentSpriteBackground.color = color;                
+
 
     }
 }

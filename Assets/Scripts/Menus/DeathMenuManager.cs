@@ -110,29 +110,31 @@ public class DeathMenuManager : MonoBehaviour
 
         _turnsMesh.text =  _turns.ToString();
 
-       
+       Color color;
         switch (winner)
         {
 
-            case TeamTag.Player1:
-                 miniatureBackgrounds[0].color = Color.blue;
-                miniatureBackgrounds[1].color =Color.blue;
-                
+           case TeamTag.Player1:
+                  ColorUtility.TryParseHtmlString("#14f7ff", out color );
                 break;
             case TeamTag.AI:
-                miniatureBackgrounds[0].color = Color.red;
-                miniatureBackgrounds[1].color =Color.red;                
-                break;
+                ColorUtility.TryParseHtmlString("#ff1c14", out color );
+                   break;
             case TeamTag.Mob:
-                miniatureBackgrounds[0].color = Color.green;
-                miniatureBackgrounds[1].color =Color.green;                
-                break;
+                ColorUtility.TryParseHtmlString("#18ff14", out color );
+                  break;
             case TeamTag.AI2:
-                miniatureBackgrounds[0].color = Color.gray;
-                miniatureBackgrounds[1].color =Color.gray;                
-                break;
+                ColorUtility.TryParseHtmlString("#c114ff", out color );
+                   break;
+
+            default:
+                ColorUtility.TryParseHtmlString("#14f7ff", out color );
+            break;
 
         }
+
+        miniatureBackgrounds[0].color = color;
+        miniatureBackgrounds[1].color =color;   
 
         int starsInt = 0;
         if(turns < 10) {

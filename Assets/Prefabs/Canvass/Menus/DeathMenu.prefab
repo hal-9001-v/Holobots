@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _quit: {fileID: 1653945936954556018}
-  _return: {fileID: 0}
+  _return: {fileID: 549696274350180008}
   _titleMesh: {fileID: 6484465244724187779}
   _killsPlayerOneMesh: {fileID: 1571163401596735044}
   _deathPlayerOneMesh: {fileID: 2036329080899164382}

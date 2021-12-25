@@ -27,12 +27,11 @@ public abstract class Team
 
     public Team(TeamTag tag, List<TeamTag> enemyTags, UIInfoManager thisDeviceManager)
     {
+        _UIManager = thisDeviceManager;
         this.teamTag = tag;
         this.enemyTags = enemyTags;
-
         actors = new List<TurnActor>();
         _actorsInTurn = new List<TurnActor>();
-        _UIManager = thisDeviceManager;
         _gameDirector = GameObject.FindObjectOfType<GameDirector>();
 
         _cameraMovement = GameObject.FindObjectOfType<CameraMovement>();
