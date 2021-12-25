@@ -2300,6 +2300,7 @@ GameObject:
   - component: {fileID: 6484465244724187772}
   - component: {fileID: 6484465244724187778}
   - component: {fileID: 6484465244724187779}
+  - component: {fileID: 4591875399382950022}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -2423,6 +2424,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4591875399382950022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484465244724187773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c59ef427b6b918442ac8e5708f0e90ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _applyDifferentSize: 0
+  _englishText: Player One Won!
+  _englishSize: 10
+  _spanishText: "\xA1Ha Ganado el Jugador Uno!"
+  _spanishSize: 10
 --- !u!1 &6484465245874044879
 GameObject:
   m_ObjectHideFlags: 0

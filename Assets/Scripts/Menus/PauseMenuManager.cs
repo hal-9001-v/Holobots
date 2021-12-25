@@ -17,6 +17,9 @@ public class PauseMenuManager : MonoBehaviour
 
 
     private void Awake() {
+
+        LanguageContext lngCtx = FindObjectOfType<LanguageContext>();
+        lngCtx.ChangeLanguage(lngCtx.currentLanguage);
         _levelLoader = FindObjectOfType<LevelLoader>();
 
           if(_resume!= null)  _resume.onClick.AddListener(() =>
