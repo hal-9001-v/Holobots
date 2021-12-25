@@ -1,0 +1,5 @@
+Red	->	#ff1c14
+Blue  	-> 	#14f7ff
+Green 	->	#18ff14
+Violet	->	#c114ff
+Pink	-> 	#ff14c3
