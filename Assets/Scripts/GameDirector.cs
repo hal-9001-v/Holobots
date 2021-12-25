@@ -31,6 +31,7 @@ public class GameDirector : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 0.75f;
         _deathMenuManager = FindObjectOfType<DeathMenuManager>();
 
         if(SystemInfo.deviceType == DeviceType.Handheld) uiInfo = handUiInfo;
