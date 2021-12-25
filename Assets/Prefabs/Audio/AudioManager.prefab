@@ -49,6 +49,7 @@ MonoBehaviour:
     volume: 0.1
     pitch: 1
     loop: 1
+    sfx: 0
     audioSource: {fileID: 0}
     time: 0
   - clip: {fileID: 8300000, guid: 8fa0902d77261e9408839bdaeb1c3e3d, type: 3}
@@ -56,5 +57,8 @@ MonoBehaviour:
     volume: 0.579
     pitch: 3
     loop: 0
+    sfx: 1
     audioSource: {fileID: 0}
     time: 0
+  music: {fileID: -4367043794428395372, guid: bfc0d2d58a97528409c40dbff2961da5, type: 2}
+  sfx: {fileID: 5732601327447243834, guid: bfc0d2d58a97528409c40dbff2961da5, type: 2}

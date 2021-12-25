@@ -2,12 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager instance;
     public Sound[] sounds;
-
+    [SerializeField] AudioMixerGroup music;
+    [SerializeField] AudioMixerGroup sfx;
     private void Awake()
     {
+        if(instance == null) {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        } else Destroy(this.gameObject);
+
         foreach (Sound s in sounds)
         {
             s.audioSource = gameObject.AddComponent<AudioSource>();
@@ -15,8 +23,9 @@ public class AudioManager : MonoBehaviour
             s.audioSource.volume = s.volume;
             s.audioSource.pitch = s.pitch;
             s.audioSource.loop = s.loop;
+            if(s.sfx) s.audioSource.outputAudioMixerGroup = sfx;
+            else s.audioSource.outputAudioMixerGroup = music;
         }
-
         Play("TestMusic");
     }
 

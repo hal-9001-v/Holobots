@@ -630,10 +630,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34d5c9a437a18c7419748e606b52e87f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menu: {fileID: 3532652936813065537}
+  _audioMixer: {fileID: 24100000, guid: bfc0d2d58a97528409c40dbff2961da5, type: 2}
   _SFX: {fileID: 3532652937191795692}
-  _Master: {fileID: 3562382986651310425}
+  _master: {fileID: 3562382986651310425}
   _music: {fileID: 3532652938206612421}
+  _menu: {fileID: 3532652936813065537}
+  _englishButton: {fileID: 6242252575332488978}
+  _spanishButton: {fileID: 6242252575332488978}
 --- !u!1 &3532652936813065543
 GameObject:
   m_ObjectHideFlags: 0

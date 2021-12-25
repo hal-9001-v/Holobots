@@ -10,10 +10,27 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button _playPVPButton;
     [SerializeField] private Button _settingsButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _tutorialButton;
+
+    [SerializeField] private Button _controlsButton;
+    [SerializeField] private Button _controlsCloseButton;
 
     [SerializeField] private Animator _menuAnimator;
     [SerializeField] private Animator _settingsAnimator;
 
+    [SerializeField] private CanvasGroup tutorialCanvasGroup;
+    [SerializeField] private CanvasGroup controlsCanvasGroup;
+
+
+void Awake()
+{
+    if (SystemInfo.deviceType == DeviceType.Handheld){
+
+        _controlsButton.enabled = false;
+
+    }
+    CloseControls();
+}
     private void Start()
     {
         _levelLoader = FindObjectOfType<LevelLoader>();
@@ -44,8 +61,38 @@ public class MainMenuManager : MonoBehaviour
         {
             Application.Quit();
         });
+          _tutorialButton.onClick.AddListener(() =>
+        {
+            ShowTutorial();
+        });
+          _controlsButton.onClick.AddListener(() =>
+        {
+            ShowControls();
+        });
+        _controlsCloseButton.onClick.AddListener(()=> {
+
+            CloseControls();
+
+        });
     }
 
+    private void ShowControls(){
+
+        controlsCanvasGroup.alpha = 1;
+        controlsCanvasGroup.blocksRaycasts = true;
+
+    }
+    private void CloseControls(){
+
+        controlsCanvasGroup.alpha = 0;
+        controlsCanvasGroup.blocksRaycasts = false;
+
+    }
+    private void ShowTutorial(){
+
+        Debug.Log("Tutorial");
+
+    }
     private void Play(int level)
     {
 
