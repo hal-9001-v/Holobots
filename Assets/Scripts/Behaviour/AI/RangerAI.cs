@@ -63,7 +63,7 @@ public class RangerAI : Bot, IUtilityAI
         _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _groupSensor = new GroupSensor(actor.team.enemyTags, new List<TeamTag>() { _target.teamTag }, 0.4f, -0.2f, _explosioner.explosionRange, new LinearUtilityFunction());
         _distanceSensor = new DistanceSensor(_target, actor.team.enemyTags, _mover.pathProfile, 6, new LinearUtilityFunction());
-      dw_healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
+        _healthSensor = new HealthSensor(_target, new LinearUtilityFunction());
         _sightSensor = new SightSensor(_target, actor.team.enemyTags, _obstacleMask, new ThresholdUtilityFunction(0.9f));
 
         _distanceToTankSensor = new DistanceSensor(_target, TargetType.Tank, new List<TeamTag>() { _target.teamTag }, _mover.pathProfile, 4, new ThresholdUtilityFunction(1));
