@@ -507,7 +507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.046434738, b: 0.4339623, a: 0.49019608}
+  m_Color: {r: 0.31764707, g: 0, b: 0.6392157, a: 0.49019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1737,7 +1737,7 @@ RectTransform:
   m_GameObject: {fileID: 5144650308423024413}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3879424, y: 1.155651, z: 0.46458334}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 2165202800069708740}
   m_Father: {fileID: 5919398737185622842}
@@ -1745,7 +1745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 186, y: 0}
+  m_AnchoredPosition: {x: 203.99998, y: 7.999978}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1049645391566931792
@@ -1769,7 +1769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30891773, g: 0.6052582, b: 0.735849, a: 0.57254905}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.57254905}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1845,17 +1845,17 @@ MonoBehaviour:
   _pauseButton: {fileID: 392773311211821093}
   _pauseButtonAnimator: {fileID: 0}
   _icons:
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: e0aa6179dcf348648b40e88b28469464, type: 3}
     adapterType: 0
-  - icon: {fileID: 21300000, guid: 890a1d29209ebe343b20e6b0a125b6af, type: 3}
+  - icon: {fileID: 21300000, guid: 621ba012e709dc145aa41f898ec3e98e, type: 3}
     adapterType: 1
   - icon: {fileID: 21300000, guid: e8af86a9d8b41724591683d0f1ad6580, type: 3}
     adapterType: 2
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: a23a3ff8695e1104fad49436839710b0, type: 3}
     adapterType: 3
-  - icon: {fileID: 21300000, guid: 32b7a1fbcf1e51a42aae3f2f58d528b4, type: 3}
+  - icon: {fileID: 21300000, guid: 01bec8c9b8ffe7541b10ace24a837989, type: 3}
     adapterType: 4
-  - icon: {fileID: 21300000, guid: 46ed5a06ce1456b47b2864e5f5a0eaf4, type: 3}
+  - icon: {fileID: 21300000, guid: 2d5086ba4529dc944b537761671aed2e, type: 3}
     adapterType: 5
   _selectedColor: {r: 0.09803922, g: 0.70980394, b: 0.44529453, a: 1}
   _unselectedColor: {r: 0.098039225, g: 0.49411768, b: 0.70980394, a: 1}
@@ -1901,7 +1901,7 @@ RectTransform:
   m_GameObject: {fileID: 5144650308478631025}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3879424, y: 1.155651, z: 0.46458334}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 2165202799879948456}
   m_Father: {fileID: 5919398737185622842}
@@ -1909,7 +1909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 368, y: 0}
+  m_AnchoredPosition: {x: 386, y: 7.999978}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1049645392048260156
@@ -1933,7 +1933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30891773, g: 0.6052582, b: 0.735849, a: 0.57254905}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.57254905}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2009,17 +2009,17 @@ MonoBehaviour:
   _pauseButton: {fileID: 392773311211821093}
   _pauseButtonAnimator: {fileID: 0}
   _icons:
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: e0aa6179dcf348648b40e88b28469464, type: 3}
     adapterType: 0
-  - icon: {fileID: 21300000, guid: 890a1d29209ebe343b20e6b0a125b6af, type: 3}
+  - icon: {fileID: 21300000, guid: 621ba012e709dc145aa41f898ec3e98e, type: 3}
     adapterType: 1
   - icon: {fileID: 21300000, guid: e8af86a9d8b41724591683d0f1ad6580, type: 3}
     adapterType: 2
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: a23a3ff8695e1104fad49436839710b0, type: 3}
     adapterType: 3
-  - icon: {fileID: 21300000, guid: 32b7a1fbcf1e51a42aae3f2f58d528b4, type: 3}
+  - icon: {fileID: 21300000, guid: 01bec8c9b8ffe7541b10ace24a837989, type: 3}
     adapterType: 4
-  - icon: {fileID: 21300000, guid: 46ed5a06ce1456b47b2864e5f5a0eaf4, type: 3}
+  - icon: {fileID: 21300000, guid: 2d5086ba4529dc944b537761671aed2e, type: 3}
     adapterType: 5
   _selectedColor: {r: 0.09803922, g: 0.70980394, b: 0.44529453, a: 1}
   _unselectedColor: {r: 0.098039225, g: 0.49411768, b: 0.70980394, a: 1}
@@ -2065,7 +2065,7 @@ RectTransform:
   m_GameObject: {fileID: 5144650309048488678}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3879424, y: 1.155651, z: 0.46458334}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 2165202801591723583}
   m_Father: {fileID: 5919398737185622842}
@@ -2073,7 +2073,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 535, y: 0}
+  m_AnchoredPosition: {x: 553, y: 7.999978}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1049645392551029419
@@ -2097,7 +2097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30891773, g: 0.6052582, b: 0.735849, a: 0.57254905}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.57254905}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2173,17 +2173,17 @@ MonoBehaviour:
   _pauseButton: {fileID: 392773311211821093}
   _pauseButtonAnimator: {fileID: 0}
   _icons:
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: e0aa6179dcf348648b40e88b28469464, type: 3}
     adapterType: 0
-  - icon: {fileID: 21300000, guid: 890a1d29209ebe343b20e6b0a125b6af, type: 3}
+  - icon: {fileID: 21300000, guid: 621ba012e709dc145aa41f898ec3e98e, type: 3}
     adapterType: 1
   - icon: {fileID: 21300000, guid: e8af86a9d8b41724591683d0f1ad6580, type: 3}
     adapterType: 2
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: a23a3ff8695e1104fad49436839710b0, type: 3}
     adapterType: 3
-  - icon: {fileID: 21300000, guid: 32b7a1fbcf1e51a42aae3f2f58d528b4, type: 3}
+  - icon: {fileID: 21300000, guid: 01bec8c9b8ffe7541b10ace24a837989, type: 3}
     adapterType: 4
-  - icon: {fileID: 21300000, guid: 46ed5a06ce1456b47b2864e5f5a0eaf4, type: 3}
+  - icon: {fileID: 21300000, guid: 2d5086ba4529dc944b537761671aed2e, type: 3}
     adapterType: 5
   _selectedColor: {r: 0.09803922, g: 0.70980394, b: 0.44529453, a: 1}
   _unselectedColor: {r: 0.098039225, g: 0.49411768, b: 0.70980394, a: 1}
@@ -2454,7 +2454,7 @@ RectTransform:
   m_GameObject: {fileID: 6637323255082555316}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3879424, y: 1.155651, z: 0.46458334}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 393398794971833197}
   m_Father: {fileID: 5919398737185622842}
@@ -2462,7 +2462,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 18, y: 8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1578771751439167481
@@ -2486,7 +2486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30891773, g: 0.6052582, b: 0.735849, a: 0.57254905}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.57254905}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2562,17 +2562,17 @@ MonoBehaviour:
   _pauseButton: {fileID: 392773311211821093}
   _pauseButtonAnimator: {fileID: 0}
   _icons:
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: e0aa6179dcf348648b40e88b28469464, type: 3}
     adapterType: 0
-  - icon: {fileID: 21300000, guid: 890a1d29209ebe343b20e6b0a125b6af, type: 3}
+  - icon: {fileID: 21300000, guid: 621ba012e709dc145aa41f898ec3e98e, type: 3}
     adapterType: 1
   - icon: {fileID: 21300000, guid: e8af86a9d8b41724591683d0f1ad6580, type: 3}
     adapterType: 2
-  - icon: {fileID: 21300000, guid: 3dfd90beba6f0db459da3330641b56a6, type: 3}
+  - icon: {fileID: 21300000, guid: a23a3ff8695e1104fad49436839710b0, type: 3}
     adapterType: 3
-  - icon: {fileID: 21300000, guid: 32b7a1fbcf1e51a42aae3f2f58d528b4, type: 3}
+  - icon: {fileID: 21300000, guid: 01bec8c9b8ffe7541b10ace24a837989, type: 3}
     adapterType: 4
-  - icon: {fileID: 21300000, guid: 46ed5a06ce1456b47b2864e5f5a0eaf4, type: 3}
+  - icon: {fileID: 21300000, guid: 2d5086ba4529dc944b537761671aed2e, type: 3}
     adapterType: 5
   _selectedColor: {r: 0.09803922, g: 0.70980394, b: 0.44529453, a: 1}
   _unselectedColor: {r: 0.098039225, g: 0.49411768, b: 0.70980394, a: 1}

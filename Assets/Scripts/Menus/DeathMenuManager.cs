@@ -6,6 +6,7 @@ public class DeathMenuManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Button _quit;
+    [SerializeField] private Button _return;
 
     [SerializeField] TextMeshProUGUI _titleMesh;
     [Space(5)]
@@ -19,6 +20,14 @@ public class DeathMenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI _killsPlayerTwoMesh;
     [SerializeField] TextMeshProUGUI _turnsMesh;
 
+    [SerializeField] Sprite goodStar;
+    [SerializeField] Sprite badStar;
+
+    [SerializeField] Image[] stars;
+    [SerializeField] Image[] miniatureBackgrounds;
+    
+
+ 
     TextMeshProUGUI pointText;
     TextMeshProUGUI turnText;
 
@@ -55,6 +64,10 @@ public class DeathMenuManager : MonoBehaviour
 
         _quit.onClick.AddListener(() =>
         {
+            Application.Quit();
+        });
+             _return.onClick.AddListener(() =>
+        {
             SceneManager.LoadScene(0, LoadSceneMode.Single);
         });
 
@@ -89,13 +102,66 @@ public class DeathMenuManager : MonoBehaviour
                 break;
         }
 
-        _killsPlayerOneMesh.text = "Kills: " + _killsOne.ToString();
+        _killsPlayerOneMesh.text =  _killsOne.ToString();
         _killsPlayerTwoMesh.text = "Kills: " + _killsTwo.ToString();
 
-        _deathPlayerOneMesh.text = "Deaths: " + _deathsOne.ToString();
-        _deathPlayerTwoMesh.text = "Deaths: " + _deathsTwo.ToString();
+        _deathPlayerOneMesh.text =  _deathsOne.ToString();
+        _deathPlayerTwoMesh.text = _deathsTwo.ToString();
 
-        _turnsMesh.text = "Turns: " + _turns.ToString();
+        _turnsMesh.text =  _turns.ToString();
+
+       
+        switch (winner)
+        {
+
+            case TeamTag.Player1:
+                 miniatureBackgrounds[0].color = Color.blue;
+                miniatureBackgrounds[1].color =Color.blue;
+                
+                break;
+            case TeamTag.AI:
+                miniatureBackgrounds[0].color = Color.red;
+                miniatureBackgrounds[1].color =Color.red;                
+                break;
+            case TeamTag.Mob:
+                miniatureBackgrounds[0].color = Color.green;
+                miniatureBackgrounds[1].color =Color.green;                
+                break;
+            case TeamTag.AI2:
+                miniatureBackgrounds[0].color = Color.gray;
+                miniatureBackgrounds[1].color =Color.gray;                
+                break;
+
+        }
+
+        int starsInt = 0;
+        if(turns < 10) {
+
+            starsInt = 5;
+
+        } else if (turns < 20){
+
+            starsInt = 4;
+
+        } else if(turns < 30){
+
+            starsInt = 3;
+
+        }
+        else if(turns < 40){
+
+            starsInt = 2;
+
+        }
+        else if (turns < 50){
+            starsInt = 1;
+        } 
+
+        for(int i = 0; i < starsInt; i++){
+
+            stars[i].sprite = goodStar;
+
+        }
     }
 
     public void DisplayEndgameScreen(TeamTag winner)

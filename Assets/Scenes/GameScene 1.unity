@@ -2035,6 +2035,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2111771048440441337, guid: e09b844de30509a4ebcf972fbb057ffd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3532652936460681561, guid: e09b844de30509a4ebcf972fbb057ffd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2096,6 +2100,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3532652938598413953, guid: e09b844de30509a4ebcf972fbb057ffd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8856810052079270740, guid: e09b844de30509a4ebcf972fbb057ffd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -5212,11 +5220,10 @@ MonoBehaviour:
   - {fileID: 706376304}
   _variation: 0
   _maxX: 0
-  _minX: 0
   _maxY: 0
-  _minY: 0
   _tilePrefabs: []
   _cellSize: 2
+  _gizmosColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &878218958
 GameObject:
   m_ObjectHideFlags: 0
@@ -5272,6 +5279,8 @@ MonoBehaviour:
     enemyTeamTag: 000000000100000002000000
   - teamTag: 2
     enemyTeamTag: 000000000100000003000000
+  handUiInfo: {fileID: 0}
+  deskUiInfo: {fileID: 0}
 --- !u!114 &878218961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12710,7 +12719,7 @@ PrefabInstance:
       objectReference: {fileID: 700501900}
     - target: {fileID: 3546174353239284517, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4201389273232598647, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
       propertyPath: _portraitSprites.Array.size
@@ -12726,15 +12735,15 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 2e9f3113edb1982429c93064bbc10e21, type: 3}
     - target: {fileID: 8045708705058377579, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8382518316721301205, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8478694266561772957, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19913be12608bfc4ba8484a4931b0020, type: 3}
