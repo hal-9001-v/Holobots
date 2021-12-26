@@ -328,7 +328,7 @@ MonoBehaviour:
   _moveCost: 1
   _pathProfile:
     canTraspass: 0
-    canFly: 0
+    canFly: 1
   _movingSpeed: 7
   _rotationTime: 0.35
 --- !u!114 &2622731951349286004

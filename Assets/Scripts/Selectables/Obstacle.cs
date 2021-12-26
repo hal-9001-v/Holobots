@@ -107,15 +107,18 @@ public class Obstacle : MonoBehaviour
                             tile.unit.Hurt(_target, _debrisDamage, barrier);
                         }
 
-                        var debrisClone = Instantiate(_debrisPrototype);
-                        _childGiver.AddChildToContainer(debrisClone.gameObject);
-                        debrisClone.transform.position = _debrisPrototype.transform.position;
+                        if (tile.tileType != TileType.Void)
+                        {
+                            var debrisClone = Instantiate(_debrisPrototype);
+                            _childGiver.AddChildToContainer(debrisClone.gameObject);
+                            debrisClone.transform.position = _debrisPrototype.transform.position;
 
-                        debrisClone.transform.position += new Vector3(offset.x * _ground.cellSize, 0, offset.y * _ground.cellSize);
+                            debrisClone.transform.position += new Vector3(offset.x * _ground.cellSize, 0, offset.y * _ground.cellSize);
 
-                        debrisClone.enabled = true;
+                            debrisClone.enabled = true;
 
-                        tile.weight = _debrisWeight;
+                            tile.weight = _debrisWeight;
+                        }
                     }
 
 

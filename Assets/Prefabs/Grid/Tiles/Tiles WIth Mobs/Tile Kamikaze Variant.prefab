@@ -53,8 +53,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7607050364994292932, guid: 087261824abb6fb4f8e365930f4f6e5e, type: 3}
       propertyPath: m_Name
-      value: Tile Kamikaze
+      value: Tile Kamikaze Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 8255468038196964625, guid: 087261824abb6fb4f8e365930f4f6e5e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7e6abf72f5ffa6c44a6cf0441899ba3a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 087261824abb6fb4f8e365930f4f6e5e, type: 3}
 --- !u!4 &6739334532153811320 stripped
