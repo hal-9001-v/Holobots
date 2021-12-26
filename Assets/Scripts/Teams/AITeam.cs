@@ -7,7 +7,7 @@ public class AITeam : Team
     List<Bot> _bots;
     List<Bot> _botsInTurn;
 
-    public AITeam(Transform target, TeamTag tag, List<TeamTag> enemyTags, UIInfoManager deviceUIInforManager) : base(tag, enemyTags, deviceUIInforManager)
+    public AITeam(TeamTag tag, List<TeamTag> enemyTags, UIInfoManager deviceUIInforManager) : base(tag, enemyTags, deviceUIInforManager)
     {
         _botsInTurn = new List<Bot>();
 

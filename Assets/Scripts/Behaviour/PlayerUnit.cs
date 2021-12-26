@@ -20,10 +20,6 @@ public class PlayerUnit : MonoBehaviour, ITurnPreviewer
         target = GetComponent<Target>();
         _turnActor = GetComponent<TurnActor>();
 
-    }
-
-    private void Start()
-    {
         CreateAdapters();
     }
 

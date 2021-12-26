@@ -16,7 +16,7 @@ public class PlayerTeam : Team
 
     bool _turnIsActive;
 
-    public PlayerTeam(Transform target, TeamTag teamTag, List<TeamTag> enemyTags, UIInfoManager deviceUiInfo) : base(teamTag, enemyTags, deviceUiInfo)
+    public PlayerTeam(TeamTag teamTag, List<TeamTag> enemyTags, UIInfoManager deviceUiInfo) : base(teamTag, enemyTags, deviceUiInfo)
     {
         inputContainer = new GameInput();
 

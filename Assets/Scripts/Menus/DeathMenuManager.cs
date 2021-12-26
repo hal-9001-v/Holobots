@@ -25,9 +25,9 @@ public class DeathMenuManager : MonoBehaviour
 
     [SerializeField] Image[] stars;
     [SerializeField] Image[] miniatureBackgrounds;
-    
 
- 
+
+
     TextMeshProUGUI pointText;
     TextMeshProUGUI turnText;
 
@@ -66,17 +66,18 @@ public class DeathMenuManager : MonoBehaviour
         {
             Application.Quit();
         });
-             _return.onClick.AddListener(() =>
-        {
-            SceneManager.LoadScene(0, LoadSceneMode.Single);
-        });
+        _return.onClick.AddListener(() =>
+   {
+       SceneManager.LoadScene(0, LoadSceneMode.Single);
+   });
 
     }
 
     void UpdatePointsGUI(TeamTag winner)
     {
-        
-        if(FindObjectOfType<LanguageContext>().currentLanguage == Language.English){
+
+        if (FindObjectOfType<LanguageContext>().currentLanguage == Language.English)
+        {
             switch (winner)
             {
                 case TeamTag.Player1:
@@ -103,95 +104,104 @@ public class DeathMenuManager : MonoBehaviour
                     _titleMesh.text = "Defeat!";
                     break;
             }
-        } else 
+        }
+        else
         {
             switch (winner)
-                {
-                    case TeamTag.Player1:
-                        _titleMesh.text = "¡Ha Ganado el Jugador Uno!";
-                        break;
+            {
+                case TeamTag.Player1:
+                    _titleMesh.text = "¡Ha Ganado el Jugador Uno!";
+                    break;
 
-                    case TeamTag.Player2:
-                        _titleMesh.text = "¡Ha Ganado el Jugador Dos!";
-                        break;
+                case TeamTag.Player2:
+                    _titleMesh.text = "¡Ha Ganado el Jugador Dos!";
+                    break;
 
-                    case TeamTag.AI:
-                        _titleMesh.text = "¡Ha Ganado el Equipo IA 1!";
-                        break;
+                case TeamTag.AI:
+                    _titleMesh.text = "¡Ha Ganado el Equipo IA 1!";
+                    break;
 
-                    case TeamTag.AI2:
-                        _titleMesh.text = "¡Ha Ganado el Equipo IA 2!";
-                        break;
+                case TeamTag.AI2:
+                    _titleMesh.text = "¡Ha Ganado el Equipo IA 2!";
+                    break;
 
-                    case TeamTag.Mob:
-                        _titleMesh.text = "¡Han Ganado los Monstruos!";
-                        break;
+                case TeamTag.Mob:
+                    _titleMesh.text = "¡Han Ganado los Monstruos!";
+                    break;
 
-                    default:
-                        _titleMesh.text = "¡Derrota!";
-                        break;
-                }
+                default:
+                    _titleMesh.text = "¡Derrota!";
+                    break;
+            }
 
 
         }
-        _killsPlayerOneMesh.text =  _killsOne.ToString();
-        _killsPlayerTwoMesh.text =  _killsTwo.ToString();
+        _killsPlayerOneMesh.text = _killsOne.ToString();
+        _killsPlayerTwoMesh.text = _killsTwo.ToString();
 
-        _deathPlayerOneMesh.text =  _deathsOne.ToString();
+        _deathPlayerOneMesh.text = _deathsOne.ToString();
         _deathPlayerTwoMesh.text = _deathsTwo.ToString();
 
-        _turnsMesh.text =  _turns.ToString();
+        _turnsMesh.text = _turns.ToString();
 
-       Color color;
+        Color color;
         switch (winner)
         {
 
-           case TeamTag.Player1:
-                  ColorUtility.TryParseHtmlString("#14f7ff", out color );
+            case TeamTag.Player1:
+                ColorUtility.TryParseHtmlString("#14f7ff", out color);
                 break;
             case TeamTag.AI:
-                ColorUtility.TryParseHtmlString("#ff1c14", out color );
-                   break;
+                ColorUtility.TryParseHtmlString("#ff1c14", out color);
+                break;
             case TeamTag.Mob:
-                ColorUtility.TryParseHtmlString("#18ff14", out color );
-                  break;
+                ColorUtility.TryParseHtmlString("#18ff14", out color);
+                break;
             case TeamTag.AI2:
-                ColorUtility.TryParseHtmlString("#c114ff", out color );
-                   break;
+                ColorUtility.TryParseHtmlString("#c114ff", out color);
+                break;
 
             default:
-                ColorUtility.TryParseHtmlString("#14f7ff", out color );
-            break;
+                ColorUtility.TryParseHtmlString("#14f7ff", out color);
+                break;
 
         }
 
         miniatureBackgrounds[0].color = color;
-        miniatureBackgrounds[1].color =color;   
+        miniatureBackgrounds[1].color = color;
 
         int starsInt = 0;
-        if(turns < 10) {
+        if (turns < 10)
+        {
 
             starsInt = 5;
 
-        } else if (turns < 20){
+        }
+        else if (turns < 20)
+        {
 
             starsInt = 4;
 
-        } else if(turns < 30){
+        }
+        else if (turns < 30)
+        {
 
             starsInt = 3;
 
         }
-        else if(turns < 40){
+        else if (turns < 40)
+        {
 
             starsInt = 2;
 
         }
-        else if (turns < 50){
+        else if (turns < 50)
+        {
             starsInt = 1;
-        } 
+        }
 
-        for(int i = 0; i < starsInt; i++){
+        for (int i = 0; i < starsInt; i++)
+        {
 
             stars[i].sprite = goodStar;
 
@@ -211,29 +221,31 @@ public class DeathMenuManager : MonoBehaviour
         _turns++;
     }
 
-    public void AddKill(TeamTag tag)
+    public void AddKill(TeamTag killer, TeamTag death)
     {
-        switch (tag)
+        if (killer == TeamTag.None) return;
+        if (death == TeamTag.None) return;
+
+
+        switch (killer)
         {
             case TeamTag.Player1:
                 _killsOne++;
                 break;
+
             case TeamTag.Player2:
                 _killsTwo++;
                 break;
+
             default:
                 break;
         }
-    }
 
-    public void AddDeath(TeamTag tag)
-    {
-        switch (tag)
+        switch (death)
         {
             case TeamTag.Player1:
                 _deathsOne++;
                 break;
-
             case TeamTag.Player2:
                 _deathsTwo++;
                 break;
@@ -241,6 +253,6 @@ public class DeathMenuManager : MonoBehaviour
             default:
                 break;
         }
-    }
 
+    }
 }

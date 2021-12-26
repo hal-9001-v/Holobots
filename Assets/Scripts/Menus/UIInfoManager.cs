@@ -6,10 +6,10 @@ using TMPro;
 public class UIInfoManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private TextMeshProUGUI _unitName;
+    [SerializeField] TextMeshProUGUI _unitName;
     [SerializeField] Image _currentSprite;
     [SerializeField] Image _currentSpriteBackground;
-    [SerializeField] private Sprite[] _portraitSprites;
+    [SerializeField] Sprite[] _portraitSprites;
     
     public TextMeshProUGUI unitName
     {

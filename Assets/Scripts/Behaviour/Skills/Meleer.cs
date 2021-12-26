@@ -136,7 +136,7 @@ class MeleerExecuter
         _highlighter.Unhighlight();
 
         barrier.AddCounter();
-        target.Hurt(target, damage, barrier);
+        target.Hurt(_actor.target, damage, barrier);
         barrier.RemoveCounter();
     }
 }

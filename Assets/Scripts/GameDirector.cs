@@ -6,17 +6,12 @@ using TMPro;
 public class GameDirector : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] Transform cameraTarget;
-    [SerializeField] TextMeshProUGUI winningtext;
-
     [SerializeField] TaggedTeam[] _taggedTeams;
 
     List<Team> _teams;
     BehaviourTree _teamTurnTree;
 
     UIInfoManager uiInfo;
-    public UIInfoManager handUiInfo;
-    public UIInfoManager deskUiInfo;
     DeathMenuManager _deathMenuManager;
 
     int _currentTeam = -1;
@@ -34,9 +29,9 @@ public class GameDirector : MonoBehaviour
         Time.timeScale = 0.75f;
         _deathMenuManager = FindObjectOfType<DeathMenuManager>();
 
-        if(SystemInfo.deviceType == DeviceType.Handheld) uiInfo = handUiInfo;
-        else uiInfo = deskUiInfo;
-        
+        var infoProvider = FindObjectOfType<UIInfoManagerProvider>();
+        uiInfo = infoProvider.infoManager;
+
         CreateTeams();
     }
 
@@ -75,7 +70,6 @@ public class GameDirector : MonoBehaviour
                 break;
 
             case GameStates.EndGame:
-                winningtext.text = "End Game, winner: " + _teams[0].teamTag;
                 _deathMenuManager.DisplayEndgameScreen(_teams[0].teamTag);
 
                 return;
@@ -96,19 +90,19 @@ public class GameDirector : MonoBehaviour
             switch (taggedTeam.teamTag)
             {
                 case TeamTag.Player1:
-                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player1, taggedTeam.enemyTeamTag, uiInfo));
+                    _teams.Add(new PlayerTeam(TeamTag.Player1, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.Player2:
-                    _teams.Add(new PlayerTeam(cameraTarget, TeamTag.Player2, taggedTeam.enemyTeamTag, uiInfo));
+                    _teams.Add(new PlayerTeam(TeamTag.Player2, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.AI:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI, taggedTeam.enemyTeamTag, uiInfo));
+                    _teams.Add(new AITeam(TeamTag.AI, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.AI2:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.AI2, taggedTeam.enemyTeamTag,uiInfo));
+                    _teams.Add(new AITeam(TeamTag.AI2, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.Mob:
-                    _teams.Add(new AITeam(cameraTarget, TeamTag.Mob, taggedTeam.enemyTeamTag,uiInfo));
+                    _teams.Add(new AITeam(TeamTag.Mob, taggedTeam.enemyTeamTag, uiInfo));
                     break;
                 case TeamTag.None:
                     break;
@@ -131,17 +125,19 @@ public class GameDirector : MonoBehaviour
         {
             ChangeState(GameStates.EndGame);
         }
-
-        if (_teams[_currentTeam].StartTurn())
-        {
-            Debug.Log("Start Turn of " + _teams[_currentTeam].teamTag);
-        }
         else
         {
-            _teams.RemoveAt(_currentTeam);
+            if (_teams[_currentTeam].StartTurn())
+            {
+                Debug.Log("Start Turn of " + _teams[_currentTeam].teamTag);
+            }
+            else
+            {
+                _teams.RemoveAt(_currentTeam);
 
-            StartTeamTurn();
+                StartTeamTurn();
 
+            }
         }
     }
 
@@ -228,10 +224,7 @@ public class GameDirector : MonoBehaviour
 
     public void TeamEndedTurn(Team team)
     {
-        if (team == _teams[_currentTeam])
-        {
-            StartCoroutine(EndTurnCountdown());
-        }
+        StartCoroutine(EndTurnCountdown());
     }
 
     IEnumerator EndTurnCountdown()

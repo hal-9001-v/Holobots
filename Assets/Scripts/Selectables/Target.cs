@@ -139,8 +139,7 @@ public class Target : MonoBehaviour
 
             Die(barrier);
 
-            _deathMamenu.AddKill(hurter.teamTag);
-            _deathMamenu.AddDeath(teamTag);
+            _deathMamenu.AddKill(hurter.teamTag, teamTag);
 
             return true;
         }
