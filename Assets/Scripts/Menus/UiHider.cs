@@ -20,4 +20,7 @@ public class UiHider : MonoBehaviour
         backgroundCanvas.alpha = 1f;
 
     }
+
+ 
+    
 }

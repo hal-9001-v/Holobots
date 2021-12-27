@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour
     MeshRenderer _meshRenderer;
 
     VFXManager _vfxManager;
-
+    [SerializeField] GameObject trailVFX;
     public Target damagedTarget { get; private set; }
 
     private void Awake()
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
     {
         _meshRenderer.enabled = false;
         _collider.enabled = false;
-
+        trailVFX.SetActive(false);
 
     }
 
@@ -46,6 +46,7 @@ public class Projectile : MonoBehaviour
     {
         _meshRenderer.enabled = true;
         _collider.enabled = true;
+        trailVFX.SetActive(true);
 
         damagedTarget = null;
 

@@ -84,7 +84,6 @@ public class PlayerTeam : Team
     {
         _turnIsActive = true;
         _gameDirector.UpdateTeams();
-
         if (base.StartTurn())
         {
             SelectUnit(0);
@@ -181,6 +180,7 @@ public class PlayerTeam : Team
             _skillSelector.SetSelectedUnit(_actorsInTurn[_unitIndex]);
 
             SetTargetOfCamera(_actorsInTurn[_unitIndex].target, false);
+            UiHider.EnableUI();
         }
     }
 
