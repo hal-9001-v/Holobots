@@ -59,7 +59,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7034239778695269442}
-  m_LocalRotation: {x: -0.15333728, y: 0.84635466, z: -0.34804955, w: -0.37287143}
+  m_LocalRotation: {x: -0.1533373, y: 0.8463546, z: -0.3480495, w: -0.37287146}
   m_LocalPosition: {x: 6.4700003, y: 5.29, z: 0.50999975}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -284,7 +284,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7034239779227418556}
-  m_LocalRotation: {x: -0.15333728, y: 0.84635466, z: -0.34804955, w: -0.37287143}
+  m_LocalRotation: {x: -0.1533373, y: 0.8463546, z: -0.3480495, w: -0.37287146}
   m_LocalPosition: {x: 6.4700003, y: 5.29, z: 0.50999975}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -507,7 +507,7 @@ MonoBehaviour:
   _virtualCamera: {fileID: 7034239779227418530}
   _followRigidbody: {fileID: 7034239779587648635}
   _rotationSpeed: 250
-  _movementSpeed: 5
+  _movementSpeed: 10
   _fovChange: 1
 --- !u!54 &7034239779587648635
 Rigidbody:

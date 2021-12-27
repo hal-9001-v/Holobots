@@ -73,7 +73,7 @@ public class SelfExplosion : MonoBehaviour
 
         }
 
-        _vfxManager.Play("Explosion", _target.currentGroundTile.transform);
+        _vfxManager.Play("Explosion", _target.currentGroundTile.transform, Quaternion.EulerAngles(Vector3.zero));
 
         _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 

@@ -19,7 +19,7 @@ public class VFXManager : MonoBehaviour
 
     [SerializeField] VFX[] vfxes;
 
-    public void Play(String vfxs, Transform target)
+    public void Play(String vfxs, Transform target, Quaternion rotation)
     {
         VFX v =  Array.Find(vfxes, vfx => vfx.name == vfxs);
         if (v.name == "")
@@ -28,12 +28,11 @@ public class VFXManager : MonoBehaviour
             return;
         }
         _VFXObject.transform.position = v.positionOffset + target.position;
-
-        _VFXObject.playRate = v.rate;
+        _VFXObject.transform.rotation  = rotation;
 
         _VFXObject.transform.localScale = v.scale;
         _VFXObject.visualEffectAsset = v.vfx;
-
+        
         _VFXObject.Play();
     }
 

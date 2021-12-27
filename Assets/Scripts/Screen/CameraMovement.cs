@@ -18,6 +18,7 @@ public class CameraMovement : MonoBehaviour
     [Header("Settings")]
     [SerializeField] [Range(50f, 250f)] float _rotationSpeed = 1;
     [SerializeField] [Range(0f, 20f)] float _movementSpeed = 1;
+    [SerializeField] [Range(30f, 120f)] float fov= 1;
     [SerializeField] [Range(0f, 10f)] float _fovChange = 1;
 
     float _rotationInput;
@@ -73,14 +74,18 @@ public class CameraMovement : MonoBehaviour
         {
             if (ctx.ReadValue<float>() < 0)
             {
-                _virtualCamera.m_Lens.FieldOfView += _fovChange;
-               if(_movementSpeed < 5) _movementSpeed+=0.1f;
+
+                if(_virtualCamera.m_Lens.FieldOfView < 120)_virtualCamera.m_Lens.FieldOfView += _fovChange;
+               if(_movementSpeed < 15) _movementSpeed+=0.1f;
+               fov = _virtualCamera.m_Lens.FieldOfView;
             }
             else
             if (ctx.ReadValue<float>() > 0)
             {
-                _virtualCamera.m_Lens.FieldOfView -= _fovChange;
-                if(_movementSpeed > 1) _movementSpeed-=0.1f;
+               if(_virtualCamera.m_Lens.FieldOfView > 30) _virtualCamera.m_Lens.FieldOfView -= _fovChange;
+                if(_movementSpeed > 5) _movementSpeed-=0.1f;
+                fov = _virtualCamera.m_Lens.FieldOfView;
+
             }
         };
     }

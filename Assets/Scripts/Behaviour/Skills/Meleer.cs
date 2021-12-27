@@ -130,7 +130,7 @@ class MeleerExecuter
         _cameraMovement.FixLookAt(target.transform);
         yield return new WaitForSeconds(0.5f);
 
-        _vfxManager.Play("Hit", target.transform);
+        _vfxManager.Play("Hit", target.transform,Quaternion.EulerAngles(Vector3.zero));
         yield return new WaitForSeconds(_vfxManager.GetDuration() - 1.5f);
 
         _highlighter.Unhighlight();

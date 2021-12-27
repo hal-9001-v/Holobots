@@ -65,7 +65,7 @@ public class Projectile : MonoBehaviour
         {
             damagedTarget = target;
 
-            _vfxManager.Play("Hit", transform);
+            _vfxManager.Play("Hit", transform,Quaternion.EulerAngles(Vector3.zero));
 
             DisableProjectile();
 

@@ -55,7 +55,7 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        _vfxManager.Play("Explosion", centerTile.transform);
+        _vfxManager.Play("Explosion", centerTile.transform,Quaternion.EulerAngles(Vector3.zero));
         _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 
         yield return new WaitForSeconds(_vfxManager.GetDuration());

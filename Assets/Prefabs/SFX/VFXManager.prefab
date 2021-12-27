@@ -59,8 +59,8 @@ MonoBehaviour:
   - name: Muzzle
     positionOffset: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
-    vfx: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
-    rate: 1
+    vfx: {fileID: 8926484042661614526, guid: e3c490aa6aa43ee4cb8ddd260f641fe6, type: 3}
+    rate: 0.2
   - name: Hit
     positionOffset: {x: 0, y: 0, z: 0}
     scale: {x: 2, y: 2, z: 2}

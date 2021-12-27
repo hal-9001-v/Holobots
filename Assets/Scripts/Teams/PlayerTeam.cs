@@ -98,8 +98,8 @@ public class PlayerTeam : Team
     public override void EndTurn()
     {
         _turnIsActive = false;
-
         base.EndTurn();
+        UiHider.DisableUI();
         _skillSelector.Hide();
     }
 
@@ -132,6 +132,7 @@ public class PlayerTeam : Team
 
     public override void ActorFinishedTurn(TurnActor actor)
     {
+
         if (_actorsInTurn.Contains(actor))
         {
             _actorsInTurn.Remove(actor);
@@ -145,7 +146,6 @@ public class PlayerTeam : Team
                 else
                 {
                     SelectUnit(0);
-
                     SetTargetOfCamera(_actorsInTurn[0].target, false);
                 }
             }
@@ -185,7 +185,8 @@ public class PlayerTeam : Team
     }
 
     public override void ActorFinishedStep(TurnActor actor)
-    {
+    {        UiHider.EnableUI();
+
         if (_gameDirector.UpdateTeams())
         {
             SelectUnit(_unitIndex);
@@ -200,8 +201,8 @@ public class PlayerTeam : Team
     public override void ActorStartedStep(TurnActor actor)
     {
         GameObject.FindObjectOfType<SelectionArrow>().SetPosition(_actorsInTurn[_unitIndex].gameObject);
-
-        _cameraMovement.FixLookAtC(_actorsInTurn[_unitIndex].transform);
+        UiHider.DisableUI();
+        _cameraMovement.FixLookAt(_actorsInTurn[_unitIndex].transform);
         _skillSelector.Hide();
 
     }

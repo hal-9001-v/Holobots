@@ -345,6 +345,8 @@ GameObject:
   - component: {fileID: 392773311302287719}
   - component: {fileID: 392773311302287721}
   - component: {fileID: 392773311302287720}
+  - component: {fileID: 3717847451388637533}
+  - component: {fileID: 2387465961570903010}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -406,6 +408,30 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!225 &3717847451388637533
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392773311302287718}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &2387465961570903010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392773311302287718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c2d699919568842b56655514bd079c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &392773311599100773
 GameObject:
   m_ObjectHideFlags: 0
@@ -3310,7 +3336,7 @@ RectTransform:
   m_GameObject: {fileID: 8478694266561772957}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.93094164, y: 0.93094164, z: 0.93094164}
+  m_LocalScale: {x: 0.93094164, y: 0.9309416, z: 0.9309416}
   m_Children:
   - {fileID: 6542244705334257451}
   - {fileID: 6889519335606764254}
