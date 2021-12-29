@@ -55,9 +55,16 @@ public class Explosion : MonoBehaviour
             }
         }
 
-        _vfxManager.Play("Explosion", centerTile.transform);
-        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
 
+        if(SystemInfo.deviceType != DeviceType.Handheld) {
+            _vfxManager.Play("Explosion", centerTile.transform,Quaternion.EulerAngles(Vector3.zero));
+        }
+        else 
+        { 
+            yield return new WaitForSeconds(0.5f);
+            _vfxManager.Play("Hit2", centerTile.transform,Quaternion.EulerAngles(Vector3.zero));
+        }
+        _cameraMovement.FixLookAt(_vfxManager.VFXObject.transform);
         yield return new WaitForSeconds(_vfxManager.GetDuration());
         //Add to barrier so it doesnt get to 0 in loop.
         barrier.AddCounter();

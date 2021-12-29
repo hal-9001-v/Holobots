@@ -47,7 +47,7 @@ MonoBehaviour:
   _VFXObject: {fileID: 7333810040814427109}
   vfxes:
   - name: Explosion
-    positionOffset: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 1, z: 0}
     scale: {x: 1, y: 1, z: 1}
     vfx: {fileID: 8926484042661614526, guid: 85fde10a7c451834480b8d1130702fc5, type: 3}
     rate: 1
@@ -59,13 +59,18 @@ MonoBehaviour:
   - name: Muzzle
     positionOffset: {x: 0, y: 0, z: 0}
     scale: {x: 1, y: 1, z: 1}
-    vfx: {fileID: 8926484042661614526, guid: 1194657162895cf41a278fe3576dbb4a, type: 3}
-    rate: 1
+    vfx: {fileID: 8926484042661614526, guid: e3c490aa6aa43ee4cb8ddd260f641fe6, type: 3}
+    rate: 0.2
   - name: Hit
     positionOffset: {x: 0, y: 0, z: 0}
     scale: {x: 2, y: 2, z: 2}
     vfx: {fileID: 8926484042661614526, guid: 594f17ff9592cd8429606b788f83c325, type: 3}
     rate: 1
+  - name: Hit2
+    positionOffset: {x: 0, y: 1, z: 0}
+    scale: {x: 5, y: 5, z: 5}
+    vfx: {fileID: 8926484042661614526, guid: 594f17ff9592cd8429606b788f83c325, type: 3}
+    rate: 0.1
 --- !u!1 &7333810040814427106
 GameObject:
   m_ObjectHideFlags: 0

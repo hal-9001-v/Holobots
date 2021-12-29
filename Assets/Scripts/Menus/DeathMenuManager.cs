@@ -26,7 +26,7 @@ public class DeathMenuManager : MonoBehaviour
     [SerializeField] Image[] stars;
     [SerializeField] Image[] miniatureBackgrounds;
 
-
+    [SerializeField] GameObject GameUI;
 
     TextMeshProUGUI pointText;
     TextMeshProUGUI turnText;
@@ -68,14 +68,14 @@ public class DeathMenuManager : MonoBehaviour
         });
         _return.onClick.AddListener(() =>
    {
-       SceneManager.LoadScene(0, LoadSceneMode.Single);
-   });
+        FindObjectOfType<LevelLoader>().LoadLevel(0);
+    });
 
     }
 
     void UpdatePointsGUI(TeamTag winner)
     {
-
+        GameUI.SetActive(false);
         if (FindObjectOfType<LanguageContext>().currentLanguage == Language.English)
         {
             switch (winner)
@@ -211,7 +211,6 @@ public class DeathMenuManager : MonoBehaviour
     public void DisplayEndgameScreen(TeamTag winner)
     {
         UpdatePointsGUI(winner);
-
         _animator.SetTrigger(AnimationStartTrigger);
 
     }

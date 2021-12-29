@@ -76,6 +76,9 @@ public class UIInfoManager : MonoBehaviour
             case TeamTag.Player1:
                   ColorUtility.TryParseHtmlString("#14f7ff", out color );
                 break;
+                case TeamTag.Player2:
+                  ColorUtility.TryParseHtmlString("#ff14c3", out color );
+                break;
             case TeamTag.AI:
                 ColorUtility.TryParseHtmlString("#ff1c14", out color );
                    break;

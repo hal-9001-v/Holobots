@@ -10,6 +10,7 @@ public class Shooter : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] [Range(1, 5)] int _shootCost = 1;
+    [SerializeField] Transform cannon;
 
     public int shootCost
     {
@@ -46,7 +47,7 @@ public class Shooter : MonoBehaviour
 
         var rotator = GetComponentInChildren<CharacterRotator>();
         var cameraMovement = FindObjectOfType<CameraMovement>();
-        _executer = new ShooterExecuter(_projectile, rotator,cameraMovement, _damage, this, _turnActor, _speed);
+        _executer = new ShooterExecuter(_projectile, rotator,cameraMovement, _damage, this, _turnActor, _speed, cannon);
     }
 
     public void AddShoot(Target target)
@@ -79,6 +80,7 @@ public class ShooterExecuter
     TurnActor _turnActor;
     Shooter _owner;
 
+    Transform _cannonPos;
     float _speed;
 
     int _damage;
@@ -87,13 +89,13 @@ public class ShooterExecuter
 
     CameraMovement _cameraMovement;
 
-    public ShooterExecuter(Projectile projectile, CharacterRotator characterRotator, CameraMovement cameraMovement, int damage, Shooter owner, TurnActor turnActor, float speed)
+    public ShooterExecuter(Projectile projectile, CharacterRotator characterRotator, CameraMovement cameraMovement, int damage, Shooter owner, TurnActor turnActor, float speed, Transform cannon)
     {
         _projectile = projectile;
         _owner = owner;
 
         _damage = damage;
-
+        _cannonPos = cannon;
         _turnActor = turnActor;
 
         _speed = speed;
@@ -107,10 +109,11 @@ public class ShooterExecuter
 
     public void Execute(Target target)
     {
-        _owner.StartCoroutine(MoveProjectileToTarget(_speed, _turnActor.transform.position, target));
+        if(_cannonPos!= null) _owner.StartCoroutine(MoveProjectileToTarget(_speed, _cannonPos, target));
+        else _owner.StartCoroutine(MoveProjectileToTarget(_speed, _turnActor.transform, target));
     }
 
-    IEnumerator MoveProjectileToTarget(float speed, Vector3 origin, Target target)
+    IEnumerator MoveProjectileToTarget(float speed, Transform origin, Target target)
     {
         CountBarrier barrier = new CountBarrier(() =>
         {
@@ -125,7 +128,7 @@ public class ShooterExecuter
 
         if (_rotator)
         {
-            var direction = target.transform.position - origin;
+            var direction = target.transform.position - origin.position;
             direction.Normalize();
 
             _rotator.SetForward(direction, 0.3f);
@@ -134,18 +137,19 @@ public class ShooterExecuter
 
         yield return new WaitForSeconds(0.5f);
 
-        float duration = Vector3.Distance(origin, target.transform.position) / speed;
+        float duration = Vector3.Distance(origin.position, target.transform.position) / speed;
         float elapsedTime = 0;
-        _projectile.transform.position = origin;
+        _projectile.transform.position = origin.position;
 
         _projectile.EnableProjectile();
         _cameraMovement.FixLookAt(_projectile.transform);
-
+        VFXManager vfx = GameObject.FindObjectOfType<VFXManager>();
+        vfx.Play("Muzzle", origin, origin.rotation);
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
 
-            _projectile.transform.position = Vector3.Lerp(origin, target.transform.position, elapsedTime / duration);
+            _projectile.transform.position = Vector3.Lerp(origin.position, target.transform.position, elapsedTime / duration);
 
             yield return null;
 
