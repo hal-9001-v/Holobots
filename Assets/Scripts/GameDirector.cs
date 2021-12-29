@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 public class GameDirector : MonoBehaviour
 {
     [Header("References")]
@@ -28,6 +28,7 @@ public class GameDirector : MonoBehaviour
     {
         Time.timeScale = 0.75f;
         _deathMenuManager = FindObjectOfType<DeathMenuManager>();
+        _deathMenuManager.AddTurn();
 
         var infoProvider = FindObjectOfType<UIInfoManagerProvider>();
         uiInfo = infoProvider.infoManager;
@@ -119,6 +120,8 @@ public class GameDirector : MonoBehaviour
         if (_currentTeam >= _teams.Count)
         {
             _currentTeam = 0;
+
+            _deathMenuManager.AddTurn();
         }
 
         if (_teams.Count == 1)
