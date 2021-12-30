@@ -109,7 +109,7 @@ class MeleerExecuter
     public void Execute(Target target, int damage)
     {
         Debug.Log(_actor.name + " is attacking with melee " + target.name);
-
+    
         _actor.StartCoroutine(MakeHit(target, damage));
     }
 
@@ -126,9 +126,11 @@ class MeleerExecuter
         _actor.StartStep(_cost);
         _highlighter.AddDangerededHighlightable(target.highlightable);
         _highlighter.AddDangerededHighlightable(target.currentGroundTile.highlightable);
-
+        Animator anim = _actor.gameObject.GetComponentInChildren<Animator>();
+        anim.SetTrigger("Attack");
         _cameraMovement.FixLookAt(target.transform);
         yield return new WaitForSeconds(0.5f);
+        anim.ResetTrigger("Attack");
 
         _vfxManager.Play("Hit", target.transform,Quaternion.EulerAngles(Vector3.zero));
         yield return new WaitForSeconds(_vfxManager.GetDuration() - 1.5f);

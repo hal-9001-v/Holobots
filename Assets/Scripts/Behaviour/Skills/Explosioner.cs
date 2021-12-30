@@ -82,7 +82,18 @@ class ExplosionerExecuter
             _actor.EndStep();
         });
 
+        Animator anim = _actor.gameObject.GetComponentInChildren<Animator>();
+        anim.SetTrigger("Attack");
+
+
         _explosion.Explode(tile, barrier, _actor.target);
+        _actor.StartCoroutine(ResetExplosionAnim(anim));
+
+    }
+
+    private IEnumerator ResetExplosionAnim(Animator anim){
+        yield return new WaitForSeconds(0.1f);
+        anim.ResetTrigger("Attack");
     }
 
 }

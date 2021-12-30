@@ -141,7 +141,7 @@ public class SettingsMenuManager : MonoBehaviour
             Debug.Log("Return to main menu");
 
         } else {
-            Time.timeScale = 1f;
+        Time.timeScale = 0.75f;
             StartCoroutine(ReturnToMenuC(false));
             Debug.Log("Return to pause menu");
             

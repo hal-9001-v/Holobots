@@ -120,9 +120,11 @@ public class ShooterExecuter
             _turnActor.EndStep();
         });
         barrier.AddCounter();
+        Animator anim = _turnActor.gameObject.GetComponentInChildren<Animator>();
+        anim.SetTrigger("Attack");
+
 
         _turnActor.StartStep(_owner.shootCost);
-
         _highligher.AddDangerededHighlightable(target.highlightable);
         _highligher.AddDangerededHighlightable(target.currentGroundTile.highlightable);
 
@@ -136,6 +138,8 @@ public class ShooterExecuter
         }
 
         yield return new WaitForSeconds(0.5f);
+        
+        anim.ResetTrigger("Attack");
 
         float duration = Vector3.Distance(origin.position, target.transform.position) / speed;
         float elapsedTime = 0;

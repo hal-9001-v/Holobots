@@ -92,8 +92,11 @@ class HealerExecuter
 
         _vfxManager.Play("Heal", target.transform,Quaternion.EulerAngles(Vector3.zero));
         _cameraMovement.FixLookAt(target.transform);
+        Animator anim = _actor.gameObject.GetComponentInChildren<Animator>();
+        anim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(_vfxManager.GetDuration()-1.5f);
+        anim.ResetTrigger("Attack");
 
         target.Heal(points);
 

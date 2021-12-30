@@ -55,7 +55,6 @@ public class Explosion : MonoBehaviour
             }
         }
 
-
         if(SystemInfo.deviceType != DeviceType.Handheld) {
             _vfxManager.Play("Explosion", centerTile.transform,Quaternion.EulerAngles(Vector3.zero));
         }

@@ -46,7 +46,7 @@ public class PauseMenuManager : MonoBehaviour
     private void Resume(){
 
         StartCoroutine(ResumeC());
-        Time.timeScale = 1;
+        Time.timeScale = 0.75f;
        _pauseButton.GetComponent<CanvasGroup>().alpha = 1;
     }
 
@@ -73,7 +73,7 @@ public class PauseMenuManager : MonoBehaviour
     
     private void ReturnToMenu(){
        
-        Time.timeScale = 1f;
+        Time.timeScale = 0.75f;
         _levelLoader.LoadLevel(0);
 
 

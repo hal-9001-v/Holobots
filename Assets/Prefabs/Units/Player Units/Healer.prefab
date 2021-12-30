@@ -266,7 +266,6 @@ GameObject:
   - component: {fileID: 7147693655462807100}
   - component: {fileID: 3649478519851027282}
   - component: {fileID: 4846680743195190741}
-  - component: {fileID: 6980353238086634573}
   m_Layer: 0
   m_Name: Healer
   m_TagString: Untagged
@@ -451,25 +450,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dissolveTime: 0
---- !u!95 &6980353238086634573
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9053618713726190353}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 99c694e355737cf4ea912de54a29a120, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &4235657618253762082
 PrefabInstance:
   m_ObjectHideFlags: 0
