@@ -17,7 +17,13 @@ public class Dissolver : MonoBehaviour
         _renderers = GetComponentsInChildren<Renderer>();
 
     }
+ 
+    [ContextMenu("Dissolve")]
+    public void DissolveC(){
 
+        Dissolve(null);
+
+    }    
     public void Dissolve(CountBarrier barrier)
     {
         StartCoroutine(DissolveOverTime(barrier));
@@ -33,7 +39,7 @@ public class Dissolver : MonoBehaviour
             {
                 foreach (var renderer in _renderers)
                 {
-                    renderer.material.SetFloat(DissolveKey, counter / _dissolveTime);
+                   foreach(Material m in renderer.materials) m.SetFloat(DissolveKey, counter / _dissolveTime);
                 }
 
                 counter += Time.deltaTime;

@@ -260,6 +260,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2626802953280025652}
     m_Modifications:
+    - target: {fileID: 5682961640806653512, guid: b904f2aebcd6a0f439fe418e037ead34, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.714
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682961640806653512, guid: b904f2aebcd6a0f439fe418e037ead34, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682961640806653512, guid: b904f2aebcd6a0f439fe418e037ead34, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5682961640806653512, guid: b904f2aebcd6a0f439fe418e037ead34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 5962367221777819480, guid: b904f2aebcd6a0f439fe418e037ead34, type: 3}
       propertyPath: m_Name
       value: Tank
