@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
             if(s.sfx) s.audioSource.outputAudioMixerGroup = sfx;
             else s.audioSource.outputAudioMixerGroup = music;
         }
-        Play("TestMusic");
+        Play("Menu");
     }
 
     public void Play(string name)

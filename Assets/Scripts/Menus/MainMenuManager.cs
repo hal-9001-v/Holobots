@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private CanvasGroup tutorialCanvasGroup;
     [SerializeField] private CanvasGroup controlsCanvasGroup;
 
-
+    AudioManager musicPlayer;
 void Awake()
 {
     if (SystemInfo.deviceType == DeviceType.Handheld){
@@ -29,6 +29,7 @@ void Awake()
         _controlsButton.enabled = false;
 
     }
+    musicPlayer = FindObjectOfType<AudioManager>();
     CloseControls();
 }
     private void Start()
@@ -38,17 +39,20 @@ void Awake()
         _playLevelOneButton.onClick.AddListener(() =>
         {
             Play(1);
+            musicPlayer.Play("Level1");
         });
 
         _playLevelTwoButton.onClick.AddListener(() =>
         {
             Play(2);
+            musicPlayer.Play("Level2");
         });
 
 
         _playPVPButton.onClick.AddListener(() =>
         {
             Play(3);
+            musicPlayer.Play("TestMusic");
         });
 
         _settingsButton.onClick.AddListener(() =>

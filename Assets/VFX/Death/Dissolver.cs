@@ -32,7 +32,13 @@ public class Dissolver : MonoBehaviour
     public IEnumerator DissolveOverTime(CountBarrier barrier)
     {
         float counter = 0;
-
+        foreach (var renderer in _renderers)
+                {
+                    foreach(Material m in renderer.materials) {
+                        renderer.gameObject.layer = 0;
+                    }
+                }
+                
         if (_renderers != null && _renderers.Length != 0)
         {
             while (counter < _dissolveTime)
@@ -50,7 +56,10 @@ public class Dissolver : MonoBehaviour
 
         foreach (var renderer in _renderers)
         {
-            renderer.material.SetFloat(DissolveKey, 1);
+            
+            foreach(Material m in renderer.materials) {
+                renderer.material.SetFloat(DissolveKey, 1);
+            }
         }
 
         if (barrier != null)

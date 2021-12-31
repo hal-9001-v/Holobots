@@ -12,7 +12,6 @@ public class UIInfoManager : MonoBehaviour
     [SerializeField] Sprite[] _portraitSprites;
      void Start()
     {
-                 SetTargetUnit(currentTarget);
 
     }
    
