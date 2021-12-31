@@ -40,12 +40,19 @@ void Awake()
         {
             Play(1);
             musicPlayer.Play("Level1");
+            musicPlayer.Stop("Menu");   
+            musicPlayer.Stop("Level2");   
+            musicPlayer.Stop("TestMusic");
+
         });
 
         _playLevelTwoButton.onClick.AddListener(() =>
         {
             Play(2);
             musicPlayer.Play("Level2");
+            musicPlayer.Stop("Menu");   
+            musicPlayer.Stop("Level1");   
+            musicPlayer.Stop("TestMusic");
         });
 
 
@@ -53,6 +60,9 @@ void Awake()
         {
             Play(3);
             musicPlayer.Play("TestMusic");
+            musicPlayer.Stop("Menu");   
+            musicPlayer.Stop("Level2");   
+            musicPlayer.Stop("Level1");
         });
 
         _settingsButton.onClick.AddListener(() =>

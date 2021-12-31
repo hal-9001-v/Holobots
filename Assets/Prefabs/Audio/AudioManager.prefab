@@ -46,7 +46,7 @@ MonoBehaviour:
   sounds:
   - clip: {fileID: 8300000, guid: ce6c1cb1249b77d4888329ac55caa6b4, type: 3}
     name: TestMusic
-    volume: 0.1
+    volume: 0.358
     pitch: 1
     loop: 1
     sfx: 0
@@ -60,28 +60,28 @@ MonoBehaviour:
     sfx: 1
     audioSource: {fileID: 0}
     time: 0
-  - clip: {fileID: 8300000, guid: 8fa0902d77261e9408839bdaeb1c3e3d, type: 3}
-    name: TestSelect
+  - clip: {fileID: 8300000, guid: 672a621d607a5f54bb3fde56082085f0, type: 3}
+    name: Level1
     volume: 0.579
-    pitch: 3
-    loop: 0
-    sfx: 1
+    pitch: 1
+    loop: 1
+    sfx: 0
     audioSource: {fileID: 0}
     time: 0
-  - clip: {fileID: 8300000, guid: 8fa0902d77261e9408839bdaeb1c3e3d, type: 3}
-    name: TestSelect
-    volume: 0.579
-    pitch: 3
-    loop: 0
-    sfx: 1
+  - clip: {fileID: 8300000, guid: eddeb5db3d0b5a04180a1d9d16bcceaf, type: 3}
+    name: Menu
+    volume: 0.4
+    pitch: 1
+    loop: 1
+    sfx: 0
     audioSource: {fileID: 0}
     time: 0
-  - clip: {fileID: 8300000, guid: 8fa0902d77261e9408839bdaeb1c3e3d, type: 3}
-    name: TestSelect
+  - clip: {fileID: 8300000, guid: 078fa01bf94bc1148be04ef9e805a387, type: 3}
+    name: Level2
     volume: 0.579
-    pitch: 3
-    loop: 0
-    sfx: 1
+    pitch: 1
+    loop: 1
+    sfx: 0
     audioSource: {fileID: 0}
     time: 0
   music: {fileID: -4367043794428395372, guid: bfc0d2d58a97528409c40dbff2961da5, type: 2}

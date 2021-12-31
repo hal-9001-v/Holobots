@@ -11708,6 +11708,46 @@ PrefabInstance:
       propertyPath: sounds.Array.data[1].sfx
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[2].sfx
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[3].sfx
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[4].sfx
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[2].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[3].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[4].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[4].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2002896955271851046, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
+      propertyPath: sounds.Array.data[3].volume
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 2002896955271851047, guid: ed4cb3e05762d0e48b0d0240633c4fd1, type: 3}
       propertyPath: m_RootOrder
       value: 5

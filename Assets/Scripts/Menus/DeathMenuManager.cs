@@ -69,6 +69,12 @@ public class DeathMenuManager : MonoBehaviour
         _return.onClick.AddListener(() =>
    {
         FindObjectOfType<LevelLoader>().LoadLevel(0);
+        AudioManager audio = FindObjectOfType<AudioManager>();
+        audio.Play("Menu");
+        audio.Stop("Level1");   
+        audio.Stop("Level2");   
+        audio.Stop("TestMusic");   
+        
     });
 
     }

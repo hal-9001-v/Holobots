@@ -39,6 +39,11 @@ public class PauseMenuManager : MonoBehaviour
         if(_returnToMenu != null) _returnToMenu.onClick.AddListener(() =>
         {
             ReturnToMenu();
+            AudioManager audio = FindObjectOfType<AudioManager>();
+            audio.Play("Menu");
+            audio.Stop("Level1");   
+            audio.Stop("Level2");   
+            audio.Stop("TestMusic");   
         });
     }
     

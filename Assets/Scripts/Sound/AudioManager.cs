@@ -27,6 +27,9 @@ public class AudioManager : MonoBehaviour
             else s.audioSource.outputAudioMixerGroup = music;
         }
         Play("Menu");
+        Stop("Level1");   
+        Stop("Level2");   
+        Stop("TestMusic");   
     }
 
     public void Play(string name)
@@ -44,23 +47,35 @@ public class AudioManager : MonoBehaviour
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
         s.time = s.audioSource.time;
-        Debug.LogWarning("Sound: " + s.name + " not found!");
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
         s.audioSource.Pause();
     }
 
     public void Resume(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        Debug.LogWarning("Sound: " + s.name + " not found!");
-        s.audioSource.Play();
+        if (s == null)
+                {
+                    Debug.LogWarning("Sound: " + name + " not found!");
+                    return;
+        }       
+         s.audioSource.Play();
         if (s.time != 0 || s.time != -1) s.audioSource.time = s.time;
     }
 
     public void Stop(string name)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        Debug.LogWarning("Sound: " + s.name + " not found!");
-        s.audioSource.Stop();
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }       
+         s.audioSource.Stop();
     }
 
 }
