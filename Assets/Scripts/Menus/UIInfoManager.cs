@@ -10,7 +10,12 @@ public class UIInfoManager : MonoBehaviour
     [SerializeField] Image _currentSprite;
     [SerializeField] Image _currentSpriteBackground;
     [SerializeField] Sprite[] _portraitSprites;
-    
+     void Start()
+    {
+                 SetTargetUnit(currentTarget);
+
+    }
+   
     public TextMeshProUGUI unitName
     {
         get

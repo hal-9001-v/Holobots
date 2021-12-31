@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6663451072526282468}
   - component: {fileID: 6663451072526282469}
   - component: {fileID: 6663451072526282470}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 140635186267673880}
   - component: {fileID: 5857471901840974112}
   - component: {fileID: 6037604462128736262}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 6663451073801727816}
   - component: {fileID: 6663451073801727817}
   - component: {fileID: 6663451073801727818}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ GameObject:
   - component: {fileID: 5400066451055513858}
   - component: {fileID: 2781590564320983733}
   - component: {fileID: 3840901983366317226}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,9 +649,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6663451073602726684}
     m_Modifications:
+    - target: {fileID: 1649289947302573804, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3840234493311203323, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
       propertyPath: m_Name
       value: PROJECTILE
+      objectReference: {fileID: 0}
+    - target: {fileID: 3840234493311203323, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3840234493311203325, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
       propertyPath: m_Enabled
@@ -716,6 +724,18 @@ PrefabInstance:
     - target: {fileID: 3840234493311203327, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310374467294359667, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5402880726770318270, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5402880727991788189, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df583b3aecd630b4cad9ac34ae9b66bd, type: 3}
@@ -798,9 +818,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8586942612844339602, guid: a8c4fcba9c1626d43bb17960cc5fb543, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a8c4fcba9c1626d43bb17960cc5fb543, type: 3}
       propertyPath: m_Name
       value: turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8c4fcba9c1626d43bb17960cc5fb543, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6224677790759850056, guid: a8c4fcba9c1626d43bb17960cc5fb543, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8c4fcba9c1626d43bb17960cc5fb543, type: 3}

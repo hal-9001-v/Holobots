@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3937831840436734394}
   - component: {fileID: 951207682951555959}
   - component: {fileID: 623194491842439457}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 4366520161091536072}
   - component: {fileID: 2932673605497842312}
   - component: {fileID: 193813135660323607}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Kamikaze
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1815672252795066481}
   - component: {fileID: 1815672252795066482}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Explosioner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,6 +511,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 646cfe751972a6f49803ab446c312240, type: 3}
       propertyPath: m_Name
       value: kamikaze
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 646cfe751972a6f49803ab446c312240, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 646cfe751972a6f49803ab446c312240, type: 3}

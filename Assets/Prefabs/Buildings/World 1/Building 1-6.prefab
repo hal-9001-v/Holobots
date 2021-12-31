@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: -8370825868086536939, guid: 01ae6f554488e3d45848203bcf95f43f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,8 +103,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 01ae6f554488e3d45848203bcf95f43f, type: 2}
+  m_sharedMaterial: {fileID: -8370825868086536939, guid: 01ae6f554488e3d45848203bcf95f43f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -347,6 +347,7 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 128
+  _renderers: []
 --- !u!1001 &3850590826845346611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -439,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6654050738762964281, guid: 84b63f933d72cf94b9d8d7f8a23eb715, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.020000458
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6654050738762964281, guid: 84b63f933d72cf94b9d8d7f8a23eb715, type: 3}
       propertyPath: m_LocalPosition.y
